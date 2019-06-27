@@ -37,7 +37,7 @@
     </div>
     <div class="tab">
       <router-link to="/contract">快速办理>></router-link>
-      <router-link to="/query">查询进度>></router-link>
+      <router-link to="/list">查询进度>></router-link>
       <img src="../../img/kdy.png">
     </div>
   </div>
