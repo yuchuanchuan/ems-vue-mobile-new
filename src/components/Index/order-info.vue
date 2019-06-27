@@ -47,12 +47,15 @@
         <div class="title">收件地址</div>
         <div class="select">
           <select v-model="dataForm.postProvinceId" @change="getCityNames">
+            <option class="option11"></option>
             <option v-for="(item,index) in provinceNames" :key="index" :value="item.id">{{item.name}}</option>
           </select>
           <select v-model="dataForm.postCityId" @change="getCountyNames">
+            <option class="option11"></option>
             <option v-for="(item,index) in cityNames" :key="index" :value="item.id">{{item.name}}</option>
           </select>
-          <select v-model="dataForm.postCountyId" @change="getdiNames">
+          <select v-model="dataForm.postCountyId" @change="getdiNames" id="selecta">
+            <option class="option11"></option>
             <option v-for="(item,index) in countyNames" :key="index" :value="item.id">{{item.name}}</option>
           </select>
         </div>
@@ -72,7 +75,7 @@
       <button class="btn" @click="jump1">下一步</button>
     </div>
 
-    <div class="content3" v-if="third">
+    <div class="content3" v-show="third">
       <div class="title">不动产登记便民邮寄</div>
       <div class="box"><div class="tui" @click="tui2"></div>订单支付<div class="sj"></div></div>
       <div class="box1-title">
@@ -82,21 +85,21 @@
       <div class="box1">
         <div class="item">
           <div class="title">姓名</div>
-          <div class="info">李海霞</div>
+          <div class="info">{{dataForm.name}}</div>
         </div>
         <div class="item">
           <div class="title">联系电话</div>
-          <div class="info">18001360553</div>
+          <div class="info">{{dataForm.phone}}</div>
         </div>
         <div class="item">
           <div class="title">收件地址</div>
           <div class="info">
-            <div class="dizhi">天津市花园产业园区海泰信息广场天津市花园产业园区海泰信息广场</div>
+            <div class="dizhi">{{province}}{{city}}{{district}}{{dataForm.postAddress}}</div>
           </div>
         </div>
         <div class="item">
           <div class="title">凭证编号</div>
-          <div class="info">125423651428674</div>
+          <div class="info">{{dataForm.idCard}}</div>
         </div>
       </div>
       <div class="box1-title">
@@ -212,6 +215,10 @@
           handleAreaId: '',
           openid: ''
         },
+        //地址
+        province:'',
+        city:'',
+        district:"",
 
         // uploading页面属性
         imageSave1:"",
@@ -230,13 +237,10 @@
       }
     },
     methods:{
-      getdiNames(){
-        for(var i = 0;i<$("option").length;i++){
-            var content = $("option").eq(i).html();
-            var value = content.substring(0,4);
-            $("option").eq(i).html(value);
-            $("option").eq(i).attr('title',content);
-        }  
+      radio(){
+        if(this.third = true){
+        $(".myinput1").eq(0).attr("checked","true")
+        }
       },
       getInsuredList(){
         this.$http({
@@ -277,7 +281,9 @@
               })
             })
           } else {
-            console.log(data.msg)
+
+            //console.log(data.msg)
+
           }
         })
       },
@@ -304,10 +310,17 @@
                 name: item.name
               })
             })
+            var i = this.dataForm.postProvinceId
+            var lis = this.provinceNames
+            for(var j =0;j<lis.length;j++){
+              if(lis[j].id==i){
+                this.province= lis[j].name
+              }
+            }
           } else {
-            console.log(data.msg)
           }
         })
+        
       },
       getCountyNames(){
         for(var i = 0;i<$("option").length;i++){
@@ -331,12 +344,28 @@
                 name: item.name
               })
             })
+            var i = this.dataForm.postCityId
+            var lis = this.cityNames
+            for(var j =0;j<lis.length;j++){
+              if(lis[j].id==i){
+                this.city = lis[j].name
+              }
+            }
           } else {
             console.log(data.msg)
           }
         })
       },
-
+      getdiNames(){
+        var that = this
+        for(var i = 0;i<$("option").length;i++){
+            var content = $("option").eq(i).html();
+            var value = content.substring(0,4);
+            $("option").eq(i).html(value);
+            $("option").eq(i).attr('title',content);
+        }
+        this.district = $("#selecta option:selected").text();
+      },
       // 支付
       wechatPay(orderId){
         this.$http({
@@ -415,7 +444,6 @@
       // 地理位置
       getMyLocation(){
         let that = this;
-
         that.$http({
           url: that.$http.adornUrl('/wechatJs/location'),
           method: 'get',
@@ -616,6 +644,7 @@
         this.first = false
         this.second = false
         this.third = true
+        this.radio();
       },
       changeName(e){
         var u = event.currentTarget.value;
@@ -672,6 +701,7 @@
       this.yulan1();
       this.yulan2();
       this.yulan3();
+      this.getInsuredList()
     },
     created(){
       this.getInsuredList()
@@ -682,6 +712,9 @@
 </script>
 
 <style scoped>
+.option11{
+  display:none;
+}
 body{
     width:100%;
 }
