@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="content1" v-if="first">
+    <div class="content1" v-show="first">
       <div class="title">不动产登记便民邮寄</div>
       <div class="box">上传凭证<div class="sj"></div></div>
       <div class="box1-title">
@@ -28,7 +28,7 @@
       <input type="file" id="saveImage3" name="myphoto" class="myinput" ref="closeUp" accept="image">
       <button class="btn" @click="jump">下一步</button>
     </div>
-    <div class="content2" v-if="second">
+    <div class="content2" v-show="second">
       <div class="title">不动产登记便民邮寄</div>
       <div class="box"><div class="tui" @click="tui1"></div>EMS邮寄信息<div class="sj"></div></div>
       <div class="smtitle">
@@ -94,7 +94,7 @@
         <div class="item">
           <div class="title">收件地址</div>
           <div class="info">
-            <div class="dizhi">{{province}}{{city}}{{district}}{{dataForm.postAddress}}</div>
+            <div class="dizhi">{{province + city + district + dataForm.postAddress}}</div>
           </div>
         </div>
         <div class="item">
@@ -122,7 +122,7 @@
                 <div class="price"><span>￥</span>{{item.price / 100}}</div>
               </div>
               <div class="top2">
-                <input type="radio" class="myinput1" name="dizhi"/>
+                <input type="radio" class="myinput1" name="dizhi" :value="item.id" @click="handleRadio(index)"/>
               </div>
             </div>
             <!--<div class="bottom">500g以内</div>-->
@@ -154,12 +154,12 @@
         </div>
         <div class="item">
           <div class="title">保险费用</div>
-          <div class="price"><span>￥</span>5</div>
+          <div class="price"><span>￥</span>{{rateFree / 100}}</div>
         </div>
         <div class="item">
           <div class="title">受理地址</div>
           <div class="dz">
-            <div>西青区不动产登记事务中心西青区不动产登记事务中心西青区不动产登记事务中心</div>
+            <div>{{detailRiskName}}</div>
             <img src="../../img/dz.png">
           </div>
         </div>
@@ -178,6 +178,9 @@
     name: 'order-info',
     data(){
       return{
+        rateFree: '',
+        detailRiskName: '',
+
         first: true,
         second: false,
         third: false,
@@ -205,8 +208,8 @@
           ownerNegative: '',
           housingAuthority: '',
           postType: '',
-          postRisk: 1,
-          postRiskId: '',
+          postRisk: 1,  // 投递保险(1是，2否)
+          postRiskId: '',  // 投递保险运费id
           riskName: '',
           postProvinceId: '',
           postCityId: '',
@@ -239,8 +242,12 @@
     methods:{
       radio(){
         if(this.third = true){
-        $(".myinput1").eq(0).attr("checked","true")
+          $(".myinput1").eq(0).attr("checked","true")
+          this.rateFree = this.insuredList[0].insuredRate
         }
+      },
+      handleRadio(index){
+        this.rateFree = this.insuredList[index].insuredRate
       },
       getInsuredList(){
         this.$http({
@@ -254,7 +261,8 @@
               this.insuredList.push({
                 id: item.insuredId,
                 name: item.insuredComment,
-                price: item.insuredAmount
+                price: item.insuredAmount,
+                insuredRate: item.insuredRate
               })
             })
           } else {
@@ -293,7 +301,7 @@
             var value = content.substring(0,4);
             $("option").eq(i).html(value);
             $("option").eq(i).attr('title',content);
-        } 
+        }
         this.$http({
           url: this.$http.adornUrl('/mobile/area/list'),
           method: 'get',
@@ -320,7 +328,7 @@
           } else {
           }
         })
-        
+
       },
       getCountyNames(){
         for(var i = 0;i<$("option").length;i++){
@@ -328,7 +336,7 @@
             var value = content.substring(0,4);
             $("option").eq(i).html(value);
             $("option").eq(i).attr('title',content);
-        } 
+        }
         this.$http({
           url: this.$http.adornUrl('/mobile/area/list'),
           method: 'get',
@@ -393,6 +401,7 @@
         })
       },
       onBridgeReady:function(data){
+        let _this = this;
         WeixinJSBridge.invoke(
           'getBrandWCPayRequest', {
             "appId": data.data.payResponse.appId,     //公众号名称，由商户传入
@@ -404,43 +413,29 @@
           },
           function(res){
             if(res.err_msg == "get_brand_wcpay_request:ok" ) {
-              // updatePayStatus();
-              const TIME_COUNT1 = 3;
-              if (!this.atimer) {
-                this.show = false;
-                this.acount = TIME_COUNT1;
-                this.atimer = setInterval(() => {
-                  if (this.acount > 0 && this.acount <= TIME_COUNT1) {
-                    this.acount--;
-                    this.show = false;
-                  }else {
-                    // this.$router.push({path:'/index'})
-                    // location.href = 'http://ems.jujinkeji.net/mobile/Index'
-                    window.location.assign('http://ems.jujinkeji.net/mobile/Index')
-                    clearInterval(this.atimer);
-                    this.atimer = null;
-                  }
-                }, 1000)
-              }
-              // this.$http({
-              //   url: this.$http.adornUrl('/mobile/order/mail'),
-              //   method: 'post',
-              //   data: this.$http.adornData({
-              //     orderId: this.dataForm.orderId
-              //   })
-              // }).then(({ data }) => {
-              //   if (data && data.code === 0) {
-              //     location.href = 'http://ems.jujinkeji.net/mobile/Index'
-              //   } else {
-              //     alert(data.msg)
-              //   }
-              // })
+              setTimeout(()=>{
+                _this.updateOrderStatus()
+              },500)
             }
             //location.href = "${returnUrl}";
           }
         );
       },
-
+      updateOrderStatus(){
+        this.$http({
+          url: this.$http.adornUrl('/mobile/order/mail'),
+          method: 'post',
+          data: this.$http.adornData({
+            orderNumber: this.dataForm.orderId
+          })
+        }).then(({ data }) => {
+          if (data && data.code === 0) {
+            window.location.assign('http://ems.jujinkeji.net/mobile/submit')
+          } else {
+            alert(data.msg)
+          }
+        })
+      },
       // 地理位置
       getMyLocation(){
         let that = this;
@@ -476,14 +471,9 @@
             });
 
             wx.ready(function () {
-              console.log("初始化地理位置信息")
-//                wx.invoke('getLocation', 'openLocation', {}, function(res) {
-//                    //alert(res.err_msg + "唯一");
-//                });
               wx.getLocation({
                 type: 'wgs84',
                 success: function (res) {
-
                   that.pointY = res.latitude; // 纬度，浮点数，范围为90 ~ -90
                   that.pointX = res.longitude; // 经度，浮点数，范围为180 ~ -180。
 
@@ -496,7 +486,8 @@
                     })
                   }).then(({ data }) => {
                     if (data && data.code === 0) {
-                      that.dataForm.riskName = data.data
+                      that.dataForm.riskName = data.data.district
+                      that.detailRiskName = data.data.detailAddress
                     } else {
                       alert(data.msg)
                     }
@@ -507,18 +498,16 @@
                   // that.getShopFjStudio()
                 },
                 fail: function (res) {
-                  console.log("获取地理位置失败")
+                  alert("获取地理位置失败")
                 }
               });
             });
 
-//             wx.error(function (res) {
-//               alert("获取地理位置失败");
-//                console.log(res)
-// //               that.getShopFjStudio()
-//             });
+            wx.error(function (res) {
+              alert("获取地理位置失败");
+            });
           } else {
-            console.log(data.msg)
+            alert(data.msg)
           }
         })
       },
@@ -690,11 +679,52 @@
       },
 
       // order页面方法
-      switchDepartment:function(){
+      switchDepartment:function(){  // 是否投递保险
         this.isShow=!this.isShow;
+        if(this.isShow){
+          this.dataForm.postRisk = 2
+        }else{
+          this.dataForm.postRisk = 1
+        }
       },
       jump2(){
-        this.$router.push("./submit")
+        this.dataForm.ownerPositive = ownerPositive
+        this.dataForm.ownerNegative = ownerNegative
+        this.dataForm.housingAuthority = housingAuthority
+        this.dataForm.openid = localStorage.getItem("openid")
+
+        this.dataForm.postRiskId = $('input:radio[name="dizhi"]:checked').val();
+
+
+        // let index = 'http://ems.jujinkeji.net/mobile/Index'
+        // location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorize?returnUrl=' + index
+
+        this.$http({
+          url: this.$http.adornUrl('/mobile/order/create'),
+          method: 'post',
+          data: this.$http.adornData(this.dataForm)
+        }).then(({ data }) => {
+          if (data && data.code === 0) {
+            console.log(data)
+            // this.$message({
+            //   message: '操作成功',
+            //   type: 'success',
+            //   duration: 1500,
+            //   onClose: () => {
+            //     this.visible = false
+            //     this.$emit('refreshDataList')
+            //   }
+            // })
+            // alert(data.orderId + '---------------' + data.data.orderId)
+            this.dataForm.orderId = data.data.orderId
+            this.wechatPay(data.data.orderId)
+            console.log("操作成功")
+            // this.$router.push("/Index")
+          } else {
+            // this.$message.error(data.msg)
+            alert(data.msg)
+          }
+        })
       }
     },
     mounted(){
@@ -707,7 +737,17 @@
       this.getInsuredList()
       this.getProvinceNames()
       this.getMyLocation()
-    }
+    },
+    beforeRouteEnter (to, from, next) {
+      let u = navigator.userAgent;
+      let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+      // XXX: 修复iOS版微信HTML5 History兼容性问题
+      if (isiOS && "/mobile" + to.path !== window.location.pathname) {
+        window.location.assign('http://ems.jujinkeji.net/mobile/orderInfo')
+      } else {
+        next()
+      }
+    },
   }
 </script>
 

@@ -4,36 +4,12 @@
         <div class="title">不动产登记便民邮寄</div>
         <div class="box">查询列表<div class="sj"></div></div>
         <div class="box1">
-            <div class='item'>
+            <div class='item' v-for="(item, index) in orderList" :key="index">
                 <router-link to="/query">查询进度</router-link>
-                <div>订单号: 10216359874</div>
-                <div>下单时间: 2019-5-11 15:59</div>
-                <div>当前状态:提交申请</div>
+                <div>订单号: {{item.orderNumber}}</div>
+                <div>下单时间: {{item.createOrderTime}}</div>
+                <div>当前状态:{{item.status}}</div>
             </div>
-            <div class='item'>
-                    <router-link to="/query">查询进度</router-link>
-                    <div>订单号: 10216359874</div>
-                    <div>下单时间: 2019-5-11 15:59</div>
-                    <div>当前状态:提交申请</div>
-                </div>
-                <div class='item'>
-                        <router-link to="/query">查询进度</router-link>
-                        <div>订单号: 10216359874</div>
-                        <div>下单时间: 2019-5-11 15:59</div>
-                        <div>当前状态:提交申请</div>
-                    </div>
-                    <div class='item'>
-                            <router-link to="/query">查询进度</router-link>
-                            <div>订单号: 10216359874</div>
-                            <div>下单时间: 2019-5-11 15:59</div>
-                            <div>当前状态:提交申请</div>
-                        </div>
-                        <div class='item'>
-                                <router-link to="/query">查询进度</router-link>
-                                <div>订单号: 10216359874</div>
-                                <div>下单时间: 2019-5-11 15:59</div>
-                                <div>当前状态:提交申请</div>
-                            </div>
         </div>
         <div class="tab">
             <button class="btn" @click="jump">返回首页</button>
@@ -43,20 +19,51 @@
             </div>
         </div>
     </div>
-  </div> 
+  </div>
 </template>
 <script>
+  import {dateToMinute} from "../../utils/validate.js"
 export default {
-data(){
+  data(){
     return{
-        
+      orderList: []
     }
-    },
-methods:{
+  },
+  methods:{
     jump(){
         this.$router.push('./flow')
+    },
+    getUserOrderList(){
+      this.$http({
+        url: this.$http.adornUrl('/mobile/order/userOrderList'),
+        method: 'get',
+        params: this.$http.adornParams()
+      }).then(({ data }) => {
+        if (data && data.code === 0) {
+          console.log(data)
+          this.orderList = []
+          data.data.forEach((item) => {
+            item.createOrderTime = dateToMinute(item.createOrderTime)
+            if(item.status === 1){
+              item.status = '未支付'
+            }else if(item.status === 2){
+              item.status = '待发货'
+            }else if(item.status === 3){
+              item.status = '待收货'
+            } else if(item.status === 4){
+              item.status = '已收货'
+            }
+          })
+          this.orderList = data.data
+        } else {
+          alert(data.msg)
+        }
+      })
     }
-}
+  },
+  created(){
+    this.getUserOrderList()
+  }
 }
 </script>
 <style scoped>
@@ -138,7 +145,7 @@ body{
 .tab>.btn{
     height:7vh;
     width:5.6rem;
-    color:#fff; 
+    color:#fff;
     font-size: 0.32rem;
     background:#177abf;
     border-radius: 5px;

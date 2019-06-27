@@ -43,7 +43,31 @@
   </div>
 </template>
 <script>
-export default {}
+  export default {
+    data(){
+      return{
+        openid: ''
+      }
+    },
+    methods:{
+      getQueryString(name){
+        let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+        let r = window.location.search.substr(1).match(reg);
+        if (r != null) {
+          return unescape(r[2]);
+        }
+        return null;
+      }
+    },
+    created(){
+      this.openid = localStorage.getItem("openid")
+      if(this.openid == "null" || this.openid == null || this.openid == ""){
+        let parametertext = this.getQueryString('openid');  // => ‘参数内容’
+        localStorage.setItem("openid",parametertext);
+        this.openid = localStorage.getItem("openid")
+      }
+    }
+  }
 </script>
 <style scoped>
 body{
@@ -146,11 +170,11 @@ body{
   background:#f0f0f0;
   border-top-right-radius: 50px;
   border-bottom-right-radius: 50px;
-  padding:0 0.6rem 0 0.9rem; 
+  padding:0 0.6rem 0 0.9rem;
   line-height: 0.8rem;
   font-size: 0.28rem;
   color:#666;
-  box-shadow:0px 0.05rem 10px 0px #c6cbd6; 
+  box-shadow:0px 0.05rem 10px 0px #c6cbd6;
 }
 .ft2{
   margin-right:-0.45rem;
@@ -162,7 +186,7 @@ body{
   line-height: 0.8rem;
   font-size: 0.28rem;
   color:#666;
-  box-shadow:0px 0.05rem 10px 0px #c6cbd6; 
+  box-shadow:0px 0.05rem 10px 0px #c6cbd6;
 }
 .tab{
   background:#383735;

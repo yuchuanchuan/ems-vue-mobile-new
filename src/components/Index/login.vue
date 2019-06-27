@@ -97,6 +97,7 @@ export default {
         console.log("登录成功")
         console.log(data)
         if (data && data.code === 0) {
+          localStorage.removeItem("openid")
           this.$cookie.set('token', data.data)
           let index = 'http://ems.jujinkeji.net/mobile/flow'
           location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorOpenId?returnUrl=' + index
@@ -111,9 +112,10 @@ export default {
             //this.$router.push("/uploading")
         },
         weChatLogin(){
-            let index = 'http://ems.jujinkeji.net/mobile/flow'
-            location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorize?returnUrl=' + index
-    }
+          localStorage.removeItem("openid")
+          let index = 'http://ems.jujinkeji.net/mobile/flow'
+          location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorize?returnUrl=' + index
+        }
     }
 }
 </script>
