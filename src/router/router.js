@@ -10,13 +10,14 @@ import order from "../components/Index/order.vue"
 import submit from "../components/Index/submit.vue"
 import query from "../components/Index/query.vue"
 import orderInfo from "../components/Index/order-info.vue"
+import list from "../components/Index/list.vue"
 
 Vue.use(Router)
 export default new Router({
   base: '/mobile/',
   mode: 'history',
   routes: [
-    {path: '/', redirect: '/flow' },
+    {path: '/', redirect: '/login' },
     {path: '/login', name:'login', component: login},
     {path: '/flow',name: 'flow',component: index},
     {path: '/contract',name: 'contract',component: contract},
@@ -25,7 +26,8 @@ export default new Router({
     {path: '/order',name: 'order',component: order},
     {path: '/submit',name: 'submit',component: submit},
     {path: '/query',name: 'query',component: query},
-    {path: '/orderInfo', name:'orderInfo', component:orderInfo}
+    {path: '/orderInfo', name:'orderInfo', component:orderInfo},
+    {path: '/list', name: 'list', component: list}
   ]
 })
 

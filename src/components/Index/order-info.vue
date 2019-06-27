@@ -28,10 +28,9 @@
       <input type="file" id="saveImage3" name="myphoto" class="myinput" ref="closeUp" accept="image">
       <button class="btn" @click="jump">下一步</button>
     </div>
-
     <div class="content2" v-if="second">
       <div class="title">不动产登记便民邮寄</div>
-      <div class="box">EMS邮寄信息<div class="sj"></div></div>
+      <div class="box"><div class="tui" @click="tui1"></div>EMS邮寄信息<div class="sj"></div></div>
       <div class="smtitle">
         <div class="l">提示:</div>
         <div class="r">为了确保邮件投递准确无误,请申请人准确、详细填写收件人信息为了确保邮件投递准确无误,请申请人准确、详细填写收件人信息为了确保邮件投递准确无误,请申请人准确、详细填写收件人信息为了确保邮件投递准确无误,请申请人准确、详细填写收件人信息</div>
@@ -53,7 +52,7 @@
           <select v-model="dataForm.postCityId" @change="getCountyNames">
             <option v-for="(item,index) in cityNames" :key="index" :value="item.id">{{item.name}}</option>
           </select>
-          <select v-model="dataForm.postCountyId">
+          <select v-model="dataForm.postCountyId" @change="getdiNames">
             <option v-for="(item,index) in countyNames" :key="index" :value="item.id">{{item.name}}</option>
           </select>
         </div>
@@ -75,7 +74,7 @@
 
     <div class="content3" v-if="third">
       <div class="title">不动产登记便民邮寄</div>
-      <div class="box">订单支付<div class="sj"></div></div>
+      <div class="box"><div class="tui" @click="tui2"></div>订单支付<div class="sj"></div></div>
       <div class="box1-title">
         <img src="../../img/xin.png">
         <div>邮寄信息</div>
@@ -168,6 +167,7 @@
 </template>
 
 <script>
+  import $ from 'jquery'
   var ownerPositive = '';  // 正面身份证
   var ownerNegative = '';  // 反面身份证
   var housingAuthority = ''; // 房产证
@@ -230,6 +230,14 @@
       }
     },
     methods:{
+      getdiNames(){
+        for(var i = 0;i<$("option").length;i++){
+            var content = $("option").eq(i).html();
+            var value = content.substring(0,4);
+            $("option").eq(i).html(value);
+            $("option").eq(i).attr('title',content);
+        }  
+      },
       getInsuredList(){
         this.$http({
           url: this.$http.adornUrl('/mobile/insured/list'),
@@ -274,6 +282,12 @@
         })
       },
       getCityNames(){
+        for(var i = 0;i<$("option").length;i++){
+            var content = $("option").eq(i).html();
+            var value = content.substring(0,4);
+            $("option").eq(i).html(value);
+            $("option").eq(i).attr('title',content);
+        } 
         this.$http({
           url: this.$http.adornUrl('/mobile/area/list'),
           method: 'get',
@@ -296,6 +310,12 @@
         })
       },
       getCountyNames(){
+        for(var i = 0;i<$("option").length;i++){
+            var content = $("option").eq(i).html();
+            var value = content.substring(0,4);
+            $("option").eq(i).html(value);
+            $("option").eq(i).attr('title',content);
+        } 
         this.$http({
           url: this.$http.adornUrl('/mobile/area/list'),
           method: 'get',
@@ -582,6 +602,16 @@
       },
 
       //  info页面方法
+      tui1(){
+        this.first = true
+        this.second = false
+        this.third = false
+      },
+      tui2(){
+        this.first = false
+        this.second = true
+        this.third = false
+      },
       jump1(){
         this.first = false
         this.second = false
@@ -682,6 +712,16 @@ body{
   top:0.3rem;
   right:0.4rem;
 }
+.tui{
+  position: absolute;
+  top:0.25rem;
+  left:0.3rem;
+  width:0.3rem;
+  height:0.3rem;
+  background:url("../../img/zuo.png");
+  background-size:0.3rem 0.3rem;
+  background-repeat: no-repeat;
+}
 .content1 .box1{
     width:5.2rem;
     height:3rem;
@@ -778,14 +818,24 @@ body{
 }
 .content2 .select>select{
     background:#f2f2f2;
+    font-size:0.2rem;
     border-radius: 5px;
     border:0;
     outline: none;
     color:#666;
-    width:1.3rem;
+    width:1.4rem;
     height:0.8rem;
-    padding-left:0.2rem;
+    text-overflow: ellipsis;
+    appearance:none;
+    -moz-appearance:none;
+    -webkit-appearance:none;
+    padding:0 0.2rem;
+    background:url("../../img/down.png");
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 0.2rem;
 }
+.content2 .select>select::-ms-expand { display: none; }
 .content2 .tishi{
     font-size:0.28rem;
     color:#f00;

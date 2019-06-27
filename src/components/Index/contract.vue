@@ -28,7 +28,7 @@ export default {
             this.mybtn=!as
         },
         jump(){
-            this.$router.push("/login")
+            this.$router.push("/orderInfo")
         }
     }
 }

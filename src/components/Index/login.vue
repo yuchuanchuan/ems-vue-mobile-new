@@ -17,7 +17,7 @@
             <button v-bind:disabled="mybtn" @click="sendMsg">{{content}}</button>
         </div>
     </div>
-    <button class="btn" @click="login">下一步</button>
+    <button class="btn" @click="login">登录</button>
     <div class="vx">
         <div class="title">微信授权登录</div>
         <img src="../../img/weixin.png" @click="weChatLogin">
@@ -98,7 +98,7 @@ export default {
         console.log(data)
         if (data && data.code === 0) {
           this.$cookie.set('token', data.data)
-          let index = 'http://ems.jujinkeji.net/mobile/orderInfo'
+          let index = 'http://ems.jujinkeji.net/mobile/flow'
           location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorOpenId?returnUrl=' + index
           // this.$route
           // this.$router.push({ path:'/Index'})
@@ -111,7 +111,7 @@ export default {
             //this.$router.push("/uploading")
         },
         weChatLogin(){
-            let index = 'http://ems.jujinkeji.net/mobile/orderInfo'
+            let index = 'http://ems.jujinkeji.net/mobile/flow'
             location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorize?returnUrl=' + index
     }
     }

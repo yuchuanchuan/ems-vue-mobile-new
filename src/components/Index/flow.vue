@@ -37,6 +37,7 @@
     </div>
     <div class="tab">
       <router-link to="/contract">快速办理>></router-link>
+      <router-link to="/query">查询进度>></router-link>
       <img src="../../img/kdy.png">
     </div>
   </div>
@@ -167,13 +168,14 @@ body{
   background:#383735;
   color:#fff;
   font-size:0.36rem;
-  text-align: center;
   height:1rem;
   line-height: 1rem;
   font-weight: bold;
   position:relative;
+  display: flex;
 }
 .tab>img{
+  display: none;
   position:absolute;
   width:2rem;
   right:0.25rem;
@@ -181,6 +183,9 @@ body{
   }
   .tab>a{
     text-decoration: none;
+    display: block;
     color:#fff;
+    width:3.75rem;
+    text-align: center;
   }
 </style>
