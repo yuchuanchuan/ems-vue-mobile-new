@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="content" v-if="first">
+    <div class="content1" v-if="first">
       <div class="title">不动产登记便民邮寄</div>
       <div class="box">上传凭证<div class="sj"></div></div>
       <div class="box1-title">
@@ -11,12 +11,12 @@
         <div v-show="show1">身份证正面</div>
         <img :src=imageSave1 id="portrait1" class="img"/>
       </div>
-      <input type="file" id="saveImage1" name="myphoto" class="myinput">
+      <input type="file" id="saveImage1" name="myphoto" class="myinput" ref="closeUp" accept="image">
       <div @click="monidianji2" class="box1">
         <div v-show="show2">身份证反面</div>
         <img :src=imageSave2 id="portrait2" class="img"/>
       </div>
-      <input type="file" id="saveImage2" name="myphoto" class="myinput">
+      <input type="file" id="saveImage2" name="myphoto" class="myinput" ref="closeUp" accept="image">
       <div class="box1-title">
         <img src="../../img/shu.png">
         <div>不动产登记受理凭证(上传图片)</div>
@@ -25,11 +25,11 @@
         <div v-show="show3">上传凭证</div>
         <img :src=imageSave3 id="portrait3" class="img"/>
       </div>
-      <input type="file" id="saveImage3" name="myphoto" class="myinput">
+      <input type="file" id="saveImage3" name="myphoto" class="myinput" ref="closeUp" accept="image">
       <button class="btn" @click="jump">下一步</button>
     </div>
 
-    <div class="content" v-if="second">
+    <div class="content2" v-if="second">
       <div class="title">不动产登记便民邮寄</div>
       <div class="box">EMS邮寄信息<div class="sj"></div></div>
       <div class="smtitle">
@@ -38,11 +38,11 @@
       </div>
       <div class="item">
         <div class="title">姓名</div>
-        <input type="text" placeholder="输入收件人姓名" @blur.prevent="changeName()">
+        <input type="text" placeholder="输入收件人姓名" @blur.prevent="changeName()" v-model="dataForm.name">
       </div>
       <div class="item">
         <div class="title">联系电话</div>
-        <input type="text" placeholder="输入收件人手机号" @blur.prevent="changePhone()">
+        <input type="text" placeholder="输入收件人手机号" @blur.prevent="changePhone()" v-model="dataForm.phone">
       </div>
       <div class="item">
         <div class="title">收件地址</div>
@@ -60,11 +60,11 @@
       </div>
       <div class="item">
         <div class="title">详细地址</div>
-        <input type="text" placeholder="输入详细地址" @blur.prevent="changeDizhi()">
+        <input type="text" placeholder="输入详细地址" @blur.prevent="changeDizhi()" v-model="dataForm.postAddress">
       </div>
       <div class="item">
         <div class="title">凭证编号</div>
-        <input type="text" placeholder="请输入凭证编号" @blur.prevent="changeBianhao()">
+        <input type="text" placeholder="请输入凭证编号" @blur.prevent="changeBianhao()" v-model="dataForm.idCard">
       </div>
       <div class="tishi" v-show="show">
         <img src="../../img/i.png">
@@ -73,7 +73,7 @@
       <button class="btn" @click="jump1">下一步</button>
     </div>
 
-    <div class="content" v-if="third">
+    <div class="content3" v-if="third">
       <div class="title">不动产登记便民邮寄</div>
       <div class="box">订单支付<div class="sj"></div></div>
       <div class="box1-title">
@@ -652,37 +652,37 @@
 </script>
 
 <style scoped>
-  body{
+body{
     width:100%;
-  }
-  .content>.title{
-    font-size:0.36rem;
-    color:#fff;
-    text-align: center;
-    background:#213980;
-    height:0.8rem;
-    line-height: 0.8rem;
-  }
-  .box{
-    width:7.5rem;
-    height:0.8rem;
-    color:#fff;
-    font-size: 0.28rem;
-    line-height: 0.8rem;
-    background:#177abf;
-    text-align: center;
-    position:relative;
-  }
-  .sj{
-    border-top:0.17rem solid #fff;
-    border-left:0.13rem solid transparent;
-    border-right:0.13rem solid transparent;
-    border-bottom:0.13rem solid transparent;
-    position:absolute;
-    top:0.3rem;
-    right:0.4rem;
-  }
-  .box1{
+}
+.content1>.title,.content2>.title,.content3>.title{
+  font-size:0.36rem;
+  color:#fff;
+  text-align: center;
+  background:#213980;
+  height:0.8rem;
+  line-height: 0.8rem;
+}
+.box{
+  width:7.5rem;
+  height:0.8rem;
+  color:#fff;
+  font-size: 0.28rem;
+  line-height: 0.8rem;
+  background:#177abf;
+  text-align: center;
+  position:relative;
+}
+.sj{
+  border-top:0.17rem solid #fff;
+  border-left:0.13rem solid transparent;
+  border-right:0.13rem solid transparent;
+  border-bottom:0.13rem solid transparent;
+  position:absolute;
+  top:0.3rem;
+  right:0.4rem;
+}
+.content1 .box1{
     width:5.2rem;
     height:3rem;
     background:#f2f2f2;
@@ -691,251 +691,34 @@
     align-items: center;
     justify-content: center;
     position:relative;
-  }
-  .img{
+}
+.content1 .img{
     display: block;
     height:100%;
     position:absolute;
     z-index:2;
-  }
-  .box1>div{
+}
+.content1 .box1>div{
     font-size:0.28rem;
     position: absolute;
     z-index:1;
-  }
-  .box1-title{
+}
+.content1 .box1-title{
     height:1rem;
     display: flex;
     align-items: center;
     padding:0 0.6rem;
     font-size:0.28rem;
     color:#333;
-  }
-  .box1-title>img{
+}
+.content1 .box1-title>img{
     width:0.4rem;
     margin-right: 0.1rem;
-  }
-  .myinput{
+}
+.content1 .myinput{
     display:none;
-  }
-
-
-  .sj{
-    border-top:0.17rem solid #fff;
-    border-left:0.13rem solid transparent;
-    border-right:0.13rem solid transparent;
-    border-bottom:0.13rem solid transparent;
-    position:absolute;
-    top:2.5vh;
-    right:0.4rem;
-  }
-  .box1-title{
-    height:1rem;
-    display: flex;
-    align-items: center;
-    padding:0 0.6rem;
-    font-size:0.28rem;
-    color:#333;
-  }
-  .box1-title>img{
-    width:0.4rem;
-    margin-right: 0.1rem;
-  }
-  .item{
-    margin:0 0.3rem 0.3rem;
-    height:0.8rem;
-    align-items: center;
-    display: flex;
-  }
-  .item>.title{
-    font-weight: bold;
-    font-size:0.32rem;
-    height:0.8rem;
-    line-height: 0.8rem;
-    text-align: center;
-    width:2.1rem;
-    background:#f2f2f2;
-    border:1px solid #666;
-    border-radius: 5px;
-    margin-right: 0.2rem;
-  }
-  .item>.info{
-    font-size:0.28rem;
-    width:4rem;
-    border-radius: 5px;
-    padding:0 0.3rem;
-    height:0.8rem;
-    line-height: 0.8rem;
-    color:#666;
-    background:#f2f2f2;
-    border:1px solid #f2f2f2;
-  }
-  .dizhi{
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-  .dizhi::-webkit-scrollbar{
-    display: none;
-  }
-  .item:last-child{
-    margin-bottom:0;
-  }
-  .item>select{
-    width:4.6rem;
-    height:0.8rem;
-    border:0;
-    outline: none;
-    background:#f2f2f2;
-    border-radius: 5px;
-    color:#666;
-    padding:0 0.3rem;
-  }
-  .box2{
-    width:6.9rem;
-    box-sizing: border-box;
-    margin:0 0.3rem;
-    background:#f2f2f2;
-    padding:0.3rem;
-    border-radius: 5px;
-  }
-  .box2>.title{
-    font-size:0.32rem;
-    color:#333;
-    font-weight: bold;
-    height:1rem;
-    line-height: 1rem;
-  }
-  .b2-item{
-    height:1rem;
-    border-bottom:1px solid #ccc;
-    font-size:0.28rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  label:last-child .b2-item{
-    border:0;
-  }
-  .b2-item>.top{
-    color:#666;
-    display: flex;
-    justify-content: space-between;
-  }
-  .top>.top1{
-    display: flex;
-    justify-content: space-between;
-    width:5.8rem;
-  }
-  .top1>.price>span{
-    font-size:0.18rem;
-  }
-  .bottom{
-    font-size: 0.24rem;
-    color:#999;
-  }
-  input[type=radio] {
-    display:block;
-    width:0.3rem;
-    height:0.3rem;
-    -webkit-appearance:none;
-    border-radius: 50%;
-    border:1px solid #dadada;
-    background-color: transparent;
-    outline: 0 !important;
-    line-height: 5vw;}
-  input[type=radio]:after {
-    content:"";
-    display:block;
-    width:0.3rem;
-    height:0.3rem;
-    border-radius:50%;
-    text-align:center;
-    line-height:0.3rem;
-    font-size:0.2rem;
-    box-sizing:border-box;}
-  input[type=radio]:checked{border:0;}
-  input[type=radio]:checked:after {
-    content: "L";
-    color:#fff;
-    transform:matrix(-0.766044,-0.642788,-0.642788,0.766044,0,0);
-    -webkit-transform:matrix(-0.766044,-0.642788,-0.642788,0.766044,0,0);
-    border-color:2px solid #177abf;
-    background-color: #177abf;}
-  .item>.kg{
-    background:#f2f2f2;
-    padding-right: 0.4rem;
-    width:4.2rem;
-    border-radius: 5px;
-    height:0.8rem;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-  }
-  .item>.price{
-    font-size:0.28rem;
-    color:#333;
-    width:4.2rem;
-    padding-right: 0.4rem;
-    background:#f2f2f2;
-    border-radius: 5px;
-    height:0.8rem;
-    line-height: 0.8rem;
-    text-align: right;
-  }
-  .item>.price>span{
-    font-size: 0.2rem;
-    color:#999;
-  }
-  .item>.dz{
-    font-size:0.28rem;
-    color:#999;
-    display: flex;
-    justify-content: space-between;
-    background:#f2f2f2;
-    border-radius: 5px;
-    padding:0 0.15rem 0 0.4rem;
-    width:4.05rem;
-    align-items: center;
-    height:0.8rem;
-  }
-  .dz>img{
-    width:0.3rem;
-    display: block;
-  }
-  .dz>div{
-    width:3.65rem;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-  .dz>div::-webkit-scrollbar{
-    display: none;
-  }
-  .switch{
-    display: inline-block;
-    width: 0.7rem;
-    height: 0.36rem;
-    background: #dbdbdb;
-    border-radius: 50px;
-    position: relative;
-    vertical-align: middle;}
-  .switch-circle{
-    background:#177abf;
-    position: absolute;
-    left: -0.02rem;
-    top: -0.02rem;
-    width:0.4rem;
-    height: 0.4rem;
-    border-radius: 50%;
-  }
-  .on{
-    background:#177abf;
-  }
-  .right{
-    background:#fff;
-    transform :translateX(0.35rem)
-  }
-
-  .btn{
+}
+.btn{
     background:#177abf;
     width:6rem;
     height:1rem;
@@ -946,5 +729,314 @@
     border-radius: 5px;
     margin:0 0.75rem 0.6rem;
     outline: none;
+}
+.content2 .smtitle{
+    font-size:0.28rem;
+    display: flex;
+    padding:0.6rem 0.3rem 0.4rem;
+    width:6.9rem;
+    color:#666;
+}
+.content2 .l{
+    width:0.7rem;
+}
+.content2 .r{
+    width:6.2rem;
+}
+.content2 .item{
+    margin:0 0.3rem 0.3rem;
+    height:0.8rem;
+    align-items: center;
+    display: flex;
+}
+.content2 .item>.title{
+    font-weight: bold;
+    font-size:0.32rem;
+    height:0.8rem;
+    line-height: 0.8rem;
+    text-align: center;
+    width:2.1rem;
+    background:#f2f2f2;
+    border:1px solid #666;
+    border-radius: 5px;
+    margin-right: 0.2rem;
+}
+.content2 .item>input{
+    font-size:0.28rem;
+    border-radius: 5px;
+    background:#f0f0f0;
+    border:0;
+    outline: none;
+    width:3.8rem;
+    height:0.75rem;
+    padding:0 0.4rem;
+}
+.content2 .item>.select{
+    width:4.6rem;
+    display: flex;
+    justify-content: space-between;
+}
+.content2 .select>select{
+    background:#f2f2f2;
+    border-radius: 5px;
+    border:0;
+    outline: none;
+    color:#666;
+    width:1.3rem;
+    height:0.8rem;
+    padding-left:0.2rem;
+}
+.content2 .tishi{
+    font-size:0.28rem;
+    color:#f00;
+    display: flex;
+    align-items: center;
+    padding-left:0.3rem;
+}
+.content2 .tishi>img{
+    width:0.4rem;
+    margin-right: 0.1rem;
+}
+
+.content2 .box1{
+  width:5.2rem;
+  height:3rem;
+  background:#f2f2f2;
+  margin:0 1.25rem 0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position:relative;
+}
+.content2 .img{
+  display: block;
+  height:100%;
+  position:absolute;
+  z-index:2;
+}
+.content2 .box1>div{
+  font-size:0.28rem;
+  position: absolute;
+  z-index:1;
+}
+.content2 .box1-title{
+  height:1rem;
+  display: flex;
+  align-items: center;
+  padding:0 0.6rem;
+  font-size:0.28rem;
+  color:#333;
+}
+.content2 .box1-title>img{
+  width:0.4rem;
+  margin-right: 0.1rem;
+}
+.content2 .myinput{
+  display:none;
+}
+.content3 .box1-title{
+    height:1rem;
+    display: flex;
+    align-items: center;
+    padding:0 0.6rem;
+    font-size:0.28rem;
+    color:#333;
+}
+.content3 .box1-title>img{
+    width:0.4rem;
+    margin-right: 0.1rem;
+}
+.content3 .item{
+    margin:0 0.3rem 0.3rem;
+    height:0.8rem;
+    align-items: center;
+    display: flex;
+}
+.content3 .item>.title{
+    font-weight: bold;
+    font-size:0.32rem;
+    height:0.8rem;
+    line-height: 0.8rem;
+    text-align: center;
+    width:2.1rem;
+    background:#f2f2f2;
+    border:1px solid #666;
+    border-radius: 5px;
+    margin-right: 0.2rem;
+}
+.content3 .item>.info{
+    font-size:0.28rem;
+    width:4rem;
+    border-radius: 5px;
+    padding:0 0.3rem;
+    height:0.8rem;
+    line-height: 0.8rem;
+    color:#666;
+    background:#f2f2f2;
+    border:1px solid #f2f2f2;
+}
+.content3 .dizhi{
+    overflow-x: auto;
+    white-space: nowrap;
+}
+.content3 .dizhi::-webkit-scrollbar{
+    display: none;
+}
+.content3 .item:last-child{
+    margin-bottom:0;
+}
+.content3 .item>select{
+    width:4.6rem;
+    height:0.8rem;
+    border:0;
+    outline: none;
+    background:#f2f2f2;
+    border-radius: 5px;
+    color:#666;
+    padding:0 0.3rem;
+}
+.content3 .box2{
+    width:6.9rem;
+    box-sizing: border-box;
+    margin:0 0.3rem;
+    background:#f2f2f2;
+    padding:0.3rem;
+    border-radius: 5px;
+}
+.content3 .box2>.title{
+    font-size:0.32rem;
+    color:#333;
+    font-weight: bold;
+    height:1rem;
+    line-height: 1rem;
+}
+.content3 .b2-item{
+    height:1rem;
+    border-bottom:1px solid #ccc;
+    font-size:0.28rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.content3 label:last-child .b2-item{
+    border:0;
+}
+.content3 .b2-item>.top{
+    color:#666;
+    display: flex;
+    justify-content: space-between;
+}
+.content3 .top>.top1{
+    display: flex;
+    justify-content: space-between;
+    width:5.8rem;
+}
+.content3 .top1>.price>span{
+    font-size:0.18rem;
+}
+.content3 .bottom{
+    font-size: 0.24rem;
+    color:#999;
+}
+.content3 input[type=radio] {
+    display:block;
+    width:0.3rem;
+    height:0.3rem;
+    -webkit-appearance:none;
+    border-radius: 50%;
+    border:1px solid #dadada;
+    background-color: transparent;
+    outline: 0 !important;
+    line-height: 5vw;}
+.content3 input[type=radio]:after {
+    content:"";
+    display:block;
+    width:0.3rem;
+    height:0.3rem;
+    border-radius:50%;
+    text-align:center;
+    line-height:0.3rem;
+    font-size:0.2rem;
+    box-sizing:border-box;}
+.content3 input[type=radio]:checked{border:0;}
+.content3 input[type=radio]:checked:after {
+    content: "L";
+    color:#fff;
+    transform:matrix(-0.766044,-0.642788,-0.642788,0.766044,0,0);
+    -webkit-transform:matrix(-0.766044,-0.642788,-0.642788,0.766044,0,0);
+    border-color:2px solid #177abf;
+    background-color: #177abf;}
+.content3 .item>.kg{
+    background:#f2f2f2;
+    padding-right: 0.4rem;
+    width:4.2rem;
+    border-radius: 5px;
+    height:0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.content3 .item>.price{
+    font-size:0.28rem;
+    color:#333;
+    width:4.2rem;
+    padding-right: 0.4rem;
+    background:#f2f2f2;
+    border-radius: 5px;
+    height:0.8rem;
+    line-height: 0.8rem;
+    text-align: right;
+}
+.content3 .item>.price>span{
+    font-size: 0.2rem;
+    color:#999;
+}
+.content3 .item>.dz{
+    font-size:0.28rem;
+    color:#999;
+    display: flex;
+    justify-content: space-between;
+    background:#f2f2f2;
+    border-radius: 5px;
+    padding:0 0.15rem 0 0.4rem;
+    width:4.05rem;
+    align-items: center;
+    height:0.8rem;
+}
+.content3 .dz>img{
+    width:0.3rem;
+    display: block;
+}
+.content3 .dz>div{
+    width:3.65rem;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+.content3 .dz>div::-webkit-scrollbar{
+    display: none;
+}
+.content3 .switch{
+    display: inline-block;
+    width: 0.7rem;
+    height: 0.36rem;
+    background: #dbdbdb;
+    border-radius: 50px;
+    position: relative;
+    vertical-align: middle;}
+.content3 .switch-circle{
+    background:#177abf;
+    position: absolute;
+    left: -0.02rem;
+    top: -0.02rem;
+    width:0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    }
+.content3 .on{
+   background:#177abf;
+  }
+.content3 .right{
+    background:#fff;
+    transform :translateX(0.35rem)
   }
 </style>
