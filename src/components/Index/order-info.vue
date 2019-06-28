@@ -99,7 +99,9 @@
         </div>
         <div class="item">
           <div class="title">凭证编号</div>
-          <div class="info">{{dataForm.idCard}}</div>
+          <div class="info">
+            <div class="dizhi">{{dataForm.idCard}}</div>
+          </div>
         </div>
       </div>
       <div class="box1-title">
@@ -669,7 +671,7 @@
         }if(this.dataForm.postAddress==""){
           alert("请输入详细地址")
           return
-        }if(this.dataForm.idCard){
+        }if(this.dataForm.idCard==""){
           alert("请输入凭证编号")
           return
         }else{
@@ -736,7 +738,6 @@
         this.dataForm.ownerNegative = ownerNegative
         this.dataForm.housingAuthority = housingAuthority
         this.dataForm.openid = localStorage.getItem("openid")
-
         this.dataForm.postRiskId = $('input:radio[name="dizhi"]:checked').val();
 
 
