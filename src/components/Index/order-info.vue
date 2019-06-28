@@ -26,7 +26,7 @@
         <img :src=imageSave3 id="portrait3" class="img"/>
       </div>
       <input type="file" id="saveImage3" name="myphoto" class="myinput" ref="closeUp" accept="image">
-      <button class="btn" @click="jump">下一步</button>
+      <button class="btn" @click="jump" v-bind:disabled="mybtn1" >下一步</button>
     </div>
     <div class="content2" v-show="second">
       <div class="title">不动产登记便民邮寄</div>
@@ -37,7 +37,7 @@
       </div>
       <div class="item">
         <div class="title">姓名</div>
-        <input type="text" placeholder="输入收件人姓名" @blur.prevent="changeName()" v-model="dataForm.name">
+        <input type="text" placeholder="输入收件人姓名" @blur.prevent="changeName()" v-model="dataForm.name" autofocus="autofocus">
       </div>
       <div class="item">
         <div class="title">联系电话</div>
@@ -72,7 +72,7 @@
         <img src="../../img/i.png">
         <div>{{text}}</div>
       </div>
-      <button class="btn" @click="jump1">下一步</button>
+      <button class="btn" @click="jump1" >下一步</button>
     </div>
 
     <div class="content3" v-show="third">
@@ -230,6 +230,7 @@
         show1:true,
         show2:true,
         show3:true,
+        mybtn1:false,
 
         // info页面属性
         show:false,
@@ -514,9 +515,20 @@
 
       // uploading页面方法
       jump(){
-        this.first = false
-        this.second = true
-        this.third = false
+        if(this.show1==true){
+          alert("请上传身份证正面照片")
+          return
+        }if(this.show2==true){
+          alert("请上传身份证反面照片")
+          return
+        }if(this.show3==true){
+          alert("请上传凭证")
+          return
+        }else{
+          this.first = false
+          this.second = true
+          this.third = false
+        }
       },
       monidianji1(){
         document.getElementById('saveImage1').click()
@@ -630,10 +642,42 @@
         this.third = false
       },
       jump1(){
+        var reg1 = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/;
+        var reg2 = /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/;
+        if(this.dataForm.name==''){
+          alert("请输入收件人姓名")
+          return
+        }if(!reg1.test(this.dataForm.name)){
+          alert("请输入正确的收件人姓名")
+          return
+        }
+        if(this.dataForm.phone==""){
+          alert("请输入电话号码")
+          return
+        }if(!reg2.test(this.dataForm.phone)){
+          alert("请输入正确的电话号码")
+          return
+        }if(this.province==""){
+          alert("请输入寄达地")
+          return
+        }if(this.city==""){
+          alert("请输入寄达地")
+          return
+        }if(this.district==""){
+          alert("请输入寄达地")
+          return
+        }if(this.dataForm.postAddress==""){
+          alert("请输入详细地址")
+          return
+        }if(this.dataForm.idCard){
+          alert("请输入凭证编号")
+          return
+        }else{
         this.first = false
         this.second = false
         this.third = true
         this.radio();
+        }
       },
       changeName(e){
         var u = event.currentTarget.value;
