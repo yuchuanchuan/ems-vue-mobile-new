@@ -39,7 +39,7 @@
                 <div class="middle">
                     <img src="../../img/zz.png">
                 </div>
-                <div class="right">制证中</div>
+                <div class="right">业务受理中</div>
             </div>
             <div class="bottom"></div>
         </div>
