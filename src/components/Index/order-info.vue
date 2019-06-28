@@ -156,7 +156,7 @@
         </div>
         <div class="item">
           <div class="title">保险费用</div>
-          <div class="price"><span>￥</span>{{rateFree / 100}}</div>
+          <div class="price"><span>￥</span>{{rateFree / 100 + Riskprice}}</div>
         </div>
         <div class="item">
           <div class="title">受理地址</div>
@@ -182,7 +182,6 @@
       return{
         rateFree: '',
         detailRiskName: '',
-
         first: true,
         second: false,
         third: false,
@@ -225,6 +224,7 @@
         city:'',
         district:"",
 
+        Riskprice:0,
         // uploading页面属性
         imageSave1:"",
         imageSave2:'',
@@ -723,13 +723,14 @@
           this.show=false;
         }
       },
-
       // order页面方法
       switchDepartment:function(){  // 是否投递保险
         this.isShow=!this.isShow;
         if(this.isShow){
+          this.Riskprice=1;
           this.dataForm.postRisk = 2
         }else{
+          this.Riskprice=0;
           this.dataForm.postRisk = 1
         }
       },
