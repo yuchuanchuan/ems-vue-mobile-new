@@ -25,7 +25,7 @@ export default new Router({
     {path: '/info',name: 'info',component: info},
     {path: '/order',name: 'order',component: order},
     {path: '/submit',name: 'submit',component: submit},
-    {path: '/query',name: 'query',component: query},
+    {path: '/query/:orderNum',name: 'query',component: query},
     {path: '/orderInfo', name:'orderInfo', component:orderInfo},
     {path: '/list', name: 'list', component: list}
   ]

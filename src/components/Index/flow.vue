@@ -57,9 +57,21 @@
           return unescape(r[2]);
         }
         return null;
-      }
+      },
+      getPostNotify(){
+        this.$http({
+          url: this.$http.adornUrl('/mobile/order/notify'),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({ data }) => {
+          if (data && data.code === 0) {
+            console.log(data)
+          }
+        })
+      },
     },
     created(){
+      this.getPostNotify()
       this.openid = localStorage.getItem("openid")
       if(this.openid == "null" || this.openid == null || this.openid == ""){
         let parametertext = this.getQueryString('openid');  // => ‘参数内容’

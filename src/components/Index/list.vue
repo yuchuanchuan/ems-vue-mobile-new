@@ -5,7 +5,7 @@
         <div class="box">查询列表<div class="sj"></div></div>
         <div class="box1">
             <div class='item' v-for="(item, index) in orderList" :key="index">
-                <router-link to="/query">查询进度</router-link>
+                <a @click.prevent="queryInfo(item.orderNumber)">查询进度</a>
                 <div>订单号: {{item.orderNumber}}</div>
                 <div>下单时间: {{item.createOrderTime}}</div>
                 <div>当前状态:{{item.status}}</div>
@@ -22,7 +22,6 @@
   </div>
 </template>
 <script>
-  import {dateToMinute} from "../../utils/validate.js"
 export default {
   data(){
     return{
@@ -43,7 +42,7 @@ export default {
           console.log(data)
           this.orderList = []
           data.data.forEach((item) => {
-            item.createOrderTime = dateToMinute(item.createOrderTime)
+            item.createOrderTime = item.createOrderDate
             if(item.status === 1){
               item.status = '未支付'
             }else if(item.status === 2){
@@ -59,6 +58,9 @@ export default {
           alert(data.msg)
         }
       })
+    },
+    queryInfo(orderNum){
+      this.$router.push({ name: 'query', params:{'orderNum': orderNum} })
     }
   },
   created(){

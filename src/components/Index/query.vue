@@ -3,86 +3,86 @@
     <div class="title">不动产登记便民邮寄</div>
     <div class="box">进度查询<div class="sj"></div></div>
     <div class="box1">
-        <div class="item">
+        <div class="item" v-for="(item,index) in orderList" :key="index">
             <div class="top">
-                <div class="left">2019年6月4日</div>
+                <div class="left">{{item.emsDate}}</div>
                 <div class="middle">
-                    <img src="../../img/tj.png">
+                    <img :src="item.imgSrc">
                 </div>
-                <div class="right">提交申请</div>
+                <div class="right">{{item.emsMessage}}</div>
             </div>
             <div class="bottom"></div>
         </div>
-        <div class="item">
-            <div class="top">
-                <div class="left">2019年6月4日</div>
-                <div class="middle">
-                    <img src="../../img/zf.png">
-                </div>
-                <div class="right">费用支付</div>
-            </div>
-            <div class="bottom"></div>
-        </div>
-        <div class="item">
-            <div class="top">
-                <div class="left">2019年6月4日</div>
-                <div class="middle">
-                    <img src="../../img/cg.png">
-                </div>
-                <div class="right">申请提交成功</div>
-            </div>
-            <div class="bottom"></div>
-        </div>
-        <div class="item">
-            <div class="top">
-                <div class="left">2019年6月4日</div>
-                <div class="middle">
-                    <img src="../../img/zz.png">
-                </div>
-                <div class="right">业务受理中</div>
-            </div>
-            <div class="bottom"></div>
-        </div>
-        <div class="item">
-            <div class="top">
-                <div class="left">2019年6月4日</div>
-                <div class="middle">
-                    <img src="../../img/ys.png">
-                </div>
-                <div class="right">已揽收</div>
-            </div>
-            <div class="bottom"></div>
-        </div>
-        <div class="item">
-            <div class="top">
-                <div class="left">2019年6月4日</div>
-                <div class="middle">
-                    <img src="../../img/ys.png">
-                </div>
-                <div class="right">EMS运输中</div>
-            </div>
-            <div class="bottom"></div>
-        </div>
-        <div class="item">
-            <div class="top">
-                <div class="left">2019年6月4日</div>
-                <div class="middle">
-                    <img src="../../img/ys.png">
-                </div>
-                <div class="right">正在派件</div>
-            </div>
-            <div class="bottom"></div>
-        </div>
-        <div class="item">
-            <div class="top">
-                <div class="left">2019年6月4日</div>
-                <div class="middle">
-                    <img src="../../img/ok.png">
-                </div>
-                <div class="right">天津市华苑产业园区海泰信息广场B座903室</div>
-            </div>
-            <div class="bottom"></div>
-        </div>
+        <!--<div class="item">-->
+            <!--<div class="top">-->
+                <!--<div class="left">2019年6月4日</div>-->
+                <!--<div class="middle">-->
+                    <!--<img src="../../img/ems2.png">-->
+                <!--</div>-->
+                <!--<div class="right">费用支付</div>-->
+            <!--</div>-->
+            <!--<div class="bottom"></div>-->
+        <!--</div>-->
+        <!--<div class="item">-->
+            <!--<div class="top">-->
+                <!--<div class="left">2019年6月4日</div>-->
+                <!--<div class="middle">-->
+                    <!--<img src="../../img/ems3.png">-->
+                <!--</div>-->
+                <!--<div class="right">申请提交成功</div>-->
+            <!--</div>-->
+            <!--<div class="bottom"></div>-->
+        <!--</div>-->
+        <!--<div class="item">-->
+            <!--<div class="top">-->
+                <!--<div class="left">2019年6月4日</div>-->
+                <!--<div class="middle">-->
+                    <!--<img src="../../img/ems4.png">-->
+                <!--</div>-->
+                <!--<div class="right">业务受理中</div>-->
+            <!--</div>-->
+            <!--<div class="bottom"></div>-->
+        <!--</div>-->
+        <!--<div class="item">-->
+            <!--<div class="top">-->
+                <!--<div class="left">2019年6月4日</div>-->
+                <!--<div class="middle">-->
+                    <!--<img src="../../img/ems5.png">-->
+                <!--</div>-->
+                <!--<div class="right">已揽收</div>-->
+            <!--</div>-->
+            <!--<div class="bottom"></div>-->
+        <!--</div>-->
+        <!--<div class="item">-->
+            <!--<div class="top">-->
+                <!--<div class="left">2019年6月4日</div>-->
+                <!--<div class="middle">-->
+                    <!--<img src="../../img/ems6.png">-->
+                <!--</div>-->
+                <!--<div class="right">EMS运输中</div>-->
+            <!--</div>-->
+            <!--<div class="bottom"></div>-->
+        <!--</div>-->
+        <!--<div class="item">-->
+            <!--<div class="top">-->
+                <!--<div class="left">2019年6月4日</div>-->
+                <!--<div class="middle">-->
+                    <!--<img src="../../img/ems7.png">-->
+                <!--</div>-->
+                <!--<div class="right">正在派件</div>-->
+            <!--</div>-->
+            <!--<div class="bottom"></div>-->
+        <!--</div>-->
+        <!--<div class="item">-->
+            <!--<div class="top">-->
+                <!--<div class="left">2019年6月4日</div>-->
+                <!--<div class="middle">-->
+                    <!--<img src="../../img/ems8.png">-->
+                <!--</div>-->
+                <!--<div class="right">天津市华苑产业园区海泰信息广场B座903室</div>-->
+            <!--</div>-->
+            <!--<div class="bottom"></div>-->
+        <!--</div>-->
     </div>
     <div class="tab">
         <button class="btn" @click="jump">返回首页</button>
@@ -91,20 +91,49 @@
             <img src="../../img/kdy.png">
         </div>
     </div>
-    
+
   </div>
 </template>
 <script>
 export default {
     data(){
         return{
+          orderList:[]
         }
     },
     methods:{
         jump(){
             this.$router.push('./flow')
-        }
-    }
+        },
+      getOrderInfo(orderNum){
+          ///
+        this.$http({
+          url: this.$http.adornUrl('/mobile/order/getOrderInfo'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'orderNum': orderNum
+          })
+        }).then(({ data }) => {
+          if (data && data.code === 0) {
+            this.orderList = []
+            data.data.forEach((item, index) => {
+              this.orderList.push({
+                emsDate: item.emsDate,
+                emsMessage: item.emsMessage,
+                imgSrc: '../../../static/img/ems'+ (index + 1) +'.png'
+              })
+            })
+          } else {
+            alert(data.msg)
+          }
+        })
+      }
+    },
+  created(){
+      console.log("接收参数")
+    console.log(this.$route.params.orderNum)
+    this.getOrderInfo(this.$route.params.orderNum)
+  }
 }
 </script>
 <style scoped>
@@ -150,7 +179,7 @@ body{
 }
 .item{
     font-size:0.28rem;
-    color:#333;   
+    color:#333;
     position:relative;
     height:1.5rem;
 }
@@ -211,7 +240,7 @@ body{
 .tab>.btn{
     height:7vh;
     width:5.6rem;
-    color:#fff; 
+    color:#fff;
     font-size: 0.32rem;
     background:#177abf;
     border-radius: 5px;

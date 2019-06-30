@@ -75,6 +75,8 @@ export function isURL (s) {
 
 export function dateToMinute (date) {
   if(date){
-    return  moment(new Date(date)).format('YYYY-MM-DD')
+    // alert(date.replace(/\-/g, '/'))
+    // alert(new Date(date))
+    return  moment(new Date(date).getTime()).format('YYYY-MM-DD')
   }
 }

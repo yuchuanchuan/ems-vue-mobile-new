@@ -156,12 +156,12 @@
         </div>
         <div class="item">
           <div class="title">保险费用</div>
-          <div class="price"><span>￥</span>{{rateFree / 100 + Riskprice}}</div>
+          <div class="price"><span>￥</span>{{dataForm.postRisk == 2 ? 0 : (rateFree / 100)}}</div>
         </div>
         <div class="item">
           <div class="title">受理地址</div>
           <div class="dz">
-            <div>{{detailRiskName}}</div>
+            <div>{{detailRiskName ? detailRiskName : dataForm.riskName}}</div>
             <img src="../../img/dz.png">
           </div>
         </div>
@@ -209,7 +209,7 @@
           ownerNegative: '',
           housingAuthority: '',
           postType: '',
-          postRisk: 1,  // 投递保险(1是，2否)
+          postRisk: 2,  // 投递保险(1是，2否)
           postRiskId: '',  // 投递保险运费id
           riskName: '',
           postProvinceId: '',
@@ -224,7 +224,7 @@
         city:'',
         district:"",
 
-        Riskprice:0,
+        riskPrice:0,
         // uploading页面属性
         imageSave1:"",
         imageSave2:'',
@@ -244,7 +244,7 @@
     },
     methods:{
       radio(){
-        if(this.third = true){
+        if(this.third){
           $(".myinput1").eq(0).attr("checked","true")
           this.rateFree = this.insuredList[0].insuredRate
         }
@@ -727,11 +727,11 @@
       switchDepartment:function(){  // 是否投递保险
         this.isShow=!this.isShow;
         if(this.isShow){
-          this.Riskprice=1;
-          this.dataForm.postRisk = 2
-        }else{
-          this.Riskprice=0;
+          // this.riskPrice=1;
           this.dataForm.postRisk = 1
+        }else{
+          // this.riskPrice=0;
+          this.dataForm.postRisk = 2
         }
       },
       jump2(){
