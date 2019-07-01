@@ -98,13 +98,39 @@
 export default {
     data(){
         return{
-          orderList:[]
+          orderList:[],
+          imgList:[
+            {
+              src: require('../../assets/img/ems1.png')
+            },
+            {
+              src: require('../../assets/img/ems2.png')
+            },
+            {
+              src: require('../../assets/img/ems3.png')
+            },
+            {
+              src: require('../../assets/img/ems4.png')
+            },
+            {
+              src: require('../../assets/img/ems5.png')
+            },
+            {
+              src: require('../../assets/img/ems6.png')
+            },
+            {
+              src: require('../../assets/img/ems7.png')
+            },
+            {
+              src: require('../../assets/img/ems8.png')
+            }
+          ]
         }
     },
     methods:{
-        jump(){
-            this.$router.push('./flow')
-        },
+      jump(){
+        this.$router.push({name: 'flow'})
+      },
       getOrderInfo(orderNum){
           ///
         this.$http({
@@ -120,7 +146,7 @@ export default {
               this.orderList.push({
                 emsDate: item.emsDate,
                 emsMessage: item.emsMessage,
-                imgSrc: '../../../static/img/ems'+ (index + 1) +'.png'
+                imgSrc: this.imgList[index].src
               })
             })
           } else {

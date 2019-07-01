@@ -30,7 +30,7 @@ export default {
   },
   methods:{
     jump(){
-        this.$router.push('./flow')
+      this.$router.push({name: 'flow'})
     },
     getUserOrderList(){
       this.$http({

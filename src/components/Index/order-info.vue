@@ -433,7 +433,8 @@
           })
         }).then(({ data }) => {
           if (data && data.code === 0) {
-            window.location.assign('http://ems.jujinkeji.net/mobile/submit')
+            // window.location.assign('http://ems.jujinkeji.net/mobile/submit')
+            this.$router.push({ name: 'submit', params:{'orderNum': this.dataForm.orderId} })
           } else {
             alert(data.msg)
           }

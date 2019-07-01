@@ -22,16 +22,20 @@
 export default {
     data(){
         return{
+          orderNum: ''
         }
     },
     methods:{
       jump1(){
-        this.$router.push('./flow')
+        this.$router.push({name: 'flow'})
       },
       jump2(){
-        this.$router.push('./query')
+        this.$router.push({ name: 'query', params:{'orderNum': this.orderNum} })
       }
-    }
+    },
+  created(){
+      this.orderNum = this.$route.params.orderNum
+  }
 }
 </script>
 <style scoped>
@@ -106,7 +110,7 @@ body{
   border-radius: 10px;
   outline: none;
   border:0;
-  font-weight: bold; 
+  font-weight: bold;
 }
 .text{
   font-size:0.28rem;
