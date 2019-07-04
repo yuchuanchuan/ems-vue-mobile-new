@@ -192,12 +192,12 @@
         insuredList: [],
         handleAreas: [],
         postInfo: '',
+        //删掉了{id：2，value：'正式'}
+        //将{id：1，value：房本}改为{id:1,value:'不动产权证'}
         postTypes:[{
-          id:1, value: '房本'
+          id:1, value: '不动产权证'
         },{
-          id:2, value: '正式'
-        },{
-          id:3, value: '其他'
+          id:2, value: '其他'
         }],
         dataForm:{
           orderId: '',
