@@ -11,6 +11,7 @@ import submit from "../components/Index/submit.vue"
 import query from "../components/Index/query.vue"
 import orderInfo from "../components/Index/order-info.vue"
 import list from "../components/Index/list.vue"
+import tip from "../components/Index/tip.vue"
 
 Vue.use(Router)
 export default new Router({
@@ -27,7 +28,8 @@ export default new Router({
     {path: '/submit/:orderNum',name: 'submit',component: submit},
     {path: '/query/:orderNum',name: 'query',component: query},
     {path: '/orderInfo', name:'orderInfo', component:orderInfo},
-    {path: '/list', name: 'list', component: list}
+    {path: '/list', name: 'list', component: list},
+    {path:'/tip',name:'tip',component:tip}
   ]
 })
 
