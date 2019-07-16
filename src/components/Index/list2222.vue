@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="content">
-        <div class="title">不动产登记便民邮寄</div>
+        <div class="title">不动产登记便民邮寄111</div>
         <div class="box">查询列表<div class="sj"></div></div>
         <div class="box1">
             <div class='item' v-for="(item, index) in orderList" :key="index">
@@ -44,13 +44,13 @@ export default {
           data.data.forEach((item) => {
             item.createOrderTime = item.createOrderDate
             if(item.status === 1){
-              item.status = '未支付'
+              item.status = '未支付 '
             }else if(item.status === 2){
-              item.status = '待发货'
+              item.status = '待发货 '
             }else if(item.status === 3){
-              item.status = '待收货'
+              item.status = '待收货 '
             } else if(item.status === 4){
-              item.status = '已收货'
+              item.status = '已收货 '
             }
           })
           this.orderList = data.data
