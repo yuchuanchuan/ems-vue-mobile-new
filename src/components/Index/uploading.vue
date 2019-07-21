@@ -8,12 +8,12 @@
     </div>
     <div @click="monidianji1" class="box1">
         <div v-show="show1">身份证正面</div>
-        <img :src=imageSave1 id="portrait1" class="img"/>
+        <img :src=imageSave1 id="portrait1" class="img" capture="camera"/>
     </div>
     <input type="file" id="saveImage1" name="myphoto" class="myinput">
     <div @click="monidianji2" class="box1">
         <div v-show="show2">身份证反面</div>
-        <img :src=imageSave2 id="portrait2" class="img"/>
+        <img :src=imageSave2 id="portrait2" class="img" capture="camera"/>
     </div>
     <input type="file" id="saveImage2" name="myphoto" class="myinput">
     <div class="box1-title">
@@ -22,7 +22,7 @@
     </div>
     <div @click="monidianji3" class="box1">
         <div v-show="show3">上传凭证</div>
-        <img :src=imageSave3 id="portrait3" class="img"/>
+        <img :src=imageSave3 id="portrait3" class="img" capture="camera"/>
     </div>
     <input type="file" id="saveImage3" name="myphoto" class="myinput">
     <button class="btn" @click="jump">下一步</button>

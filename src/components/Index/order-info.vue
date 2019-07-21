@@ -114,36 +114,11 @@
           <option v-for="(item,index) in postTypes" :key="index" :value="item.id">{{item.value}}</option>
         </select>
       </div>
-      <div class="box2">
-        <div class="title">寄达地</div>
-        <label v-for="(item,index) in insuredList" :key="index">
-          <div class="b2-item">
-            <div class="top">
-              <div class="top1">
-                <div class="title">{{item.name}}</div>
-                <div class="price"><span>￥</span>{{item.price / 100}}</div>
-              </div>
-              <div class="top2">
-                <input type="radio" class="myinput1" name="dizhi" :value="item.id" @click="handleRadio(index)"/>
-              </div>
-            </div>
-            <!--<div class="bottom">500g以内</div>-->
-          </div>
-        </label>
-        <!--<label>-->
-          <!--<div class="b2-item">-->
-            <!--<div class="top">-->
-              <!--<div class="top1">-->
-                <!--<div class="title">天津/外阜 (新疆、西藏除外)</div>-->
-                <!--<div class="price"><span>￥</span>20</div>-->
-              <!--</div>-->
-              <!--<div class="top2">-->
-                <!--<input type="radio" class="myinput1" name="dizhi"/>-->
-              <!--</div>-->
-            <!--</div>-->
-            <!--<div class="bottom">500g以内</div>-->
-          <!--</div>-->
-        <!--</label>-->
+      <div class="item">
+        <div class="title">邮寄费用</div>
+        <div class="info">
+          <div class="dizhi">{{postPrice / 100}}</div>
+        </div>
       </div>
       <div class="box3">
         <div class="item">
@@ -180,7 +155,8 @@
     name: 'order-info',
     data(){
       return{
-        rateFree: '',
+        postPrice: '', // 邮寄价格
+        rateFree: '',  // 保险价格
         detailRiskName: '',
         first: true,
         second: false,
@@ -246,7 +222,7 @@
       radio(){
         if(this.third){
           $(".myinput1").eq(0).attr("checked","true")
-          this.rateFree = this.insuredList[0].insuredRate
+          // this.rateFree = this.insuredList[0].insuredRate
         }
       },
       handleRadio(index){
@@ -326,6 +302,21 @@
             for(var j =0;j<lis.length;j++){
               if(lis[j].id==i){
                 this.province= lis[j].name
+
+                if(this.province != '新疆维吾尔自治区' && this.province != '西藏自治区'){
+                  this.dataForm.postRiskId = this.insuredList[0].id
+                  this.postPrice = this.insuredList[0].price  // 邮寄价格
+                  this.rateFree = this.insuredList[0].insuredRate  // 保险费率价格
+                }else{
+                  this.dataForm.postRiskId = this.insuredList[1].id
+                  this.postPrice = this.insuredList[1].price  // 邮寄价格
+                  this.rateFree = this.insuredList[1].insuredRate  // 保险费率价格
+                }
+
+                console.log(this.dataForm.postRiskId)
+                console.log(this.postPrice)
+                console.log(this.rateFree)
+
               }
             }
           } else {
@@ -740,7 +731,7 @@
         this.dataForm.ownerNegative = ownerNegative
         this.dataForm.housingAuthority = housingAuthority
         this.dataForm.openid = localStorage.getItem("openid")
-        this.dataForm.postRiskId = $('input:radio[name="dizhi"]:checked').val();
+        // this.dataForm.postRiskId = $('input:radio[name="dizhi"]:checked').val();val
 
 
         // let index = 'http://ems.jujinkeji.net/mobile/Index'
@@ -764,9 +755,9 @@
             // })
             // alert(data.orderId + '---------------' + data.data.orderId)
             this.dataForm.orderId = data.data.orderId
-            this.wechatPay(data.data.orderId)
+            // this.wechatPay(data.data.orderId)
             console.log("操作成功")
-            // this.$router.push("/Index")
+            this.$router.push("/list")
           } else {
             // this.$message.error(data.msg)
             alert(data.msg)
