@@ -122,12 +122,12 @@
           <div class="kg">
                 <span class="switch" :class="{on:isShow}" @click="switchDepartment">
                     <div class="switch-circle" :class={right:isShow}></div>
-                </span> 
-          </div> 
-        </div> 
-        <div class="item"> 
-          <div class="title">保险费用</div> 
-          <div class="price"><span>￥</span>{{dataForm.postRisk == 2 ? 0 : (rateFree / 100)}}</div> 
+                </span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="title">保险费用</div>
+          <div class="price"><span>￥</span>{{dataForm.postRisk == 2 ? 0 : (rateFree / 100)}}</div>
         </div>
         <div class="item">
           <div class="title">受理地址</div>
@@ -142,16 +142,16 @@
 
     <div v-show="fourth">
       <div class='title'>
-        <div>不动产登记受理凭证信息</div>  
+        <div>不动产登记受理凭证信息</div>
         <div class='jiantou'></div>
       </div>
-      
+
       <img src="../../img/banlixuzhi.png" class='tip_img'>
       <div class='tip'>
-        <div class='tip_title'>提示：</div>  
+        <div class='tip_title'>提示：</div>
         <div class='tip_info'>请将“天津市不动产登记受理凭证”中的“编号信息”、“权利人姓名”填写在以下表格中，“手机号”请填写受理登记时填写的信息。</div>
       </div>
-      
+
       <div class="inp_list">
         <div class='user_name'>
           <div class='left'>姓名</div>
@@ -161,7 +161,7 @@
           <div class='left'>手机号</div>
           <input type="text" v-model="dataForm.phone" @blur.prevent="changePhone()">
         </div>
-        
+
         <div class='user_num'>
           <div class='left'>凭证编号</div>
           <input type="text" v-model='dataForm.idCard' @blur.prevent="changeBianhao()">
@@ -367,14 +367,14 @@
                 console.log(this.insuredList)
 
 
-                
+
                 console.log(this.dataForm.postRiskId)
                 console.log(this.postPrice)
                 console.log(this.rateFree)
 
               }
             }
-          } 
+          }
         })
 
       },
@@ -422,69 +422,7 @@
         }
         this.district = $("#selecta option:selected").text();
       },
-      // 支付
-      wechatPay(orderId){
-        this.$http({
-          url: this.$http.adornUrl('/pay/create'),
-          method: 'get',
-          params: this.$http.adornParams({
-            'orderId': orderId,
-            'returnUrl': 'http://ems.jujinkeji.net/mobile/flow'
-          })
-        }).then(({ data }) => {
-          if (data && data.code === 0) {
-            if (typeof WeixinJSBridge == "undefined"){//微信浏览器内置对象。参考微信官方文档
-              if( document.addEventListener ){
-                document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady(data), false);
-              }else if (document.attachEvent){
-                document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady(data));
-                document.attachEvent('onWeixinJSBridgeReady',this.onBridgeReady(data));
-              }
-            }else{
-              this.onBridgeReady(data);
-            }
-          } else {
-            alert(data.msg)
-          }
-        })
-      },
-      onBridgeReady:function(data){
-        let _this = this;
-        WeixinJSBridge.invoke(
-          'getBrandWCPayRequest', {
-            "appId": data.data.payResponse.appId,     //公众号名称，由商户传入
-            "timeStamp": data.data.payResponse.timeStamp,         //时间戳，自1970年以来的秒数
-            "nonceStr": data.data.payResponse.nonceStr, //随机串
-            "package": data.data.payResponse.package,
-            "signType": data.data.payResponse.signType,         //微信签名方式：
-            "paySign": data.data.payResponse.paySign //微信签名
-          },
-          function(res){
-            if(res.err_msg == "get_brand_wcpay_request:ok" ) {
-              setTimeout(()=>{
-                _this.updateOrderStatus()
-              },500)
-            }
-            //location.href = "${returnUrl}";
-          }
-        );
-      },
-      updateOrderStatus(){
-        this.$http({
-          url: this.$http.adornUrl('/mobile/order/mail'),
-          method: 'post',
-          data: this.$http.adornData({
-            orderNumber: this.dataForm.orderId
-          })
-        }).then(({ data }) => {
-          if (data && data.code === 0) {
-            // window.location.assign('http://ems.jujinkeji.net/mobile/submit')
-            this.$router.push({ name: 'submit', params:{'orderNum': this.dataForm.orderId} })
-          } else {
-            alert(data.msg)
-          }
-        })
-      },
+
       // 地理位置
       getMyLocation(){
         let that = this;

@@ -6,14 +6,17 @@
 
 		<ul class='info_list'>
 			<li class='info' v-for="(item, index) in orderList" :key="index">
-        <a @click.prevent="queryInfo(item.orderNumber)" v-if="item.status != '未支付' && item.status != '已取消'">查询进度</a>
+        <!--<a @click.prevent="queryInfo(item.orderNumber)" v-if="item.status != '未支付' && item.status != '已取消'">查询进度</a>-->
 				<div class='num'>订单号：{{item.orderNumber}}</div>
-				<div class='timer'>下单时间：{{item.createOrderTime}}</div>
+				<div class='timer'>下单时间：{{item.createOrderDate}}</div>
 				<div class='status'>
-					<p>当前状态：{{item.status}} <span>(剩余{{daojishi}}）</span></p>
-					<button v-if="item.status == '未支付'">去支付</button>
-          <button v-if="item.status == '已取消'">已取消</button>
-          <button v-if="item.status == '已取消'">已取消</button>
+					<p>
+            当前状态：{{item.status ===1 ? '未支付' : item.status ===2 ? '待发货' : item.status === 3 ? '待收货' : item.status === 4 ? '已收货' : item.status === 5 ? '已取消' : '' }}
+            <span v-if="item.status ===1">(剩余{{item.djs}}）</span>
+          </p>
+					<button v-if="item.status === 1" @click="wechatPay(item.orderNumber)">去支付</button>
+          <button v-if="item.status === 2">去取消</button>
+          <button v-if="item.status !== 1 && item.status !== 2" @click="queryInfo(item.orderNumber)">进度查询</button>
 				</div>
 			</li>
 
@@ -94,71 +97,37 @@ export default {
   data () {
     return {
       orderList: [],
-	  tanchuang_status:false,
-	  timer:'00:28:39'
+	  tanchuang_status:false
     }
   },
   mounted(){
-    document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + 'px';
-    var timer = this.timer.split(":")
-    var shi = parseInt(timer[0])
-    var fen = parseInt(timer[1])
-    var miao = parseInt(timer[2])
-    var new_timer
-    var daoshu = setInterval(function(){
-	new_timer = []
-	if(shi>=0 && fen>= 0 && miao>=0){
-		if(miao>0){
-			if(shi==0&&fen==0&&miao==0){
-    			clearInterval(daoshu)
-    			alert("时间结束")
-    			return
-    		}
-    		miao = miao-1
+    var t = setInterval( ()=> {
+      var dd, hh, mm, ss = null
+      for (var key in this.orderList) {
+        // var aaa = new Date(this.orderList[key]["createOrderTime"]).getTime();
+        let startTime = new Date().getTime()
+        let endTime = new Date(this.orderList[key]["createOrderTime"]).getTime() + 1800000
+        let rightTime = endTime - startTime;
+        if (rightTime >= 0) {
+          mm = Math.floor((rightTime / 1000 / 60) % 60);
+          ss = Math.floor((rightTime / 1000) % 60);
+          if( mm.toString().length === 1){
+            mm = "0" + mm
+          }
+          if(ss.toString().length === 1){
+            ss = "0" + ss
+          }
+          this.orderList[key]["djs"] = "00:" + mm + ":" + ss;
+        }else{
+          if(this.orderList[key]["status"] === 1){
+            console.log(this.orderList[key]["status"])
+            // 执行更新操作， 取消订单，，，进行退款操作
+          }
+        }
+      }
+    }, 1000);
 
-    		miao = String(miao)
-    		fen = String(fen)
-    		shi = String(shi)
-    		if(miao.length == 1){
-    			miao = "0"+miao
-    		}
-    		if(fen.length ==1){
-    			fen = "0"+fen 
-    		}
-    		if(shi.length ==1){
-    			shi = "0"+shi 
-    		}
-    	}else{
-    		if(shi==0&&fen==0&&miao==0){
-    			clearInterval(daoshu)
-    			alert("时间结束")
-    			return
-    		}
-    		miao = 59
-    		fen = fen - 1
-    		miao = miao-1
-    		miao = String(miao)
-    		fen = String(fen)
-    		shi = String(shi)
-    		if(miao.length == 1){
-    			miao = "0"+miao
-    		}
-    		if(fen.length ==1){
-    			fen = "0"+fen 
-    		}
-    		if(shi.length ==1){
-    			shi = "0"+shi 
-    		}
-    		if(shi>=0&&fen>=0&&miao>=0){
-    			clearInterval(daoshu)
-    			return
-    		}
-		}
-    	new_timer.push(shi,fen,miao)
-    	this.timer = new_timer.join(":")
-    	console.log(this.timer)
-	}
-},1000)
+    document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + 'px';
   },
   methods:{
     queryInfo(orderNum){
@@ -166,6 +135,26 @@ export default {
     },
     jump(){
       this.$router.push({name: 'flow'})
+    },
+    InitTime(endtime){
+      endtime = new Date(endtime).getTime() + 1800000
+      var mm, ss = null
+      var str = "";
+      var time =  endtime - new Date().getTime();
+      if(time >= 0){
+        mm = Math.floor((time / 1000 / 60) % 60);
+        ss = Math.floor(time / 1000 % 60);
+        if( mm.toString().length === 1){
+          mm = "0" + mm
+        }
+        if(ss.toString().length === 1){
+          ss = "0" + ss
+        }
+        str = "00:" + mm+":"+ss;
+        return str;
+      }else{
+        return "00:00:00"
+      }
     },
     getUserOrderList(){
       this.$http({
@@ -176,21 +165,96 @@ export default {
         if (data && data.code === 0) {
           console.log(data)
           this.orderList = []
-          data.data.forEach((item) => {
-            item.createOrderTime = item.createOrderDate
-            if(item.status === 1){
-              item.status = '未支付 '
-            }else if(item.status === 2){
-              item.status = '待发货 '
-            }else if(item.status === 3){
-              item.status = '待收货 '
-            } else if(item.status === 4){
-              item.status = '已收货 '
-            } else if(item.status === 5){
-              item.status = '已取消 '
-            }
+
+          data.data.map( (obj,index)=>{
+            this.$set(
+              obj,"djs",this.InitTime(new Date(obj.createOrderTime).getTime())
+            );
           })
+
+          // data.data.forEach((item) => {
+          //   item.createOrderTime = item.createOrderDate
+          // })
+
           this.orderList = data.data
+
+          console.log(this.orderList[0].djs)
+
+        } else {
+          alert(data.msg)
+        }
+      })
+    },
+    quxiao(){
+      this.tanchuang_status = true
+      console.log(this)
+    },
+    no(){
+      this.tanchuang_status = false
+    },
+    yes(){
+      this.tanchuang_status = false
+    },
+
+    // 支付
+    wechatPay(orderId){
+      this.$http({
+        url: this.$http.adornUrl('/pay/create'),
+        method: 'get',
+        params: this.$http.adornParams({
+          'orderId': orderId,
+          'returnUrl': 'http://ems.jujinkeji.net/mobile/list'
+        })
+      }).then(({ data }) => {
+        if (data && data.code === 0) {
+          if (typeof WeixinJSBridge == "undefined"){//微信浏览器内置对象。参考微信官方文档
+            if( document.addEventListener ){
+              document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady(data), false);
+            }else if (document.attachEvent){
+              document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady(data));
+              document.attachEvent('onWeixinJSBridgeReady',this.onBridgeReady(data));
+            }
+          }else{
+            this.onBridgeReady(data);
+          }
+        } else {
+          alert(data.msg)
+        }
+      })
+    },
+    onBridgeReady:function(data){
+      let _this = this;
+      WeixinJSBridge.invoke(
+        'getBrandWCPayRequest', {
+          "appId": data.data.payResponse.appId,     //公众号名称，由商户传入
+          "timeStamp": data.data.payResponse.timeStamp,         //时间戳，自1970年以来的秒数
+          "nonceStr": data.data.payResponse.nonceStr, //随机串
+          "package": data.data.payResponse.package,
+          "signType": data.data.payResponse.signType,         //微信签名方式：
+          "paySign": data.data.payResponse.paySign //微信签名
+        },
+        function(res){
+          if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+            setTimeout(()=>{
+              _this.updateOrderStatus()
+            },500)
+          }
+          //location.href = "${returnUrl}";
+        }
+      );
+    },
+    updateOrderStatus(){
+      this.$http({
+        url: this.$http.adornUrl('/mobile/order/mail'),
+        method: 'post',
+        data: this.$http.adornData({
+          orderNumber: this.dataForm.orderId
+        })
+      }).then(({ data }) => {
+        if (data && data.code === 0) {
+          // window.location.assign('http://ems.jujinkeji.net/mobile/submit')
+          // this.$router.push({ name: 'submit', params:{'orderNum': this.dataForm.orderId} })
+          this.getUserOrderList()
         } else {
           alert(data.msg)
         }
@@ -200,17 +264,8 @@ export default {
   created(){
     this.getUserOrderList()
   },
-  methods:{
-	  quxiao(){
-		  this.tanchuang_status = true
-		  console.log(this)
-	  },
-	  no(){
-		  this.tanchuang_status = false
-	  },
-	  yes(){
-		  this.tanchuang_status = false
-	  }
+  destroyed(){
+    clearInterval(t)
   }
 }
 </script>
