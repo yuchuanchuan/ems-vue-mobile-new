@@ -39,10 +39,6 @@
         <div class="title">详细地址</div>
         <input type="text" placeholder="输入详细地址" @blur.prevent="changeDizhi()">
     </div>
-    <div class="item">
-        <div class="title">凭证编号</div>
-        <input type="text" placeholder="请输入凭证编号" @blur.prevent="changeBianhao()">
-    </div>
     <div class="tishi" v-show="show">
         <img src="../../img/i.png">
         <div>{{text}}</div>
@@ -60,7 +56,12 @@ export default {
     },
     methods:{
         jump(){
-            this.$router.push("/order")
+            this.$router.push({
+                path:"/order",
+                params:{
+                    sheng_val:this.$refs.sheng.value
+                }
+            })
         },
         changeName(e){
         var u = event.currentTarget.value;

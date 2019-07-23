@@ -11,12 +11,12 @@
         <div v-show="show1">身份证正面</div>
         <img :src=imageSave1 id="portrait1" class="img"/>
       </div>
-      <input type="file" id="saveImage1" name="myphoto" class="myinput" ref="closeUp" accept="image">
+      <input type="file" id="saveImage1" name="myphoto" class="myinput" ref="closeUp" accept="camera">
       <div @click="monidianji2" class="box1">
         <div v-show="show2">身份证反面</div>
         <img :src=imageSave2 id="portrait2" class="img"/>
       </div>
-      <input type="file" id="saveImage2" name="myphoto" class="myinput" ref="closeUp" accept="image">
+      <input type="file" id="saveImage2" name="myphoto" class="myinput" ref="closeUp" accept="camera">
       <div class="box1-title">
         <img src="../../img/shu.png">
         <div>不动产登记受理凭证(上传图片)</div>
@@ -25,7 +25,7 @@
         <div v-show="show3">上传凭证</div>
         <img :src=imageSave3 id="portrait3" class="img"/>
       </div>
-      <input type="file" id="saveImage3" name="myphoto" class="myinput" ref="closeUp" accept="image">
+      <input type="file" id="saveImage3" name="myphoto" class="myinput" ref="closeUp" accept="camera">
       <button class="btn" @click="jump" v-bind:disabled="mybtn1" >下一步</button>
     </div>
     <div class="content2" v-show="second">
@@ -37,11 +37,11 @@
       </div>
       <div class="item">
         <div class="title">姓名</div>
-        <input type="text" placeholder="输入收件人姓名" @blur.prevent="changeName()" v-model="dataForm.name" autofocus="autofocus">
+        <input type="text" placeholder="输入收件人姓名" @blur.prevent="changeName()" v-model="dataForm.shoujian_name" autofocus="autofocus">
       </div>
       <div class="item">
         <div class="title">联系电话</div>
-        <input type="text" placeholder="输入收件人手机号" @blur.prevent="changePhone()" v-model="dataForm.phone">
+        <input type="text" placeholder="输入收件人手机号" @blur.prevent="changePhone()" v-model="dataForm.shoujian_phone">
       </div>
       <div class="item">
         <div class="title">收件地址</div>
@@ -64,15 +64,11 @@
         <div class="title">详细地址</div>
         <input type="text" placeholder="输入详细地址" @blur.prevent="changeDizhi()" v-model="dataForm.postAddress">
       </div>
-      <div class="item">
-        <div class="title">凭证编号</div>
-        <input type="text" placeholder="请输入凭证编号" @blur.prevent="changeBianhao()" v-model="dataForm.idCard">
-      </div>
       <div class="tishi" v-show="show">
         <img src="../../img/i.png">
         <div>{{text}}</div>
       </div>
-      <button class="btn" @click="jump1" >下一步</button>
+      <button class="btn" @click="jump4">下一步</button>
     </div>
 
     <div class="content3" v-show="third">
@@ -85,11 +81,11 @@
       <div class="box1">
         <div class="item">
           <div class="title">姓名</div>
-          <div class="info">{{dataForm.name}}</div>
+          <div class="info">{{dataForm.shoujian_name}}</div>
         </div>
         <div class="item">
           <div class="title">联系电话</div>
-          <div class="info">{{dataForm.phone}}</div>
+          <div class="info">{{dataForm.shoujian_phone}}</div>
         </div>
         <div class="item">
           <div class="title">收件地址</div>
@@ -126,12 +122,12 @@
           <div class="kg">
                 <span class="switch" :class="{on:isShow}" @click="switchDepartment">
                     <div class="switch-circle" :class={right:isShow}></div>
-                </span>
-          </div>
-        </div>
-        <div class="item">
-          <div class="title">保险费用</div>
-          <div class="price"><span>￥</span>{{dataForm.postRisk == 2 ? 0 : (rateFree / 100)}}</div>
+                </span> 
+          </div> 
+        </div> 
+        <div class="item"> 
+          <div class="title">保险费用</div> 
+          <div class="price"><span>￥</span>{{dataForm.postRisk == 2 ? 0 : (rateFree / 100)}}</div> 
         </div>
         <div class="item">
           <div class="title">受理地址</div>
@@ -142,6 +138,36 @@
         </div>
       </div>
       <button class="btn" @click="jump2">下一步</button>
+    </div>
+
+    <div v-show="fourth">
+      <div class='title'>
+        <div>不动产登记受理凭证信息</div>  
+        <div class='jiantou'></div>
+      </div>
+      
+      <img src="../../img/banlixuzhi.png" class='tip_img'>
+      <div class='tip'>
+        <div class='tip_title'>提示：</div>  
+        <div class='tip_info'>请将“天津市不动产登记受理凭证”中的“编号信息”、“权利人姓名”填写在以下表格中，“手机号”请填写受理登记时填写的信息。</div>
+      </div>
+      
+      <div class="inp_list">
+        <div class='user_name'>
+          <div class='left'>姓名</div>
+          <input type="text" v-model="dataForm.name"  @blur.prevent="changeName()">
+        </div>
+        <div class='user_phone'>
+          <div class='left'>手机号</div>
+          <input type="text" v-model="dataForm.phone" @blur.prevent="changePhone()">
+        </div>
+        
+        <div class='user_num'>
+          <div class='left'>凭证编号</div>
+          <input type="text" v-model='dataForm.idCard' @blur.prevent="changeBianhao()">
+        </div>
+      </div>
+      <button class='next' @click="jump1()">下一步</button>
     </div>
   </div>
 </template>
@@ -161,6 +187,7 @@
         first: true,
         second: false,
         third: false,
+        fourth:false,
         parentId: 1,
         provinceNames: [],
         cityNames: [],
@@ -177,6 +204,8 @@
         }],
         dataForm:{
           orderId: '',
+          shoujian_name:'',
+          shoujian_phone:'',
           name: '',
           idCard: '',
           phone: '',
@@ -219,6 +248,29 @@
       }
     },
     methods:{
+      jump4(){
+        var reg1 = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/;
+        var reg2 = /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/;
+        if(this.dataForm.shoujian_name==''){
+          alert("请输入收件人姓名")
+          return
+        }if(!reg1.test(this.dataForm.shoujian_name)){
+          alert("请输入正确的收件人姓名")
+          return
+        }
+        if(this.dataForm.shoujian_phone==""){
+          alert("请输入电话号码")
+          return
+        }if(!reg2.test(this.dataForm.shoujian_phone)){
+          alert("请输入正确的电话号码")
+          return
+        }else{
+          this.first = false
+          this.second = false
+          this.third = true
+          this.fourth = false
+        }
+      },
       radio(){
         if(this.third){
           $(".myinput1").eq(0).attr("checked","true")
@@ -312,15 +364,17 @@
                   this.postPrice = this.insuredList[1].price  // 邮寄价格
                   this.rateFree = this.insuredList[1].insuredRate  // 保险费率价格
                 }
+                console.log(this.insuredList)
 
+
+                
                 console.log(this.dataForm.postRiskId)
                 console.log(this.postPrice)
                 console.log(this.rateFree)
 
               }
             }
-          } else {
-          }
+          } 
         })
 
       },
@@ -520,8 +574,9 @@
           return
         }else{
           this.first = false
-          this.second = true
+          this.second = false
           this.third = false
+          this.fourth = true
         }
       },
       monidianji1(){
@@ -651,25 +706,14 @@
         }if(!reg2.test(this.dataForm.phone)){
           alert("请输入正确的电话号码")
           return
-        }if(this.province==""){
-          alert("请输入寄达地")
-          return
-        }if(this.city==""){
-          alert("请输入寄达地")
-          return
-        }if(this.district==""){
-          alert("请输入寄达地")
-          return
-        }if(this.dataForm.postAddress==""){
-          alert("请输入详细地址")
-          return
         }if(this.dataForm.idCard==""){
           alert("请输入凭证编号")
           return
         }else{
         this.first = false
-        this.second = false
-        this.third = true
+        this.second = true
+        this.third = false
+        this.fourth = false
         this.radio();
         }
       },
@@ -766,6 +810,7 @@
       }
     },
     mounted(){
+      document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + 'px';
       this.yulan1();
       this.yulan2();
       this.yulan3();
@@ -911,6 +956,7 @@ body{
     border:1px solid #666;
     border-radius: 5px;
     margin-right: 0.2rem;
+    color:#333;
 }
 .content2 .item>input{
     font-size:0.28rem;
@@ -1199,5 +1245,101 @@ body{
 .content3 .right{
     background:#fff;
     transform :translateX(0.35rem)
+  }
+  .next{
+    border-radius: 0.15rem;
+    margin-left: 0.8rem;
+    margin-top: 0.45rem;
+    width:5.9rem;
+    height: 0.95rem;
+    text-align: center;
+    line-height: 0.95rem;
+    border:none;
+    outline: none;
+    background: #177abf;
+    color:white;
+    font-weight: bold;
+    font-size: 0.36rem;
+  }
+  .inp_list>div{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.3rem;
+  }
+  .inp_list{
+    margin-top: 0.5rem;
+    width:6.9rem;
+    margin-left: 0.3rem;
+  }
+  .inp_list input{
+    width:4.6rem;
+    height: 0.8rem;
+    background: #f2f2f2;
+    border:none;
+    outline: none;
+    border-radius: 0.15rem;
+    text-indent: 0.64rem;
+  }
+  .left{
+    width:2.1rem;
+    height: 0.8rem;
+    text-align: center;
+    line-height: 0.8rem;
+    color:#333;
+    background:#f2f2f2;
+    border:1px solid black;
+    font-size: 0.32rem;
+    border-radius: 0.15rem;
+  }
+  .tip_title{
+    width:13%;
+  }
+  .tip_info{
+    width:87%;
+  }
+  .tip{
+    color:#666666;
+    font-size: 0.24rem;
+    width:6.9rem;
+    margin-left: 0.3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .tip_img{
+    margin-top: 0.23rem;
+    margin-left: 0.3rem;
+    width:6.9rem;
+    height: 1.4rem;
+  }
+  .title{
+    margin-top: 0;
+    height: 0.8rem;
+    width:100%;
+    background:white;
+    font-size: 0.32rem;
+    font-weight: bold;
+    color:white;
+    background: #177abf;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .jiantou{
+    position: absolute;
+    width:1px;
+    height: 1px;
+    border-top: 0.25rem solid white;
+    border-bottom: 0.2rem solid transparent;
+    border-left: 0.2rem solid transparent;
+    border-right: 0.2rem solid transparent;
+    margin-top: 0.3rem;
+    top:0;
+    right:0.4rem;
+  }
+  .content3 .item .title{
+    color:#333!important;
   }
 </style>

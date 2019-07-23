@@ -10,7 +10,7 @@
 				<div class='num'>订单号：{{item.orderNumber}}</div>
 				<div class='timer'>下单时间：{{item.createOrderTime}}</div>
 				<div class='status'>
-					<p>当前状态：{{item.status}} <span>(剩余00:29:59）</span></p>
+					<p>当前状态：{{item.status}} <span>(剩余{{daojishi}}）</span></p>
 					<button v-if="item.status == '未支付'">去支付</button>
           <button v-if="item.status == '已取消'">已取消</button>
           <button v-if="item.status == '已取消'">已取消</button>
@@ -94,8 +94,71 @@ export default {
   data () {
     return {
       orderList: [],
-	  tanchuang_status:false
+	  tanchuang_status:false,
+	  timer:'00:28:39'
     }
+  },
+  mounted(){
+    document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + 'px';
+    var timer = this.timer.split(":")
+    var shi = parseInt(timer[0])
+    var fen = parseInt(timer[1])
+    var miao = parseInt(timer[2])
+    var new_timer
+    var daoshu = setInterval(function(){
+	new_timer = []
+	if(shi>=0 && fen>= 0 && miao>=0){
+		if(miao>0){
+			if(shi==0&&fen==0&&miao==0){
+    			clearInterval(daoshu)
+    			alert("时间结束")
+    			return
+    		}
+    		miao = miao-1
+
+    		miao = String(miao)
+    		fen = String(fen)
+    		shi = String(shi)
+    		if(miao.length == 1){
+    			miao = "0"+miao
+    		}
+    		if(fen.length ==1){
+    			fen = "0"+fen 
+    		}
+    		if(shi.length ==1){
+    			shi = "0"+shi 
+    		}
+    	}else{
+    		if(shi==0&&fen==0&&miao==0){
+    			clearInterval(daoshu)
+    			alert("时间结束")
+    			return
+    		}
+    		miao = 59
+    		fen = fen - 1
+    		miao = miao-1
+    		miao = String(miao)
+    		fen = String(fen)
+    		shi = String(shi)
+    		if(miao.length == 1){
+    			miao = "0"+miao
+    		}
+    		if(fen.length ==1){
+    			fen = "0"+fen 
+    		}
+    		if(shi.length ==1){
+    			shi = "0"+shi 
+    		}
+    		if(shi>=0&&fen>=0&&miao>=0){
+    			clearInterval(daoshu)
+    			return
+    		}
+		}
+    	new_timer.push(shi,fen,miao)
+    	this.timer = new_timer.join(":")
+    	console.log(this.timer)
+	}
+},1000)
   },
   methods:{
     queryInfo(orderNum){
@@ -136,9 +199,6 @@ export default {
   },
   created(){
     this.getUserOrderList()
-  },
-  mounted(){
-    document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + 'px';
   },
   methods:{
 	  quxiao(){

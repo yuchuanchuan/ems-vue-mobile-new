@@ -100,9 +100,12 @@ export default {
           localStorage.removeItem("openid")
           this.$cookie.set('token', data.data)
           let index = 'http://ems.jujinkeji.net/mobile/flow'
-          location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorOpenId?returnUrl=' + index
-          // this.$route
-          // this.$router.push({ path:'/Index'})
+
+          // 微信页面
+          // location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorOpenId?returnUrl=' + index
+
+          this.$route
+          this.$router.push({ path:'/flow'})
         } else {
           alert(data.msg)
         }

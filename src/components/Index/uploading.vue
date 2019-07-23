@@ -10,12 +10,12 @@
         <div v-show="show1">身份证正面</div>
         <img :src=imageSave1 id="portrait1" class="img" capture="camera"/>
     </div>
-    <input type="file" id="saveImage1" name="myphoto" class="myinput">
+    <input type="file" id="saveImage1" name="myphoto" class="myinput" capture="camera">
     <div @click="monidianji2" class="box1">
         <div v-show="show2">身份证反面</div>
         <img :src=imageSave2 id="portrait2" class="img" capture="camera"/>
     </div>
-    <input type="file" id="saveImage2" name="myphoto" class="myinput">
+    <input type="file" id="saveImage2" name="myphoto" class="myinput" capture="camera">
     <div class="box1-title">
         <img src="../../img/shu.png">
         <div>不动产登记受理凭证(上传图片)</div>
@@ -24,7 +24,7 @@
         <div v-show="show3">上传凭证</div>
         <img :src=imageSave3 id="portrait3" class="img" capture="camera"/>
     </div>
-    <input type="file" id="saveImage3" name="myphoto" class="myinput">
+    <input type="file" id="saveImage3" name="myphoto" class="myinput" capture="camera">
     <button class="btn" @click="jump">下一步</button>
   </div>
 </template>
@@ -45,7 +45,7 @@
         },
         methods:{
             jump(){
-                this.$router.push("/info")
+                this.$router.push("/tip")
             },
             monidianji1(){
                 document.getElementById('saveImage1').click()

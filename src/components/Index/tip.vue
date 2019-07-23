@@ -14,21 +14,19 @@
 		<div class="inp_list">
 			<div class='user_name'>
 				<div class='left'>姓名</div>
-				<input type="text" :value="name">
+				<input type="text" v-model="name"  @blur.prevent="changeName()">
 			</div>
 			<div class='user_phone'>
 				<div class='left'>手机号</div>
-				<input type="text" :value="phone">
+				<input type="text" v-model="phone" @blur.prevent="changePhone()">
 			</div>
 			
 			<div class='user_num'>
 				<div class='left'>凭证编号</div>
-				<input type="text" :value='num'>
+				<input type="text" v-model='num' @blur.prevent="changeBianhao()">
 			</div>
 		</div>
-		
 		<button class='next' @click="next()">下一步</button>
-		
 	</div>
 
 </template>
@@ -50,6 +48,7 @@ export default {
 	  next(){
 		  if(this.name == ''){
 			  alert("姓名不能为空")
+			  console.log(this.name)
 		  }else if(this.phone == ""){
 			  alert("电话不能为空")
 		  }else if(this.num == ""){

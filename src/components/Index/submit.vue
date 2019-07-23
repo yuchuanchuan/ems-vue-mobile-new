@@ -6,7 +6,7 @@
     <div class="btitle">提交成功</div>
     <div class="stitle">您的订单已经提交成功,我们会尽快检验您的信息,请耐心等待。</div>
     <div class="atitle">您的订单已经提交成功,我们会尽快为您邮寄,请密切关注短信及电话通知</div>
-    <button class="btn" @click="jump1">完成</button>
+    <button class="btn" @click="jump3">再来一单</button>
     <button class="btn" @click="jump2">查看订单</button>
     <button class="btn" @click="jump1">返回首页</button>
     <div class="text">在办理过程中,遇到问题,请及时与我们联系!</div>
@@ -26,6 +26,9 @@ export default {
         }
     },
     methods:{
+      jump3(){
+        this.$router.push({name:"orderInfo"})
+      },
       jump1(){
         this.$router.push({name: 'flow'})
       },

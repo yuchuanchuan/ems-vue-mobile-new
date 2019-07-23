@@ -170,6 +170,7 @@ body{
     border:1px solid #666;
     border-radius: 5px;
     margin-right: 0.2rem;
+    color:#333;
 }
 .item>.info{
     font-size:0.28rem;
