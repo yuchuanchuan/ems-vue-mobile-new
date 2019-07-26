@@ -8,14 +8,14 @@
     </div>
     <div @click="monidianji1" class="box1">
         <div v-show="show1">身份证正面</div>
-        <img :src=imageSave1 id="portrait1" class="img" capture="camera"/>
+        <img :src=imageSave1 id="portrait1" class="img" cap ture="camera"/>
     </div>
-    <input type="file" id="saveImage1" name="myphoto" class="myinput" capture="camera">
+    <input type="file" name="image myphoto" accept="image/*" capture="user" id="saveImage1" class="myinput">
     <div @click="monidianji2" class="box1">
         <div v-show="show2">身份证反面</div>
         <img :src=imageSave2 id="portrait2" class="img" capture="camera"/>
     </div>
-    <input type="file" id="saveImage2" name="myphoto" class="myinput" capture="camera">
+    <input type="file" name="image myphoto" accept="image/*" capture="user" id="saveImage2" class="myinput">
     <div class="box1-title">
         <img src="../../img/shu.png">
         <div>不动产登记受理凭证(上传图片)</div>
@@ -24,7 +24,7 @@
         <div v-show="show3">上传凭证</div>
         <img :src=imageSave3 id="portrait3" class="img" capture="camera"/>
     </div>
-    <input type="file" id="saveImage3" name="myphoto" class="myinput" capture="camera">
+    <input type="file" name="image myphoto" accept="image/*" capture="user" id="saveImage3" class="myinput">
     <button class="btn" @click="jump">下一步</button>
   </div>
 </template>
@@ -232,5 +232,6 @@ body{
     border-radius: 5px;
     margin:0 0.75rem 0.6rem;
     outline: none;
+    border:none;
 }
 </style>

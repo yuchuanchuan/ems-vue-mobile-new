@@ -22,6 +22,8 @@
         <div class="title">微信授权登录</div>
         <img src="../../img/weixin.png" @click="weChatLogin">
     </div>
+
+    <div class='dianzi'></div>
   </div>
 </template>
 <script>
@@ -222,6 +224,7 @@ body{
 .vx>.title{
     font-size:0.28rem;
     color:#999;
+    background:none!important;
     text-align: center;
     margin-bottom:0.2rem;
 }
@@ -229,5 +232,10 @@ body{
     width:0.8rem;
     display:block;
     margin:0 auto;
+}
+.dianzi{
+  height:0.7rem;
+  width:100%;
+  background:white;
 }
 </style>

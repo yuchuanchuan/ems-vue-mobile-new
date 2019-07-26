@@ -863,6 +863,7 @@ body{
     border-radius: 5px;
     margin:0 0.75rem 0.6rem;
     outline: none;
+    border:none;
 }
 .content2 .smtitle{
     font-size:0.28rem;

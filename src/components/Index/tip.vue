@@ -16,6 +16,10 @@
 				<div class='left'>姓名</div>
 				<input type="text" v-model="name"  @blur.prevent="changeName()">
 			</div>
+			<div class='user_id'>
+				<div class='left'>证件号</div>
+				<input type="text" v-model="id_num"  @blur.prevent="changeId()">
+			</div>	
 			<div class='user_phone'>
 				<div class='left'>手机号</div>
 				<input type="text" v-model="phone" @blur.prevent="changePhone()">
@@ -38,7 +42,8 @@ export default {
     return {
       name:'',
 	  phone:'',
-	  num:''
+	  num:'',
+	  id_num:''
     }
   },
   mounted(){
@@ -53,8 +58,10 @@ export default {
 			  alert("电话不能为空")
 		  }else if(this.num == ""){
 			  alert("证书编号不能为空")
+		  }else if(this.id_num == ""){
+			  alert("证件号不能为空")
 		  }else{
-			  this.$router.push('/info')
+		  	this.$router.push('/info')
 		  }
 	  }
   }

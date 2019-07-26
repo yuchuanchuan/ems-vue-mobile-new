@@ -361,4 +361,9 @@ input[type=radio]:checked:after {
     border-radius: 5px;
     margin:0.4rem 0.75rem 0.8rem;
 }
+.b2-item .price{
+    float:right !important;
+    line-height:0.8rem !important;
+    padding-right: 0.4rem !important;
+}
 </style>
