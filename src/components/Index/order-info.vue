@@ -11,12 +11,12 @@
         <div v-show="show1">身份证正面</div>
         <img :src=imageSave1 id="portrait1" class="img"/>
       </div>
-      <input type="file" id="saveImage1" name="myphoto" class="myinput" ref="closeUp" accept="camera">
+      <input type="file" id="saveImage1" name="myphoto" class="myinput" ref="closeUp" accept="image/*" capture="camera">
       <div @click="monidianji2" class="box1">
         <div v-show="show2">身份证反面</div>
         <img :src=imageSave2 id="portrait2" class="img"/>
       </div>
-      <input type="file" id="saveImage2" name="myphoto" class="myinput" ref="closeUp" accept="camera">
+      <input type="file" id="saveImage2" name="myphoto" class="myinput" ref="closeUp" accept="image/*" capture="camera">
       <div class="box1-title">
         <img src="../../img/shu.png">
         <div>不动产登记受理凭证(上传图片)</div>
@@ -25,7 +25,7 @@
         <div v-show="show3">上传凭证</div>
         <img :src=imageSave3 id="portrait3" class="img"/>
       </div>
-      <input type="file" id="saveImage3" name="myphoto" class="myinput" ref="closeUp" accept="camera">
+      <input type="file" id="saveImage3" name="myphoto" class="myinput" ref="closeUp" accept="image/*" capture="camera">
       <button class="btn" @click="jump" v-bind:disabled="mybtn1" >下一步</button>
     </div>
     <div class="content2" v-show="second">
@@ -37,11 +37,15 @@
       </div>
       <div class="item">
         <div class="title">姓名</div>
-        <input type="text" placeholder="输入收件人姓名" @blur.prevent="changeName()" v-model="dataForm.shoujian_name" autofocus="autofocus">
+        <input type="text" placeholder="输入收件人姓名" @blur.prevent="changeName()" v-model="dataForm.name" autofocus="autofocus">
+      </div>
+      <div class='item'>
+        <div class='title'>身份证号</div>
+        <input type="text" v-model="dataForm.propertyNo"  @blur.prevent="changeId()">
       </div>
       <div class="item">
         <div class="title">联系电话</div>
-        <input type="text" placeholder="输入收件人手机号" @blur.prevent="changePhone()" v-model="dataForm.shoujian_phone">
+        <input type="text" placeholder="输入收件人手机号" @blur.prevent="changePhone()" v-model="dataForm.phone">
       </div>
       <div class="item">
         <div class="title">收件地址</div>
@@ -70,7 +74,6 @@
       </div>
       <button class="btn" @click="jump4">下一步</button>
     </div>
-
     <div class="content3" v-show="third">
       <div class="title">不动产登记便民邮寄</div>
       <div class="box"><div class="tui" @click="tui2"></div>订单支付<div class="sj"></div></div>
@@ -81,11 +84,11 @@
       <div class="box1">
         <div class="item">
           <div class="title">姓名</div>
-          <div class="info">{{dataForm.shoujian_name}}</div>
+          <div class="info">{{dataForm.name}}</div>
         </div>
         <div class="item">
           <div class="title">联系电话</div>
-          <div class="info">{{dataForm.shoujian_phone}}</div>
+          <div class="info">{{dataForm.phone}}</div>
         </div>
         <div class="item">
           <div class="title">收件地址</div>
@@ -132,7 +135,7 @@
         <div class="item">
           <div class="title">受理地址</div>
           <div class="dz">
-            <div>{{detailRiskName ? detailRiskName : dataForm.riskName}}</div>
+            <div>{{detailRiskName}}</div>
             <img src="../../img/dz.png">
           </div>
         </div>
@@ -157,9 +160,15 @@
           <div class='left'>姓名</div>
           <input type="text" v-model="dataForm.name"  @blur.prevent="changeName()">
         </div>
+
         <div class='user_phone'>
           <div class='left'>手机号</div>
           <input type="text" v-model="dataForm.phone" @blur.prevent="changePhone()">
+        </div>
+
+        <div class='item'>
+          <div class='left'>身份证号</div>
+          <input type="text" v-model="dataForm.propertyNo"  @blur.prevent="changeId()">
         </div>
 
         <div class='user_num'>
@@ -204,10 +213,11 @@
         }],
         dataForm:{
           orderId: '',
-          shoujian_name:'',
-          shoujian_phone:'',
+          // shoujian_name:'',
+          // shoujian_phone:'',
+          propertyNo: '', //身份证号
           name: '',
-          idCard: '',
+          idCard: '', // 产权证号
           phone: '',
           mobileCode: '',
           ownerPositive: '',
@@ -222,7 +232,8 @@
           postCountyId: '',
           postAddress: '',
           handleAreaId: '',
-          openid: ''
+          openid: '',
+          handleId: ''
         },
         //地址
         province:'',
@@ -248,20 +259,40 @@
       }
     },
     methods:{
+      // 根据地区编号，获取id
+      getHandleAreaInfo(){
+        this.$http({
+          url: this.$http.adornUrl('/mobile/handlerArea/getHandleAreaBySystemNo'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'systemNo': localStorage.getItem("areaid")
+          })
+        }).then(({ data }) => {
+          if (data && data.code === 0) {
+            console.log(data)
+            console.log(data.data)
+            // this.dataForm.riskName = data.data.handleAddress
+            this.dataForm.handleAreaId = data.data.areaId
+            this.detailRiskName = data.data.handleAddress
+            this.dataForm.handleId = data.data.id
+          }
+        })
+      },
+
       jump4(){
         var reg1 = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/;
         var reg2 = /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/;
-        if(this.dataForm.shoujian_name==''){
+        if(this.dataForm.name==''){
           alert("请输入收件人姓名")
           return
-        }if(!reg1.test(this.dataForm.shoujian_name)){
+        }if(!reg1.test(this.dataForm.name)){
           alert("请输入正确的收件人姓名")
           return
         }
-        if(this.dataForm.shoujian_phone==""){
+        if(this.dataForm.phone==""){
           alert("请输入电话号码")
           return
-        }if(!reg2.test(this.dataForm.shoujian_phone)){
+        }if(!reg2.test(this.dataForm.phone)){
           alert("请输入正确的电话号码")
           return
         }else{
@@ -355,6 +386,7 @@
               if(lis[j].id==i){
                 this.province= lis[j].name
 
+                console.log("邮费计算----------------")
                 if(this.province != '新疆维吾尔自治区' && this.province != '西藏自治区'){
                   this.dataForm.postRiskId = this.insuredList[0].id
                   this.postPrice = this.insuredList[0].price  // 邮寄价格
@@ -424,80 +456,80 @@
       },
 
       // 地理位置
-      getMyLocation(){
-        let that = this;
-        that.$http({
-          url: that.$http.adornUrl('/wechatJs/location'),
-          method: 'get',
-          params: that.$http.adornParams({
-            'url': window.location.href.replace(location.hash, '')
-          })
-        }).then(({ data }) => {
-          if (data && data.code === 0) {
-
-            wx.config({
-              debug: false,
-              appId: data.data.appId,
-              nonceStr: data.data.nonceStr,
-              timestamp: data.data.timestamp,
-              url: data.data.url,
-              signature: data.data.signature,
-              jsApiList: [
-                'checkJsApi', 'openLocation', 'getLocation'
-              ],
-            });
-
-            wx.checkJsApi({
-              jsApiList: ['getLocation'],
-              success: function (res) {
-                if (res.checkResult.getLocation == false) {
-                  alert('你的微信版本太低，不支持微信JS接口，请升级到最新的微信版本！');
-                  return;
-                }
-              }
-            });
-
-            wx.ready(function () {
-              wx.getLocation({
-                type: 'wgs84',
-                success: function (res) {
-                  that.pointY = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-                  that.pointX = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-
-                  that.$http({
-                    url: that.$http.adornUrl('/getLocationName'),
-                    method: 'get',
-                    params: that.$http.adornParams({
-                      'lng': that.pointX,
-                      'lat': that.pointY
-                    })
-                  }).then(({ data }) => {
-                    if (data && data.code === 0) {
-                      that.dataForm.riskName = data.data.district
-                      that.detailRiskName = data.data.detailAddress
-                    } else {
-                      alert(data.msg)
-                    }
-                  })
-                },
-                cancel: function (res) {
-                  alert('用户拒绝授权获取地理位置');
-                  // that.getShopFjStudio()
-                },
-                fail: function (res) {
-                  alert("获取地理位置失败")
-                }
-              });
-            });
-
-            wx.error(function (res) {
-              alert("获取地理位置失败");
-            });
-          } else {
-            alert(data.msg)
-          }
-        })
-      },
+      // getMyLocation(){
+      //   let that = this;
+      //   that.$http({
+      //     url: that.$http.adornUrl('/wechatJs/location'),
+      //     method: 'get',
+      //     params: that.$http.adornParams({
+      //       'url': window.location.href.replace(location.hash, '')
+      //     })
+      //   }).then(({ data }) => {
+      //     if (data && data.code === 0) {
+      //
+      //       wx.config({
+      //         debug: false,
+      //         appId: data.data.appId,
+      //         nonceStr: data.data.nonceStr,
+      //         timestamp: data.data.timestamp,
+      //         url: data.data.url,
+      //         signature: data.data.signature,
+      //         jsApiList: [
+      //           'checkJsApi', 'openLocation', 'getLocation'
+      //         ],
+      //       });
+      //
+      //       wx.checkJsApi({
+      //         jsApiList: ['getLocation'],
+      //         success: function (res) {
+      //           if (res.checkResult.getLocation == false) {
+      //             alert('你的微信版本太低，不支持微信JS接口，请升级到最新的微信版本！');
+      //             return;
+      //           }
+      //         }
+      //       });
+      //
+      //       wx.ready(function () {
+      //         wx.getLocation({
+      //           type: 'wgs84',
+      //           success: function (res) {
+      //             that.pointY = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+      //             that.pointX = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+      //
+      //             that.$http({
+      //               url: that.$http.adornUrl('/getLocationName'),
+      //               method: 'get',
+      //               params: that.$http.adornParams({
+      //                 'lng': that.pointX,
+      //                 'lat': that.pointY
+      //               })
+      //             }).then(({ data }) => {
+      //               if (data && data.code === 0) {
+      //                 that.dataForm.riskName = data.data.district
+      //                 that.detailRiskName = data.data.detailAddress
+      //               } else {
+      //                 alert(data.msg)
+      //               }
+      //             })
+      //           },
+      //           cancel: function (res) {
+      //             alert('用户拒绝授权获取地理位置');
+      //             // that.getShopFjStudio()
+      //           },
+      //           fail: function (res) {
+      //             alert("获取地理位置失败")
+      //           }
+      //         });
+      //       });
+      //
+      //       wx.error(function (res) {
+      //         alert("获取地理位置失败");
+      //       });
+      //     } else {
+      //       alert(data.msg)
+      //     }
+      //   })
+      // },
 
       // uploading页面方法
       jump(){
@@ -631,6 +663,7 @@
       jump1(){
         var reg1 = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/;
         var reg2 = /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/;
+        var reg3 = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
         if(this.dataForm.name==''){
           alert("请输入收件人姓名")
           return
@@ -641,10 +674,20 @@
         if(this.dataForm.phone==""){
           alert("请输入电话号码")
           return
-        }if(!reg2.test(this.dataForm.phone)){
+        }
+        if(!reg2.test(this.dataForm.phone)){
           alert("请输入正确的电话号码")
           return
-        }if(this.dataForm.idCard==""){
+        }
+        if(this.dataForm.propertyNo == ""){
+          alert("请输入身份证号")
+          return
+        }
+        if(!reg3.test(this.dataForm.propertyNo)){
+          alert("请输入正确的身份证号码")
+          return
+        }
+        if(this.dataForm.idCard==""){
           alert("请输入凭证编号")
           return
         }else{
@@ -674,6 +717,17 @@
         }if(!reg.test(u)){
           this.show=true;
           this.text="请输入正确的手机号"
+          return;
+        }
+      },
+      changeId(e){
+        var u = event.currentTarget.value;
+        var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+        if(reg.test(u)){
+          this.show=false;
+        }if(!reg.test(u)){
+          this.show=true;
+          this.text="请输入正确的身份证号"
           return;
         }
       },
@@ -752,23 +806,24 @@
       this.yulan1();
       this.yulan2();
       this.yulan3();
-      this.getInsuredList()
+      // this.getInsuredList()
     },
     created(){
       this.getInsuredList()
       this.getProvinceNames()
-      this.getMyLocation()
+      // this.getMyLocation()
+      this.getHandleAreaInfo()
     },
-    beforeRouteEnter (to, from, next) {
-      let u = navigator.userAgent;
-      let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-      // XXX: 修复iOS版微信HTML5 History兼容性问题
-      if (isiOS && "/mobile" + to.path !== window.location.pathname) {
-        window.location.assign('http://ems.jujinkeji.net/mobile/orderInfo')
-      } else {
-        next()
-      }
-    },
+    // beforeRouteEnter (to, from, next) {
+    //   let u = navigator.userAgent;
+    //   let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    //   // XXX: 修复iOS版微信HTML5 History兼容性问题
+    //   if (isiOS && "/mobile" + to.path !== window.location.pathname) {
+    //     window.location.assign('http://ems.jujinkeji.net/mobile/orderInfo')
+    //   } else {
+    //     next()
+    //   }
+    // },
   }
 </script>
 

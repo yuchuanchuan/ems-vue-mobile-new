@@ -20,7 +20,7 @@ export default new Router({
   routes: [
     {path: '/', redirect: '/login' },
     {path: '/login', name:'login', component: login},
-    {path: '/flow',name: 'flow',component: index},
+    {path: '/flow/:loginOpen/:areaid',name: 'flow',component: index},
     {path: '/contract',name: 'contract',component: contract},
     {path: '/uploading',name: 'uploading',component: uploading},
     {path: '/info',name: 'info',component: info},

@@ -15,7 +15,7 @@
             <span v-if="item.status ===1">(剩余{{item.djs}}）</span>
           </p>
 					<button v-if="item.status === 1" @click="wechatPay(item.orderNumber)">去支付</button>
-          <button v-if="item.status === 2">去取消</button>
+          <button v-if="item.status === 2"@click="quxiao(item.orderNumber)">去取消</button>
           <button v-if="item.status !== 1 && item.status !== 2" @click="queryInfo(item.orderNumber)">进度查询</button>
 				</div>
 			</li>
@@ -75,8 +75,8 @@
 			<!--</li>-->
 		</ul>
 
-		<div class='bottom'>
-			<button @click="jump">返回首页</button>
+		<div class='bottom' @click="jump">
+			<button>返回首页</button>
 			<img src="../../img/bottom.png" ></img>
 		</div>
 
@@ -93,47 +93,86 @@
 </template>
 <script>
   import { dateToMinute } from '../../utils/validate'
+  var t = null;
 export default {
   data () {
     return {
       orderList: [],
-	  tanchuang_status:false
+	  tanchuang_status:false,
+      tempOrderNum: ''
     }
   },
   mounted(){
-    var t = setInterval( ()=> {
-      var dd, hh, mm, ss = null
-      for (var key in this.orderList) {
-        // var aaa = new Date(this.orderList[key]["createOrderTime"]).getTime();
-        let startTime = new Date().getTime()
-        let endTime = new Date(this.orderList[key]["createOrderTime"]).getTime() + 1800000
-        let rightTime = endTime - startTime;
-        if (rightTime >= 0) {
-          mm = Math.floor((rightTime / 1000 / 60) % 60);
-          ss = Math.floor((rightTime / 1000) % 60);
-          if( mm.toString().length === 1){
-            mm = "0" + mm
-          }
-          if(ss.toString().length === 1){
-            ss = "0" + ss
-          }
-          this.orderList[key]["djs"] = "00:" + mm + ":" + ss;
-        }else{
-          if(this.orderList[key]["status"] === 1){
-            console.log(this.orderList[key]["status"])
-            // 执行更新操作， 取消订单，，，进行退款操作
-          }
-        }
-      }
+    t = setInterval( ()=> {
+     if(this.orderList && this.orderList.length > 0){
+       var dd, hh, mm, ss = null
+       for (var key in this.orderList) {
+         // var aaa = new Date(this.orderList[key]["createOrderTime"]).getTime();
+         let startTime = new Date().getTime()
+         let endTime = new Date(this.orderList[key]["createOrderTime"]).getTime() + 1800000
+         let rightTime = endTime - startTime;
+         if (rightTime >= 0) {
+           mm = Math.floor((rightTime / 1000 / 60) % 60);
+           ss = Math.floor((rightTime / 1000) % 60);
+           if( mm.toString().length === 1){
+             mm = "0" + mm
+           }
+           if(ss.toString().length === 1){
+             ss = "0" + ss
+           }
+           this.orderList[key]["djs"] = "00:" + mm + ":" + ss;
+         }
+         // else{
+         //   alert("退款-----99999")
+         //   if(this.orderList[key]["status"] === 1){
+         //     alert(this.orderList[key]["status"] + this.orderList[key]["orderNumber"])
+         //     this.fundPay(this.orderList[key]["orderNumber"])
+         //     // 执行更新操作， 取消订单，，，进行退款操作
+         //   }
+         // }
+       }
+     }
     }, 1000);
 
     document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + 'px';
   },
   methods:{
+    // 退款
+    fundPay(orderNum){
+      this.$http({
+        url: this.$http.adornUrl('/mobile/order/cancelOrder'),
+        method: 'get',
+        params: this.$http.adornParams({
+          'orderNum': orderNum
+        })
+      }).then(({ data }) => {
+        if (data && data.code === 0) {
+          this.updateCancelStatus(orderNum)
+        } else {
+          alert(data.msg)
+        }
+      })
+    },
+    updateCancelStatus(orderNum){
+      this.$http({
+        url: this.$http.adornUrl('/mobile/order/updateCancelStatus'),
+        method: 'get',
+        params: this.$http.adornParams({
+          'orderNum': orderNum
+        })
+      }).then(({ data }) => {
+        if (data && data.code === 0) {
+          alert("订单取消成功");
+        } else {
+          alert(data.msg)
+        }
+      })
+    },
     queryInfo(orderNum){
       this.$router.push({ name: 'query', params:{'orderNum': orderNum} })
     },
     jump(){
+      console.log("跳转")
       this.$router.push({name: 'flow'})
     },
     InitTime(endtime){
@@ -178,21 +217,22 @@ export default {
 
           this.orderList = data.data
 
-          console.log(this.orderList[0].djs)
+          // console.log(this.orderList[0].djs)
 
         } else {
           alert(data.msg)
         }
       })
     },
-    quxiao(){
+    quxiao(orderNum){
+      this.tempOrderNum = orderNum
       this.tanchuang_status = true
-      console.log(this)
     },
     no(){
       this.tanchuang_status = false
     },
     yes(){
+      this.fundPay(this.tempOrderNum)
       this.tanchuang_status = false
     },
 

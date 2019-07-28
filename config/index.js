@@ -12,8 +12,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/mobile-ems':{
-        // target: 'http://ems.jujinkeji.net/mobile-ems',
-        target: 'http://localhost:8080/mobile-ems',
+        target: 'http://ems.jujinkeji.net/mobile-ems',
+        // target: 'http://localhost:8080/mobile-ems',
         changeOrigin:true,
         pathRewrite: {
           '^/mobile-ems':''

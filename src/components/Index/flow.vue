@@ -71,6 +71,12 @@
       },
     },
     created(){
+      localStorage.setItem("loginOpen",this.$route.params.loginOpen)
+      localStorage.setItem("areaid", this.$route.params.areaid)
+
+      // alert("openid=====" + localStorage.getItem("loginOpen"))
+      // alert(localStorage.getItem("areaid"))
+
       this.getPostNotify()
       this.openid = localStorage.getItem("openid")
       if(this.openid == "null" || this.openid == null || this.openid == ""){
