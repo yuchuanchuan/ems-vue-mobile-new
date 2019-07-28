@@ -99,7 +99,8 @@ export default {
     return {
       orderList: [],
 	  tanchuang_status:false,
-      tempOrderNum: ''
+      tempOrderNum: '',
+      orderNum: ''
     }
   },
   mounted(){
@@ -238,6 +239,7 @@ export default {
 
     // 支付
     wechatPay(orderId){
+      this.orderNum = orderId
       this.$http({
         url: this.$http.adornUrl('/pay/create'),
         method: 'get',
@@ -288,13 +290,13 @@ export default {
         url: this.$http.adornUrl('/mobile/order/mail'),
         method: 'post',
         data: this.$http.adornData({
-          orderNumber: this.dataForm.orderId
+          orderNumber: this.orderNum
         })
       }).then(({ data }) => {
         if (data && data.code === 0) {
           // window.location.assign('http://ems.jujinkeji.net/mobile/submit')
-          // this.$router.push({ name: 'submit', params:{'orderNum': this.dataForm.orderId} })
-          this.getUserOrderList()
+          this.$router.push({ name: 'submit', params:{'orderNum': this.orderNum} })
+          // this.getUserOrderList()
         } else {
           alert(data.msg)
         }
