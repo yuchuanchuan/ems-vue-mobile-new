@@ -39,10 +39,10 @@
         <div class="title">姓名</div>
         <input type="text" placeholder="输入收件人姓名" @blur.prevent="changeName()" v-model="dataForm.name" autofocus="autofocus">
       </div>
-      <div class='item'>
-        <div class='title'>身份证号</div>
-        <input type="text" v-model="dataForm.propertyNo"  @blur.prevent="changeId()">
-      </div>
+      <!--<div class='item'>-->
+        <!--<div class='title'>身份证号</div>-->
+        <!--<input type="text" v-model="dataForm.propertyNo"  @blur.prevent="changeId()">-->
+      <!--</div>-->
       <div class="item">
         <div class="title">联系电话</div>
         <input type="text" placeholder="输入收件人手机号" @blur.prevent="changePhone()" v-model="dataForm.phone">
@@ -143,6 +143,8 @@
       <button class="btn" @click="jump2">下一步</button>
     </div>
 
+
+    <!----------------------------------受理人信息---------------------------------------->
     <div v-show="fourth">
       <div class='title'>
         <div>不动产登记受理凭证信息</div>
@@ -158,12 +160,12 @@
       <div class="inp_list">
         <div class='user_name'>
           <div class='left'>姓名</div>
-          <input type="text" v-model="dataForm.name"  @blur.prevent="changeName()">
+          <input type="text" v-model="dataForm.shoujian_name"  @blur.prevent="changeName()">
         </div>
 
         <div class='user_phone'>
           <div class='left'>手机号</div>
-          <input type="text" v-model="dataForm.phone" @blur.prevent="changePhone()">
+          <input type="text" v-model="dataForm.shoujian_phone" @blur.prevent="changePhone()">
         </div>
 
         <div class='item'>
@@ -213,8 +215,8 @@
         }],
         dataForm:{
           orderId: '',
-          // shoujian_name:'',
-          // shoujian_phone:'',
+          shoujian_name:'',
+          shoujian_phone:'',
           propertyNo: '', //身份证号
           name: '',
           idCard: '', // 产权证号
@@ -664,18 +666,18 @@
         var reg1 = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/;
         var reg2 = /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/;
         var reg3 = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
-        if(this.dataForm.name==''){
-          alert("请输入收件人姓名")
+        if(this.dataForm.shoujian_name==''){
+          alert("请输入姓名")
           return
-        }if(!reg1.test(this.dataForm.name)){
-          alert("请输入正确的收件人姓名")
+        }if(!reg1.test(this.dataForm.shoujian_name)){
+          alert("请输入正确的姓名")
           return
         }
-        if(this.dataForm.phone==""){
+        if(this.dataForm.shoujian_phone==""){
           alert("请输入电话号码")
           return
         }
-        if(!reg2.test(this.dataForm.phone)){
+        if(!reg2.test(this.dataForm.shoujian_phone)){
           alert("请输入正确的电话号码")
           return
         }
@@ -705,7 +707,7 @@
           this.show=false;
         }if(!reg.test(u)){
           this.show=true;
-          this.text="请输入正确的收件人姓名"
+          this.text="请输入正确的姓名"
           return;
         }
       },
