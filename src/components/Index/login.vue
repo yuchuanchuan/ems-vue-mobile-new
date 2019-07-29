@@ -240,4 +240,7 @@ body{
   width:100%;
   background:white;
 }
+.item .title{
+  color:#333 !important;
+}
 </style>

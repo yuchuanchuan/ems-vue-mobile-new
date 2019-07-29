@@ -115,7 +115,7 @@
       </div>
       <div class="item">
         <div class="title">邮寄费用</div>
-        <div class="info">
+        <div class="info feiyong">
           <div class="dizhi">{{postPrice / 100}}</div>
         </div>
       </div>
@@ -1078,6 +1078,20 @@ body{
     background:#f2f2f2;
     border:1px solid #f2f2f2;
 }
+.content3 .feiyong{
+  font-size:0.28rem;
+    width:4rem;
+    border-radius: 5px;
+    padding:0 0.3rem;
+    height:0.8rem;
+    line-height: 0.8rem;
+    color:#666;
+    background:#f2f2f2;
+    border:1px solid #f2f2f2;
+    display:flex!important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+}
 .content3 .dizhi{
     overflow-x: auto;
     white-space: nowrap;
@@ -1339,3 +1353,5 @@ body{
     color:#333!important;
   }
 </style>
+
+

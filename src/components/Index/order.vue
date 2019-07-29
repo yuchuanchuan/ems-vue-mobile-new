@@ -236,7 +236,7 @@ label:last-child .b2-item{
 }
 .top>.top1{
     display: flex;
-    justify-content: space-between;
+    justify-content:flex-end;
     width:5.8rem;
 }
 .top1>.price>span{
@@ -294,6 +294,14 @@ input[type=radio]:checked:after {
     height:0.8rem;
     line-height: 0.8rem;
     text-align: right;
+    width:100%;
+}
+.top1>.price{
+    width:100% !important;
+    height:100%！important;
+    display:flex !important;
+    align-items: center;
+    justify-content: flex-end !important;
 }
 .item>.price>span{
     font-size: 0.2rem;
