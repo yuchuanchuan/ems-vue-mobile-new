@@ -110,7 +110,8 @@ export default {
        for (var key in this.orderList) {
          // var aaa = new Date(this.orderList[key]["createOrderTime"]).getTime();
          let startTime = new Date().getTime()
-         let endTime = new Date(this.orderList[key]["createOrderTime"]).getTime() + 1800000
+         // let endTime = new Date(this.orderList[key]["createOrderTime"]).getTime() + 1800000
+         let endTime = this.orderList[key]["createTimestamp"] + 1800000
          let rightTime = endTime - startTime;
          if (rightTime >= 0) {
            mm = Math.floor((rightTime / 1000 / 60) % 60);
@@ -177,7 +178,15 @@ export default {
       this.$router.push({name: 'flow'})
     },
     InitTime(endtime){
-      endtime = new Date(endtime).getTime() + 1800000
+      // alert(endtime)
+      // alert(new Date(endtime).getTime())
+      //
+      //
+      // alert(new Date().getTime())
+      //
+      //
+
+      endtime = endtime + 1800000
       var mm, ss = null
       var str = "";
       var time =  endtime - new Date().getTime();
@@ -208,7 +217,7 @@ export default {
 
           data.data.map( (obj,index)=>{
             this.$set(
-              obj,"djs",this.InitTime(new Date(obj.createOrderTime).getTime())
+              obj,"djs",this.InitTime(obj.createTimestamp)
             );
           })
 

@@ -58,7 +58,7 @@
             <option class="option11"></option>
             <option v-for="(item,index) in cityNames" :key="index" :value="item.id">{{item.name}}</option>
           </select>
-          <select v-model="dataForm.postCountyId" @change="getdiNames" id="selecta">
+          <select v-model="dataForm.postCountyId" id="selecta">
             <option class="option11"></option>
             <option v-for="(item,index) in countyNames" :key="index" :value="item.id">{{item.name}}</option>
           </select>
@@ -180,6 +180,25 @@
       </div>
       <button class='next' @click="jump1()">下一步</button>
     </div>
+
+    <!--  受理人信息确认弹出框  -->
+    <div class='fuceng' v-if="sureInfo">
+      <div class='fuceng_tip'>
+        <div class='fuceng_title'>请确认信息</div>
+
+        <div class='info_list'>
+          <div class='user_name'>姓名：{{dataForm.shoujian_name}}</div>
+          <div class='user_id'>身份证号：{{dataForm.propertyNo}}</div>
+          <div class='user_phone'>手机号：{{dataForm.shoujian_phone}}</div>
+          <div class='user_num'>凭证编号：{{dataForm.idCard}}</div>
+        </div>
+        <div class='btn_list'>
+          <div class='xiugai' @click="xiugai()">修改</div>
+          <div class='queding' @click="sureNext()">确定</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -192,6 +211,7 @@
     name: 'order-info',
     data(){
       return{
+        sureInfo: false,
         postPrice: '', // 邮寄价格
         rateFree: '',  // 保险价格
         detailRiskName: '',
@@ -261,6 +281,18 @@
       }
     },
     methods:{
+      xiugai(){
+        this.sureInfo = false
+        this.first = true
+        this.second = false
+        this.third = false
+        this.fourth = false
+      },
+      sureNext(){
+        this.sureInfo = false
+        this.first = false
+        this.second = true
+      },
       // 根据地区编号，获取id
       getHandleAreaInfo(){
         this.$http({
@@ -360,12 +392,12 @@
         })
       },
       getCityNames(){
-        for(var i = 0;i<$("option").length;i++){
-            var content = $("option").eq(i).html();
-            var value = content.substring(0,4);
-            $("option").eq(i).html(value);
-            $("option").eq(i).attr('title',content);
-        }
+        // for(var i = 0;i<$("option").length;i++){
+        //     var content = $("option").eq(i).html();
+        //     var value = content.substring(0,4);
+        //     $("option").eq(i).html(value);
+        //     $("option").eq(i).attr('title',content);
+        // }
         this.$http({
           url: this.$http.adornUrl('/mobile/area/list'),
           method: 'get',
@@ -413,12 +445,12 @@
 
       },
       getCountyNames(){
-        for(var i = 0;i<$("option").length;i++){
-            var content = $("option").eq(i).html();
-            var value = content.substring(0,4);
-            $("option").eq(i).html(value);
-            $("option").eq(i).attr('title',content);
-        }
+        // for(var i = 0;i<$("option").length;i++){
+        //     var content = $("option").eq(i).html();
+        //     var value = content.substring(0,4);
+        //     $("option").eq(i).html(value);
+        //     $("option").eq(i).attr('title',content);
+        // }
         this.$http({
           url: this.$http.adornUrl('/mobile/area/list'),
           method: 'get',
@@ -446,16 +478,16 @@
           }
         })
       },
-      getdiNames(){
-        var that = this
-        for(var i = 0;i<$("option").length;i++){
-            var content = $("option").eq(i).html();
-            var value = content.substring(0,4);
-            $("option").eq(i).html(value);
-            $("option").eq(i).attr('title',content);
-        }
-        this.district = $("#selecta option:selected").text();
-      },
+      // getdiNames(){
+      //   var that = this
+      //   for(var i = 0;i<$("option").length;i++){
+      //       var content = $("option").eq(i).html();
+      //       var value = content.substring(0,4);
+      //       $("option").eq(i).html(value);
+      //       $("option").eq(i).attr('title',content);
+      //   }
+      //   this.district = $("#selecta option:selected").text();
+      // },
 
       // 地理位置
       // getMyLocation(){
@@ -693,8 +725,9 @@
           alert("请输入凭证编号")
           return
         }else{
-        this.first = false
-        this.second = true
+        // this.first = false
+        // this.second = true
+          this.sureInfo = true
         this.third = false
         this.fourth = false
         this.radio();
@@ -1352,6 +1385,42 @@ body{
   .content3 .item .title{
     color:#333!important;
   }
+.fuceng{
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,.5);
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  margin:auto;
+  z-index:333;
+}
+.fuceng_tip{
+  font-size:0.28rem;
+  width:5.45rem;
+  height:4.85rem;
+  position:fixed;
+  border-radius:0.2rem;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  margin:auto;
+  background:white;
+  z-index:666;
+  display:flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+}
+.fuceng_title{
+  font-size:0.36rem !important;
+  color:#333;
+  font-weight:bold;
+  margin-top:0.75rem;
+}
 </style>
 
 
