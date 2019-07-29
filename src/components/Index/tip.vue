@@ -1,6 +1,6 @@
 <template>
-  <div>
-		<div class='title'>
+  	<div>
+			<div class='title'>
 		  <div>不动产登记受理凭证信息</div>  
 			<div class='jiantou'></div>
 		</div>
@@ -30,7 +30,25 @@
 				<input type="text" v-model='num' @blur.prevent="changeBianhao()">
 			</div>
 		</div>
-		<button class='next' @click="next()">下一步</button>
+
+		<div class='fuceng' v-if="status">
+			<div class='fuceng_tip'>
+				<div class='fuceng_title'>请确认信息</div>
+				
+				<div class='info_list'>
+					<div class='user_name'>姓名：{{name}}</div>
+					<div class='user_id'>证件号：{{id_num}}</div>
+					<div class='user_phone'>手机号：{{phone}}</div>
+					<div class='user_num'>凭证编号：{{num}}</div>
+				</div>
+				<div class='btn_list'>
+					<div class='xiugai' @click="tip()">修改</div>
+					<div class='queding' @click="next()">确定</div>
+				</div>
+			</div>	
+		</div>
+		<button class='next' @click="tip()">下一步</button>
+		
 	</div>
 
 </template>
@@ -43,15 +61,16 @@ export default {
       name:'',
 	  phone:'',
 	  num:'',
-	  id_num:''
+	  id_num:'',
+	  status:false
     }
   },
   mounted(){
     document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + 'px';
   },
   methods:{
-	  next(){
-		  if(this.name == ''){
+  	  tip(){
+  	  	if(this.name == ''){
 			  alert("姓名不能为空")
 			  console.log(this.name)
 		  }else if(this.phone == ""){
@@ -61,14 +80,88 @@ export default {
 		  }else if(this.id_num == ""){
 			  alert("证件号不能为空")
 		  }else{
-		  	this.$router.push('/info')
+		  	this.status = !this.status
 		  }
+  	  },
+	  next(){
+		  this.$router.push('/info')
 	  }
   }
 }
 </script>
 
 <style>
+	.info_list div{
+		margin-bottom:0.1rem;
+	}
+	.xiugai{
+		border-right:1px solid #cccccc;
+	}
+	.info_list{
+		margin-top:0.45rem;
+		display:flex;
+		justify-content: flex-start;
+		align-items: flex-start;
+		flex-direction: column;
+		color:#595959;
+	}
+	.btn_list div{
+		width:50%;
+		height:98%;
+		text-align: center;
+		line-height:0.882rem;
+		font-size:0.32rem;
+		
+	}
+	.quxiao{
+		color:#595959;
+	}
+	.queding{
+		color:#09bb07 !important;
+	}
+	.btn_list{
+		border-top:1px solid #cccccc;
+		width:100%;
+		margin-top:0.4rem;
+		height:0.9rem;
+		display:flex;
+	}
+	.fuceng{
+		width:100%;
+		height:100%;
+		background:rgba(0,0,0,.5);
+		position:fixed;
+		top:0;
+		left:0;
+		right:0;
+		bottom:0;
+		margin:auto;
+		z-index:333;
+	}
+	.fuceng_tip{
+		font-size:0.28rem;
+		width:5.45rem;
+		height:4.85rem;
+		position:fixed;
+		border-radius:0.2rem;
+		top:0;
+		left:0;
+		right:0;
+		bottom:0;
+		margin:auto;
+		background:white;
+		z-index:666;
+		display:flex;
+		justify-content: flex-start;
+		align-items: center;
+		flex-direction: column;
+	}
+	.fuceng_title{
+		font-size:0.36rem !important;
+		color:#333;
+		font-weight:bold;
+		margin-top:0.75rem;
+	}
 	.next{
 		border-radius: 0.15rem;
 		margin-left: 0.8rem;

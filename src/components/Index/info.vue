@@ -1,49 +1,49 @@
 <template>
   <div class="content">
     <div class="title">不动产登记便民邮寄</div>
-    <div class="box">EMS邮寄信息<div class="sj"></div></div>
-    <div class="smtitle">
-        <div class="l">提示:</div>
-        <div class="r">为了确保邮件投递准确无误,请申请人准确、详细填写收件人信息为了确保邮件投递准确无误,请申请人准确、详细填写收件人信息为了确保邮件投递准确无误,请申请人准确、详细填写收件人信息为了确保邮件投递准确无误,请申请人准确、详细填写收件人信息</div>
-    </div>
-    <div class="item">
-        <div class="title">姓名</div>
-        <input type="text" placeholder="输入收件人姓名" @blur.prevent="changeName()">
-    </div>
-    <div class="item">
-        <div class="title">联系电话</div>
-        <input type="text" placeholder="输入收件人手机号" @blur.prevent="changePhone()">
-    </div>
-    <div class="item">
-        <div class="title">收件地址</div>
-        <div class="select">
-            <select>
-                <option>河北省</option>
-                <option>山东省</option>
-                <option>山西省</option>
-                <option>河南省</option>
-                <option>四川省</option>
-            </select>
-            <select>
-                <option>保定市</option>
-                <option>石家庄市</option>
-                <option>邯郸市</option>
-            </select>
-            <select>
-                <option>石桥区</option>
-                <option>铁桥区</option>
-            </select>
+        <div class="box">EMS邮寄信息<div class="sj"></div></div>
+        <div class="smtitle">
+            <div class="l">提示:</div>
+            <div class="r">为了确保邮件投递准确无误,请申请人准确、详细填写收件人信息为了确保邮件投递准确无误,请申请人准确、详细填写收件人信息为了确保邮件投递准确无误,请申请人准确、详细填写收件人信息为了确保邮件投递准确无误,请申请人准确、详细填写收件人信息</div>
         </div>
-    </div>
-    <div class="item">
-        <div class="title">详细地址</div>
-        <input type="text" placeholder="输入详细地址" @blur.prevent="changeDizhi()">
-    </div>
-    <div class="tishi" v-show="show">
-        <img src="../../img/i.png">
-        <div>{{text}}</div>
-    </div>
-    <button class="btn" @click="jump">下一步</button>
+        <div class="item">
+            <div class="title">姓名</div>
+            <input type="text" placeholder="输入收件人姓名" @blur.prevent="changeName()">
+        </div>
+        <div class="item">
+            <div class="title">联系电话</div>
+            <input type="text" placeholder="输入收件人手机号" @blur.prevent="changePhone()">
+        </div>
+        <div class="item">
+            <div class="title">收件地址</div>
+            <div class="select">
+                <select>
+                    <option>河北省</option>
+                    <option>山东省</option>
+                    <option>山西省</option>
+                    <option>河南省</option>
+                    <option>四川省</option>
+                </select>
+                <select>
+                    <option>保定市</option>
+                    <option>石家庄市</option>
+                    <option>邯郸市</option>
+                </select>
+                <select>
+                    <option>石桥区</option>
+                    <option>铁桥区</option>
+                </select>
+            </div>
+        </div>
+        <div class="item">
+            <div class="title">详细地址</div>
+            <input type="text" placeholder="输入详细地址" @blur.prevent="changeDizhi()">
+        </div>
+        <div class="tishi" v-show="show">
+            <img src="../../img/i.png">
+            <div>{{text}}</div>
+        </div>
+        <button class="btn" @click="jump">下一步</button>
   </div>
 </template>
 <script>
@@ -256,5 +256,8 @@ body{
     text-align: center;
     line-height: 1rem;
     outline: none;
+}
+.item .title{
+    color:#333!important;
 }
 </style>
