@@ -278,7 +278,9 @@ body{
 .tabs{
     height:7vh;
     position:relative;
-    background:#383735;
+    background:#177abf;
+    width:7.5rem;
+    overflow-x:hidden;
 }
 .tabs>div{
     height:7vh;
@@ -295,6 +297,6 @@ body{
     position:absolute;
     bottom:0.1rem;
     width:2rem;
-    left:0;
+    right:0.8rem;
 }
 </style>
