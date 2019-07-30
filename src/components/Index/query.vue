@@ -280,7 +280,6 @@ body{
     position:relative;
     background:#177abf;
     width:7.5rem;
-    overflow-x:hidden;
 }
 .tabs>div{
     height:7vh;
@@ -298,6 +297,6 @@ body{
     bottom:0.1rem;
     width:2rem;
     right:0.8rem;
-    z-index:666;
+    z-index:9999;
 }
 </style>
