@@ -195,8 +195,6 @@ body{
 }
 .box1{
     height:65vh;
-    overflow: auto;
-    overflow-x: hidden;
     box-sizing: border-box;
     padding:0.7rem 0 0.7rem;
     width:7.5rem;
