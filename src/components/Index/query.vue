@@ -5,7 +5,7 @@
     <div class="box1">
         <div class="item" v-for="(item,index) in orderList" :key="index">
             <div class="top">
-                <div class="left">{{item.emsDate}}</div>
+                <div class="left" style="background:none;border:none;">{{item.emsDate}}</div>
                 <div class="middle">
                     <img :src="item.imgSrc">
                 </div>
@@ -196,6 +196,7 @@ body{
 .box1{
     height:65vh;
     overflow: auto;
+    overflow-x: hidden;
     box-sizing: border-box;
     padding:0.7rem 0 0.7rem;
     width:7.5rem;
@@ -294,6 +295,6 @@ body{
     position:absolute;
     bottom:0.1rem;
     width:2rem;
-    right:0.3rem;
+    left:0;
 }
 </style>
