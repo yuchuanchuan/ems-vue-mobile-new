@@ -11,7 +11,7 @@
 				<div class='timer'>下单时间：{{item.createOrderDate}}</div>
 				<div class='status'>
 					<p>
-            当前状态：{{item.status ===1 ? '未支付' : item.status ===2 ? '待发货' : item.status === 3 ? '待收货' : item.status === 4 ? '已收货' : item.status === 5 ? '已取消' : '' }}
+            当前状态：{{item.status ===1 ? '未支付' : item.status ===2 ? '待发货' : item.status === 3 ? '待收货' : item.status === 4 ? '已收货' : item.status === 5 ? '已取消' : item.status === 6 ? '受理中' : item.status === 7 ? '审核中' : item.status === 8 ? '制证中' : item.status === 9 ? '发证中' : '' }}
             <span v-if="item.status ===1">(剩余{{item.djs}}）</span>
           </p>
 					<button v-if="item.status === 1" @click="wechatPay(item.orderNumber)">去支付</button>
@@ -164,7 +164,10 @@ export default {
         })
       }).then(({ data }) => {
         if (data && data.code === 0) {
-          alert("订单取消成功");
+          this.getUserOrderList()
+          this.$nextTick(()=>{
+            alert("订单取消成功");
+          })
         } else {
           alert(data.msg)
         }
