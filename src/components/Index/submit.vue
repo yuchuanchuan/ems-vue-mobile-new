@@ -128,14 +128,18 @@ body{
   color:#fff;
   height:1rem;
   margin-top:0.7rem;
-  background:#383735;
-  position: relative;
+  background:#177abf;
+  bottom:0;
+  left:0;
+  width:100%;
+  position:fixed;
 }
 .tab>div{
   height:1rem;
   line-height: 1rem;
   display: inline-block;
   position:absolute;
+  width:45%;
   top:0;
   left:1rem;
 }
@@ -144,5 +148,6 @@ body{
   bottom:0.1rem;
   right:0.3rem;
   width:2rem;
+  z-index:333;
 }
 </style>

@@ -222,12 +222,12 @@ body{
   width:2rem;
   right:0.25rem;
   bottom:0;
-  }
-  .tab>a{
-    text-decoration: none;
-    display: block;
-    color:#fff;
-    width:3.75rem;
-    text-align: center;
-  }
+}
+.tab>a{
+  text-decoration: none;
+  display: block;
+  color:#fff;
+  width:3.75rem;
+  text-align: center;
+}
 </style>

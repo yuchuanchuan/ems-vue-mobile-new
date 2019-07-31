@@ -198,6 +198,7 @@ body{
     box-sizing: border-box;
     padding:0.7rem 0 0.7rem;
     width:7.5rem;
+    overflow-y:auto;
 }
 .box1::-webkit-scrollbar{
     display: none;
@@ -261,6 +262,10 @@ body{
     display: flex;
     justify-content: space-between;
     flex-direction: column;
+    position:fixed;
+    bottom:0;
+    left:0;
+    z-index:6666;
 }
 .tab>.btn{
     height:7vh;

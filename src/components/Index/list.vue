@@ -373,7 +373,7 @@ export default {
 		width:100%;
 		height:2.5rem;
 		position:relative;
-
+    background:#177abf;
 	}
 	.bottom button{
 		width:5.95rem;
