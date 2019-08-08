@@ -14,9 +14,11 @@
             当前状态：{{item.status ===1 ? '未支付' : item.status ===2 ? '待发货' : item.status === 3 ? '待收货' : item.status === 4 ? '已收货' : item.status === 5 ? '已取消' : item.status === 6 ? '受理中' : item.status === 7 ? '审核中' : item.status === 8 ? '制证中' : item.status === 9 ? '发证中' : '' }}
             <span v-if="item.status ===1">(剩余{{item.djs}}）</span>
           </p>
-					<button v-if="item.status === 1" @click="wechatPay(item.orderNumber)">去支付</button>
-          <button v-if="item.status === 2"@click="quxiao(item.orderNumber)">去取消</button>
-          <button v-if="item.status !== 1 && item.status !== 2" @click="queryInfo(item.orderNumber)">进度查询</button>
+				</div>
+				<div class='btn_list'>
+					<button v-if="item.status === 1" @click="wechatPay(item.orderNumber)" :class='item.status === 1?"btn_bluc":""'>付款</button>
+					<button v-if="item.status === 2"@click="quxiao(item.orderNumber)">取消订单</button>
+					<button v-if="item.status !== 1 && item.status !== 2" @click="queryInfo(item.orderNumber,item.status)">订单详情</button>
 				</div>
 			</li>
 
@@ -77,7 +79,7 @@
 
 		<div class='bottom' @click="jump">
 			<button>返回首页</button>
-			<img src="../../img/bottom.png" ></img>
+			<img src="../../img/chaxundingdan.png" ></img>
 		</div>
 
 		<div class='fuceng' v-if="tanchuang_status">
@@ -173,8 +175,27 @@ export default {
         }
       })
     },
-    queryInfo(orderNum){
-      this.$router.push({ name: 'query', params:{'orderNum': orderNum} })
+    queryInfo(orderNum,status){
+			// {{item.status ===1 ? '未支付'
+			//  : item.status ===2 ? '待发货' 
+			//  : item.status === 3 ? '待收货' 
+			//  : item.status === 4 ? '已收货' 
+			//  : item.status === 5 ? '已取消' 
+			//  : item.status === 6 ? '受理中' 
+			//  : item.status === 7 ? '审核中' 
+			//  : item.status === 8 ? '制证中' 
+			//  : item.status === 9 ? '发证中' 
+			//  : '' }}
+      console.log(status)
+			
+			
+			//当前下单时间过了今晚12点后就无法取消改订单
+			//如果是未支付或者已取消已支付并且没超过剩余时间的跳转到新页面
+			if(status == 1||status==5){
+				this.$router.push({ name: 'detail'})
+			}else{
+				this.$router.push({ name: 'query', params:{'orderNum': orderNum} })
+			}
     },
     jump(){
       console.log("跳转")
@@ -373,7 +394,6 @@ export default {
 		width:100%;
 		height:2.5rem;
 		position:relative;
-    background:#177abf;
 	}
 	.bottom button{
 		width:5.95rem;
@@ -393,7 +413,7 @@ export default {
 	}
 	.bottom img{
 		width:100%;
-		height:2.35rem;
+		height:1.44rem;
 		position:absolute;
 		bottom:0;
 		left:0;
@@ -422,7 +442,7 @@ export default {
 		font-size: 0.24rem;
 	}
 	.info>div{
-		height:33.33%;
+		height:25%;
 		width:92%;
 		margin:0 4%;
 		display: flex;
@@ -434,7 +454,7 @@ export default {
 		border-bottom: 1px solid #dedede;
 	}
 	.info{
-		height: 2.8rem;
+		height: 3.5rem;
 		margin-top: 0.2rem;
 		width:100%;
 		border:1px solid #666666;
@@ -472,5 +492,25 @@ export default {
 		border-bottom: 0.15rem solid transparent;
 		border-right: 0.15rem solid transparent;
 		border-left: 0.15rem solid transparent;
+	}
+	.btn_list{
+		border-top: 1px solid #dedede;
+		display: flex;
+		justify-content: flex-end!important;
+		align-items: center!important;
+	}
+	.btn_list button{
+		padding:0.1rem 0.25rem;
+		border:1px solid #afafaf;
+		background: none;
+		border-radius: 0.4rem;
+		font-size: 0.24rem;
+		color:#177abf;
+		margin-left: 0.3rem;
+		outline: none;
+	}
+	.btn_bluc{
+		background:#177abf!important;
+		color:white!important;
 	}
 </style>

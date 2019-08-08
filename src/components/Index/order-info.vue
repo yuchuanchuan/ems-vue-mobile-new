@@ -2,7 +2,7 @@
   <div>
     <div class="content1" v-show="first">
       <div class="title">不动产登记便民邮寄</div>
-      <div class="box">上传凭证<div class="sj"></div></div>
+      <div class="box">上传凭证</div>
       <div class="box1-title">
         <img src="../../img/ren.png">
         <div>产权人身份证明</div>
@@ -26,11 +26,16 @@
         <img :src=imageSave3 id="portrait3" class="img"/>
       </div>
       <input type="file" id="saveImage3" name="myphoto" class="myinput" ref="closeUp" accept="image/*" capture="camera">
+			
+			<p class='content1_tip'>
+				<span class='content1_tip_title'>温馨提示：</span>
+				<span class='content1_tip_text'>上传的图片需要边框整齐字体清晰，如材料有误或不清晰的，可能需要重新上传。</span>
+			</p>
       <button class="btn" @click="jump" v-bind:disabled="mybtn1" >下一步</button>
     </div>
     <div class="content2" v-show="second">
       <div class="title">不动产登记便民邮寄</div>
-      <div class="box"><div class="tui" @click="tui1"></div>EMS邮寄信息<div class="sj"></div></div>
+      <div class="box"><div class="tui" @click="tui1"></div>EMS邮寄信息</div>
       <div class="smtitle">
         <div class="l">提示:</div>
         <div class="r">为了确保邮件投递准确无误,请申请人准确、详细填写收件人信息为了确保邮件投递准确无误,请申请人准确、详细填写收件人信息为了确保邮件投递准确无误,请申请人准确、详细填写收件人信息为了确保邮件投递准确无误,请申请人准确、详细填写收件人信息</div>
@@ -76,7 +81,7 @@
     </div>
     <div class="content3" v-show="third">
       <div class="title">不动产登记便民邮寄</div>
-      <div class="box"><div class="tui" @click="tui2"></div>订单支付<div class="sj"></div></div>
+      <div class="box"><div class="tui" @click="tui2"></div>订单支付</div>
       <div class="box1-title">
         <img src="../../img/xin.png">
         <div>邮寄信息</div>
@@ -116,7 +121,7 @@
       <div class="item">
         <div class="title">邮寄费用</div>
         <div class="info feiyong">
-          <div class="dizhi">{{postPrice / 100}}</div>
+          <div class="dizhi">￥{{postPrice / 100}}</div>
         </div>
       </div>
       <div class="box3">
@@ -130,13 +135,13 @@
         </div>
         <div class="item">
           <div class="title">保险费用</div>
-          <div class="price"><span>￥</span>{{dataForm.postRisk == 2 ? 0 : (rateFree / 100)}}</div>
+          <div class="price">￥{{dataForm.postRisk == 2 ? 0 : (rateFree / 100)}}</div>
         </div>
         <div class="item">
           <div class="title">受理地址</div>
           <div class="dz">
             <div>{{detailRiskName}}</div>
-            <img src="../../img/dz.png">
+            <!-- <img src="../../img/dz.png"> -->
           </div>
         </div>
       </div>
@@ -578,9 +583,9 @@
           return
         }else{
           this.first = false
-          this.second = false
+          this.second = true
           this.third = false
-          this.fourth = true
+          this.fourth = false
         }
       },
       monidianji1(){
@@ -863,6 +868,19 @@
 </script>
 
 <style scoped>
+	.content1_tip{
+		font-size: 0.28rem;
+    width: 6rem;
+    margin: 0 auto;
+    margin-bottom: 0.1rem;
+    margin-top: 0.3rem;
+	}
+	.content1_tip_title{
+		color:#333;
+	}
+	.content1_tip_text{
+		color:#999;
+	}
 .option11{
   display:none;
 }

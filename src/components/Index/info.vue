@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="title">不动产登记便民邮寄</div>
-        <div class="box">EMS邮寄信息<div class="sj"></div></div>
+        <div class="box">EMS邮寄信息</div>
         <div class="smtitle">
             <div class="l">提示:</div>
             <div class="r">为了确保邮件投递准确无误,请申请人准确、详细填写收件人信息为了确保邮件投递准确无误,请申请人准确、详细填写收件人信息为了确保邮件投递准确无误,请申请人准确、详细填写收件人信息为了确保邮件投递准确无误,请申请人准确、详细填写收件人信息</div>

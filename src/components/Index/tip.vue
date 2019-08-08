@@ -84,7 +84,7 @@ export default {
 		  }
   	  },
 	  next(){
-		  this.$router.push('/info')
+		  this.$router.push('/orderInfo')
 	  }
   }
 }
@@ -111,7 +111,6 @@ export default {
 		text-align: center;
 		line-height:0.882rem;
 		font-size:0.32rem;
-		
 	}
 	.quxiao{
 		color:#595959;

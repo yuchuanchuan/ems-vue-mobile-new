@@ -12,6 +12,7 @@ import query from "../components/Index/query.vue"
 import orderInfo from "../components/Index/order-info.vue"
 import list from "../components/Index/list.vue"
 import tip from "../components/Index/tip.vue"
+import detail from "../components/Index/detail.vue"
 
 Vue.use(Router)
 export default new Router({
@@ -29,7 +30,8 @@ export default new Router({
     {path: '/query/:orderNum',name: 'query',component: query},
     {path: '/orderInfo', name:'orderInfo', component:orderInfo},
     {path: '/list', name: 'list', component: list},
-    {path:'/tip',name:'tip',component:tip}
+    {path:'/tip',name:'tip',component:tip},
+		{path:'/detail',name:'detail',component:detail}
   ]
 })
 
