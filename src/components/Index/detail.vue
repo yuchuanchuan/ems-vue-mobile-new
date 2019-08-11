@@ -6,47 +6,47 @@
 			<p>订单信息</p>
 			<div class='info_detail'>
 				<div class="info_left">订单号</div>
-				<div class='info_right'>10216359874</div>
+				<div class='info_right'>{{dataForm.orderNumber}}</div>
 			</div>
 			<div class='info_detail'>
 				<div class="info_left">下单时间</div>
-				<div class='info_right'>2019-5-11 15:59</div>
+				<div class='info_right'>{{dataForm.createOrderDate}}</div>
 			</div>
 			<div class='info_detail'>
 				<div class="info_left">当前状态</div>
-				<div class='info_right'>待支付 (剩余00:29:59）</div>
+				<div class='info_right'>{{dataForm.status ===1 ? '未支付' : dataForm.status ===2 ? '已支付' : dataForm.status === 3 ? '待收货' : dataForm.status === 4 ? '已收货' : dataForm.status === 5 ? '已取消' : dataForm.status === 6 ? '受理中' : dataForm.status === 7 ? '审核中' : dataForm.status === 8 ? '制证中' : dataForm.status === 9 ? '发证中' : '' }}</div>
 			</div>
 		</div>
-		
+
 		<div class='info info2'>
 			<p>订单信息</p>
 			<div class='info_detail'>
 				<div class="info_left">收件人</div>
-				<div class='info_right'>李海霞</div>
+				<div class='info_right'>{{dataForm.name}}</div>
 			</div>
 			<div class='info_detail'>
 				<div class="info_left">联系电话</div>
-				<div class='info_right'>18001360553</div>
+				<div class='info_right'>{{dataForm.phone}}</div>
 			</div>
 			<div class='info_detail'>
 				<div class="info_left">收件地址</div>
-				<div class='info_right'>天津市华苑产业园区海泰信息广</div>
+				<div class='info_right'>{{dataForm.postAddress}}</div>
 			</div>
 			<div class='info_detail'>
 				<div class="info_left">凭证编号</div>
-				<div class='info_right'>125423651426857</div>
+				<div class='info_right'>{{dataForm.idCard}}</div>
 			</div>
 		</div>
-		
+
 		<div class="info info3">
 			<span>产权人信息证明：</span>
 			<button @click="show_img">点击查看</button>
 		</div>
-		
+
 		<div class='fuceng' v-if="is_show" @click="show_img">
-			<img src="../../img/beijing.png">
-			<img src="../../img/beijing.png">
-			<img src="../../img/beijing.png">
+			<img :src="dataForm.ownerPositive">
+			<img :src="dataForm.ownerNegative">
+			<img :src="dataForm.housingAuthority">
 		</div>
   </div>
 </template>
@@ -54,7 +54,30 @@
 export default {
   data(){
     return{
-      is_show:false
+      is_show:false,
+      dataForm:{
+        orderId: '',
+        orderNumber: '',
+        createOrderDate: '',
+        name: '',
+        idCard: '', // 产权证号
+        phone: '',
+        postAddress: '',
+
+
+
+        ownerPositive: '',
+        ownerNegative: '',
+        housingAuthority: '',
+
+        postProvinceId: '',
+        postCityId: '',
+        postCountyId: '',
+
+        handleAreaId: '',
+        openid: '',
+        handleId: ''
+      }
     }
   },
 	methods:{
@@ -63,8 +86,30 @@ export default {
 		},
 		show_img(){
 			this.is_show=!this.is_show
-		}
-	}
+		},
+    getOrderInfo(orderNum){
+		  // alert(orderNum)
+      this.$http({
+        url: this.$http.adornUrl('/mobile/order/info'),
+        method: 'get',
+        params: this.$http.adornParams({
+          'orderNum': orderNum
+        })
+      }).then(({ data }) => {
+        if (data && data.code === 0) {
+          this.dataForm = data.data
+          this.dataForm.ownerNegative = "http://ems.jujinkeji.net/mobile/" + data.data.ownerNegative
+          this.dataForm.ownerPositive = "http://ems.jujinkeji.net/mobile/" + data.data.ownerPositive
+          this.dataForm.housingAuthority = "http://ems.jujinkeji.net/mobile/" + data.data.housingAuthority
+        } else {
+          alert(data.msg)
+        }
+      })
+    }
+	},
+  created(){
+    this.getOrderInfo(this.$route.params.orderNum)
+  }
 }
 </script>
 <style scoped>

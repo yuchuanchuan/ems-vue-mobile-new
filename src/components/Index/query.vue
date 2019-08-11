@@ -156,8 +156,6 @@ export default {
       }
     },
   created(){
-      console.log("接收参数")
-    console.log(this.$route.params.orderNum)
     this.getOrderInfo(this.$route.params.orderNum)
   }
 }

@@ -11,14 +11,15 @@
 				<div class='timer'>下单时间：{{item.createOrderDate}}</div>
 				<div class='status'>
 					<p>
-            当前状态：{{item.status ===1 ? '未支付' : item.status ===2 ? '待发货' : item.status === 3 ? '待收货' : item.status === 4 ? '已收货' : item.status === 5 ? '已取消' : item.status === 6 ? '受理中' : item.status === 7 ? '审核中' : item.status === 8 ? '制证中' : item.status === 9 ? '发证中' : '' }}
+            当前状态：{{item.status ===1 ? '未支付' : item.status ===2 ? '已支付' : item.status === 3 ? '待收货' : item.status === 4 ? '已收货' : item.status === 5 ? '已取消' : item.status === 6 ? '受理中' : item.status === 7 ? '审核中' : item.status === 8 ? '制证中' : item.status === 9 ? '发证中' : '' }}
             <span v-if="item.status ===1">(剩余{{item.djs}}）</span>
+            <span v-if="item.status ===2 && showCanceldjs">(剩余{{item.djs}}）</span>
           </p>
 				</div>
 				<div class='btn_list'>
 					<button v-if="item.status === 1" @click="wechatPay(item.orderNumber)" :class='item.status === 1?"btn_bluc":""'>付款</button>
-					<button v-if="item.status === 2"@click="quxiao(item.orderNumber)">取消订单</button>
-					<button v-if="item.status !== 1 && item.status !== 2" @click="queryInfo(item.orderNumber,item.status)">订单详情</button>
+					<button v-if="item.status === 1 || item.status === 2" @click="quxiao(item.orderNumber, item.status)">取消订单</button>
+					<button @click="queryInfo(item.orderNumber,item.status)">订单详情</button>
 				</div>
 			</li>
 
@@ -96,12 +97,15 @@
 <script>
   import { dateToMinute } from '../../utils/validate'
   var t = null;
+  var t1 = null;
 export default {
   data () {
     return {
+      showCanceldjs: false,
       orderList: [],
 	  tanchuang_status:false,
       tempOrderNum: '',
+      tempOrderStatus: '',
       orderNum: ''
     }
   },
@@ -137,6 +141,38 @@ export default {
        }
      }
     }, 1000);
+
+    t1 = setInterval( ()=> {
+      if(this.orderList && this.orderList.length > 0){
+        var dd, hh, mm, ss = null
+        for (var key in this.orderList) {
+          if(this.orderList[key]["status"] === 2){
+          let startTime = new Date().getTime()
+          let endTime = new Date(new Date(new Date().getTime() - 60*60*1000).setHours(0,0,0,0)).getTime() + 86400000
+          let rightTime = endTime - startTime;
+          if (rightTime >= 0) {
+            hh = Math.floor(rightTime / 1000 / 60 / 60 % 24);
+            mm = Math.floor((rightTime / 1000 / 60) % 60);
+            ss = Math.floor((rightTime / 1000) % 60);
+            if( hh.toString().length === 1){
+              hh = "0" + hh
+            }
+            if( mm.toString().length === 1){
+              mm = "0" + mm
+            }
+            if(ss.toString().length === 1){
+              ss = "0" + ss
+            }
+            this.orderList[key]["djs"] = hh + ":" + mm + ":" + ss;
+            this.showCanceldjs = true
+          }else{
+            this.showCanceldjs = false
+          }
+        }
+        }
+      }
+    }, 1000);
+
 
     document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + 'px';
   },
@@ -177,22 +213,22 @@ export default {
     },
     queryInfo(orderNum,status){
 			// {{item.status ===1 ? '未支付'
-			//  : item.status ===2 ? '待发货' 
-			//  : item.status === 3 ? '待收货' 
-			//  : item.status === 4 ? '已收货' 
-			//  : item.status === 5 ? '已取消' 
-			//  : item.status === 6 ? '受理中' 
-			//  : item.status === 7 ? '审核中' 
-			//  : item.status === 8 ? '制证中' 
-			//  : item.status === 9 ? '发证中' 
+			//  : item.status ===2 ? '待发货'
+			//  : item.status === 3 ? '待收货'
+			//  : item.status === 4 ? '已收货'
+			//  : item.status === 5 ? '已取消'
+			//  : item.status === 6 ? '受理中'
+			//  : item.status === 7 ? '审核中'
+			//  : item.status === 8 ? '制证中'
+			//  : item.status === 9 ? '发证中'
 			//  : '' }}
       console.log(status)
-			
-			
+
+
 			//当前下单时间过了今晚12点后就无法取消改订单
 			//如果是未支付或者已取消已支付并且没超过剩余时间的跳转到新页面
 			if(status == 1||status==5){
-				this.$router.push({ name: 'detail'})
+				this.$router.push({ name: 'detail', params:{'orderNum': orderNum} })
 			}else{
 				this.$router.push({ name: 'query', params:{'orderNum': orderNum} })
 			}
@@ -202,14 +238,6 @@ export default {
       this.$router.push({name: 'flow'})
     },
     InitTime(endtime){
-      // alert(endtime)
-      // alert(new Date(endtime).getTime())
-      //
-      //
-      // alert(new Date().getTime())
-      //
-      //
-
       endtime = endtime + 1800000
       var mm, ss = null
       var str = "";
@@ -229,6 +257,32 @@ export default {
         return "00:00:00"
       }
     },
+    cancelOrderTime(){
+      var endtime = new Date(new Date(new Date().getTime() - 60*60*1000).setHours(0,0,0,0)).getTime() + 86400000
+      var hh, mm, ss = null
+      var str = "";
+      var time =  endtime - new Date().getTime();
+      if(time >= 0){
+        hh = Math.floor(time / 1000 / 60 / 60 % 24);
+        mm = Math.floor((time / 1000 / 60) % 60);
+        ss = Math.floor(time / 1000 % 60);
+        if( hh.toString().length === 1){
+          hh = "0" + hh
+        }
+        if( mm.toString().length === 1){
+          mm = "0" + mm
+        }
+        if(ss.toString().length === 1){
+          ss = "0" + ss
+        }
+        str = hh + ":" + mm+":"+ss;
+        this.showCanceldjs = true
+        return str;
+      }else{
+        this.showCanceldjs = false
+        return "00:00:00"
+      }
+    },
     getUserOrderList(){
       this.$http({
         url: this.$http.adornUrl('/mobile/order/userOrderList'),
@@ -239,15 +293,23 @@ export default {
           console.log(data)
           this.orderList = []
 
-          data.data.map( (obj,index)=>{
-            this.$set(
-              obj,"djs",this.InitTime(obj.createTimestamp)
-            );
-          })
+          data.data.forEach((item) => {
+            if(item.status == 1){
+              data.data.map( (obj,index)=>{
+                this.$set(
+                  obj,"djs",this.InitTime(obj.createTimestamp)
+                );
+              })
+            }
 
-          // data.data.forEach((item) => {
-          //   item.createOrderTime = item.createOrderDate
-          // })
+            if(item.status == 2){
+              data.data.map( (obj,index)=>{
+                this.$set(
+                  obj,"djs",this.cancelOrderTime()
+                );
+              })
+            }
+          })
 
           this.orderList = data.data
 
@@ -258,15 +320,20 @@ export default {
         }
       })
     },
-    quxiao(orderNum){
+    quxiao(orderNum, status){
       this.tempOrderNum = orderNum
+      this.tempOrderStatus = status
       this.tanchuang_status = true
     },
     no(){
       this.tanchuang_status = false
     },
     yes(){
-      this.fundPay(this.tempOrderNum)
+      if(this.tempOrderStatus == 1){
+        this.updateCancelStatus(this.tempOrderNum)
+      }else{
+        this.fundPay(this.tempOrderNum)
+      }
       this.tanchuang_status = false
     },
 
@@ -337,10 +404,12 @@ export default {
     },
   },
   created(){
+    // alert('零点时间戳===' + new Date(new Date(new Date().getTime() - 60*60*1000).setHours(0,0,0,0)).getTime())
     this.getUserOrderList()
   },
   destroyed(){
     clearInterval(t)
+    clearInterval(t1)
   }
 }
 </script>

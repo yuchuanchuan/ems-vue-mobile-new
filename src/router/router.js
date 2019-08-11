@@ -31,7 +31,7 @@ export default new Router({
     {path: '/orderInfo', name:'orderInfo', component:orderInfo},
     {path: '/list', name: 'list', component: list},
     {path:'/tip',name:'tip',component:tip},
-		{path:'/detail',name:'detail',component:detail}
+		{path:'/detail/:orderNum',name:'detail',component:detail}
   ]
 })
 

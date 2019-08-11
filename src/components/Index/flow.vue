@@ -60,7 +60,7 @@
     methods:{
 			tip(){
 				if(this.checked){
-					this.$router.push({path: '/tip'})
+					this.$router.push({path: '/orderInfo'})
 				}else{
 					alert("请先同意不动产权证邮寄业务办理须知")
 				}
