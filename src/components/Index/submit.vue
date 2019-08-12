@@ -33,7 +33,8 @@ export default {
         this.$router.push({name: 'flow'})
       },
       jump2(){
-        this.$router.push({ name: 'query', params:{'orderNum': this.orderNum} })
+        // this.$router.push({ name: 'query', params:{'orderNum': this.orderNum} })
+        this.$router.push("/list")
       }
     },
   created(){

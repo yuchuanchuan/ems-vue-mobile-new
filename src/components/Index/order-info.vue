@@ -140,7 +140,7 @@
           </div>
         </div>
       </div>
-      <button class="btn" @click="jump2">下一步</button>
+      <button class="btn" @click="jump2" :disabled="payOrder">下一步</button>
     </div>
 
 
@@ -211,6 +211,7 @@
     name: 'order-info',
     data(){
       return{
+        payOrder: false,
         sureInfo: false,
         postPrice: '', // 邮寄价格
         rateFree: '',  // 保险价格
@@ -798,6 +799,7 @@
         }
       },
       jump2(){
+        this.payOrder = true
         this.dataForm.ownerPositive = ownerPositive
         this.dataForm.ownerNegative = ownerNegative
         this.dataForm.housingAuthority = housingAuthority
