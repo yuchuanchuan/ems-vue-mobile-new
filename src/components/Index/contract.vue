@@ -5,20 +5,20 @@
     <div class="txt">
      <div v-html="postInfo"></div>
     </div>
-    <div class="tab">
+    <!-- <div class="tab">
         <div class="top">
             <input type="checkbox" @click="xuan">
             <div>我已阅读《不动产权证邮寄业务办理须知》</div>
         </div>
         <button v-bind:disabled="mybtn" @click="jump">同意并进入</button>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
 export default {
     data(){
         return{
-            mybtn:true,
+          mybtn:true,
           postInfo: ''
         }
     },

@@ -5,13 +5,13 @@
     <img src="../../img/dui.png" class="dui">
     <div class="btitle">提交成功</div>
     <div class="stitle">您的订单已经提交成功,我们会尽快检验您的信息,请耐心等待。</div>
-    <div class="atitle">您的订单已经提交成功,我们会尽快为您邮寄,请密切关注短信及电话通知</div>
+    <div class="atitle">申请审核通过后的15个工作日，我们将安排为您邮寄，请密切还珠短信及短话通知</div>
     <button class="btn" @click="jump3">再来一单</button>
     <button class="btn" @click="jump2">查看订单</button>
     <button class="btn" @click="jump1">返回首页</button>
     <div class="text">在办理过程中,遇到问题,请及时与我们联系!</div>
     <div class="text">客服电话:022-84190111</div>
-    <div class="text">服务时间:周一至周五 8:30-17:00</div>
+    <div class="text">服务时间:周一至周五 9:00-17:00</div>
     <div class="tab">
       <div class="title">方便快捷 轻松办理</div>
       <img src="../../img/kdy.png">
@@ -148,7 +148,8 @@ body{
   position:absolute;
   bottom:0.1rem;
   right:0.3rem;
-  width:2rem;
+  width:2.4rem;
+	height: 1.38rem;
   z-index:333;
 }
 </style>

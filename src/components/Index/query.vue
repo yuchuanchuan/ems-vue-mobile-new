@@ -156,8 +156,6 @@ export default {
       }
     },
   created(){
-      console.log("接收参数")
-    console.log(this.$route.params.orderNum)
     this.getOrderInfo(this.$route.params.orderNum)
   }
 }
@@ -298,7 +296,8 @@ body{
 .tabs>img{
     position:absolute;
     bottom:0.1rem;
-    width:2rem;
+    width:2.4rem;
+	height: 1.38rem;
     right:0.8rem;
     z-index:9999;
 }

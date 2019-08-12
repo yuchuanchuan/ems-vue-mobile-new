@@ -35,21 +35,43 @@
         <div class="ft1">业务完成</div>
       </div>
     </div>
-    <div class="tab">
-      <router-link to="/contract">快速办理>></router-link>
-      <router-link to="/list">查询进度>></router-link>
-      <img src="../../img/kdy.png">
-    </div>
-  </div>
+    <div class="agree">
+		 <input type="checkbox" class='is_agree' v-model="checked">
+		 <p>
+			<span class='meiyongde'>同意</span>
+			<router-link to="/contract" class='bind_tap' >《不动产权证邮寄业务办理须知》</router-link>
+		 </p>
+		</div>
+			<div class="tab">
+				<div @click="tip">快速办理>></div>
+				<div @click="list">查询进度>></div>
+				<img src="../../img/kdy.png">
+			</div>
+		</div>
 </template>
 <script>
   export default {
     data(){
       return{
-        openid: ''
+        openid: '',
+				checked:false
       }
     },
     methods:{
+			tip(){
+				if(this.checked){
+					this.$router.push({path: '/orderInfo'})
+				}else{
+					alert("请先同意不动产权证邮寄业务办理须知")
+				}
+			},
+			list(){
+				if(this.checked){
+					this.$router.push({path: '/list'})
+				}else{
+					alert("请先同意不动产权证邮寄业务办理须知")
+				}
+			},
       getQueryString(name){
         let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
         let r = window.location.search.substr(1).match(reg);
@@ -88,6 +110,34 @@
   }
 </script>
 <style scoped>
+	.tab div{
+  width:50%;
+  height:100%;
+  text-align: center;
+ }
+	.bind_tap{
+		color:#177abf !important;
+		text-decoration-line:none;
+	}
+	.agree{
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+	}
+	.is_agree{
+		margin-right: 0.2rem;
+  width:0.3rem;
+  height: 0.3rem;
+	margin-left: 0.4rem;
+ }
+ .meiyongde{
+  color:#333333!important;
+ }
+ .agree{
+  margin-top:0.9rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.28rem;
+ }
 body{
     width:100%;
 }

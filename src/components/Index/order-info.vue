@@ -1,8 +1,9 @@
 <template>
   <div>
-    <div class="content1" v-show="first">
+    <!--第二步-->
+    <div class="content1" v-show="second">
       <div class="title">不动产登记便民邮寄</div>
-      <div class="box">上传凭证<div class="sj"></div></div>
+      <div class="box">上传凭证</div>
       <div class="box1-title">
         <img src="../../img/ren.png">
         <div>产权人身份证明</div>
@@ -26,11 +27,18 @@
         <img :src=imageSave3 id="portrait3" class="img"/>
       </div>
       <input type="file" id="saveImage3" name="myphoto" class="myinput" ref="closeUp" accept="image/*" capture="camera">
+
+			<p class='content1_tip'>
+				<span class='content1_tip_title'>温馨提示：</span>
+				<span class='content1_tip_text'>上传的图片需要边框整齐字体清晰，如材料有误或不清晰的，可能需要重新上传。</span>
+			</p>
       <button class="btn" @click="jump" v-bind:disabled="mybtn1" >下一步</button>
     </div>
-    <div class="content2" v-show="second">
+
+    <!--第三步-->
+    <div class="content2" v-show="third">
       <div class="title">不动产登记便民邮寄</div>
-      <div class="box"><div class="tui" @click="tui1"></div>EMS邮寄信息<div class="sj"></div></div>
+      <div class="box"><div class="tui" @click="tui1"></div>EMS邮寄信息</div>
       <div class="smtitle">
         <div class="l">提示:</div>
         <div class="r">为了确保邮件投递准确无误,请申请人准确、详细填写收件人信息为了确保邮件投递准确无误,请申请人准确、详细填写收件人信息为了确保邮件投递准确无误,请申请人准确、详细填写收件人信息为了确保邮件投递准确无误,请申请人准确、详细填写收件人信息</div>
@@ -68,41 +76,47 @@
         <div class="title">详细地址</div>
         <input type="text" placeholder="输入详细地址" @blur.prevent="changeDizhi()" v-model="dataForm.postAddress">
       </div>
+      <div class="item">
+        <div class="title">凭证编号</div>
+        <input type="text" v-model="dataForm.idCard" disabled>
+      </div>
       <div class="tishi" v-show="show">
         <img src="../../img/i.png">
         <div>{{text}}</div>
       </div>
       <button class="btn" @click="jump4">下一步</button>
     </div>
-    <div class="content3" v-show="third">
+
+    <!--第四步-->
+    <div class="content3" v-show="fourth">
       <div class="title">不动产登记便民邮寄</div>
-      <div class="box"><div class="tui" @click="tui2"></div>订单支付<div class="sj"></div></div>
-      <div class="box1-title">
-        <img src="../../img/xin.png">
-        <div>邮寄信息</div>
-      </div>
-      <div class="box1">
-        <div class="item">
-          <div class="title">姓名</div>
-          <div class="info">{{dataForm.name}}</div>
-        </div>
-        <div class="item">
-          <div class="title">联系电话</div>
-          <div class="info">{{dataForm.phone}}</div>
-        </div>
-        <div class="item">
-          <div class="title">收件地址</div>
-          <div class="info">
-            <div class="dizhi">{{province + city + district + dataForm.postAddress}}</div>
-          </div>
-        </div>
-        <div class="item">
-          <div class="title">凭证编号</div>
-          <div class="info">
-            <div class="dizhi">{{dataForm.idCard}}</div>
-          </div>
-        </div>
-      </div>
+      <div class="box"><div class="tui" @click="tui2"></div>订单支付</div>
+      <!--<div class="box1-title">-->
+        <!--<img src="../../img/xin.png">-->
+        <!--<div>邮寄信息</div>-->
+      <!--</div>-->
+      <!--<div class="box1">-->
+        <!--<div class="item">-->
+          <!--<div class="title">姓名</div>-->
+          <!--<div class="info">{{dataForm.name}}</div>-->
+        <!--</div>-->
+        <!--<div class="item">-->
+          <!--<div class="title">联系电话</div>-->
+          <!--<div class="info">{{dataForm.phone}}</div>-->
+        <!--</div>-->
+        <!--<div class="item">-->
+          <!--<div class="title">收件地址</div>-->
+          <!--<div class="info">-->
+            <!--<div class="dizhi">{{province + city + district + dataForm.postAddress}}</div>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="item">-->
+          <!--<div class="title">凭证编号</div>-->
+          <!--<div class="info">-->
+            <!--<div class="dizhi">{{dataForm.idCard}}</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
       <div class="box1-title">
         <img src="../../img/zhifu.png">
         <div>支付信息</div>
@@ -116,7 +130,7 @@
       <div class="item">
         <div class="title">邮寄费用</div>
         <div class="info feiyong">
-          <div class="dizhi">{{postPrice / 100}}</div>
+          <div class="dizhi">￥{{postPrice / 100}}</div>
         </div>
       </div>
       <div class="box3">
@@ -130,13 +144,13 @@
         </div>
         <div class="item">
           <div class="title">保险费用</div>
-          <div class="price"><span>￥</span>{{dataForm.postRisk == 2 ? 0 : (rateFree / 100)}}</div>
+          <div class="price">￥{{dataForm.postRisk == 2 ? 0 : (rateFree / 100)}}</div>
         </div>
         <div class="item">
           <div class="title">受理地址</div>
           <div class="dz">
             <div>{{detailRiskName}}</div>
-            <img src="../../img/dz.png">
+            <!-- <img src="../../img/dz.png"> -->
           </div>
         </div>
       </div>
@@ -144,11 +158,11 @@
     </div>
 
 
-    <!----------------------------------受理人信息---------------------------------------->
-    <div v-show="fourth">
+    <!----------------------------------受理人信息-  第一步--------------------------------------->
+    <div v-show="first">
       <div class='title'>
         <div>不动产登记受理凭证信息</div>
-        <div class='jiantou'></div>
+        <!--<div class='jiantou'></div>-->
       </div>
 
       <img src="../../img/banlixuzhi.png" class='tip_img'>
@@ -159,7 +173,7 @@
 
       <div class="inp_list">
         <div class='user_name'>
-          <div class='left'>姓名</div>
+          <div class='left'>授权人</div>
           <input type="text" v-model="dataForm.shoujian_name"  @blur.prevent="changeName()">
         </div>
 
@@ -175,7 +189,7 @@
 
         <div class='user_num'>
           <div class='left'>凭证编号</div>
-          <input type="text" v-model='dataForm.idCard' @blur.prevent="changeBianhao()">
+          <input type="text" v-model="dataForm.idCard">
         </div>
       </div>
       <button class='next' @click="jump1()">下一步</button>
@@ -187,7 +201,7 @@
         <div class='fuceng_title'>请确认信息</div>
 
         <div class='info_list'>
-          <div class='user_name'>姓名：{{dataForm.shoujian_name}}</div>
+          <div class='user_name'>授权人：{{dataForm.shoujian_name}}</div>
           <div class='user_id'>身份证号：{{dataForm.propertyNo}}</div>
           <div class='user_phone'>手机号：{{dataForm.shoujian_phone}}</div>
           <div class='user_num'>凭证编号：{{dataForm.idCard}}</div>
@@ -229,11 +243,7 @@
         postInfo: '',
         //删掉了{id：2，value：'正式'}
         //将{id：1，value：房本}改为{id:1,value:'不动产权证'}
-        postTypes:[{
-          id:1, value: '不动产权证'
-        },{
-          id:2, value: '其他'
-        }],
+        postTypes:[],
         dataForm:{
           orderId: '',
           shoujian_name:'',
@@ -282,6 +292,23 @@
       }
     },
     methods:{
+      getPostInfo(){
+        this.$http({
+          url: this.$http.adornUrl('/mobile/bussiness/list'),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({ data }) => {
+          if (data && data.code === 0) {
+            this.postTypes = [];
+            data.data.forEach((item)=>{
+              this.postTypes.push({
+                id: item.id,
+                value: item.bussinessName
+              })
+            })
+          }
+        })
+      },
       xiugai(){
         this.sureInfo = false
         this.first = true
@@ -304,8 +331,6 @@
           })
         }).then(({ data }) => {
           if (data && data.code === 0) {
-            console.log(data)
-            console.log(data.data)
             // this.dataForm.riskName = data.data.handleAddress
             this.dataForm.handleAreaId = data.data.areaId
             this.detailRiskName = data.data.handleAddress
@@ -333,8 +358,8 @@
         }else{
           this.first = false
           this.second = false
-          this.third = true
-          this.fourth = false
+          this.third = false
+          this.fourth = true
         }
       },
       radio(){
@@ -580,8 +605,8 @@
         }else{
           this.first = false
           this.second = false
-          this.third = false
-          this.fourth = true
+          this.third = true
+          this.fourth = false
         }
       },
       monidianji1(){
@@ -686,14 +711,16 @@
 
       //  info页面方法
       tui1(){
-        this.first = true
-        this.second = false
-        this.third = false
-      },
-      tui2(){
         this.first = false
         this.second = true
         this.third = false
+        this.fourth = false
+      },
+      tui2(){
+        this.first = false
+        this.second = false
+        this.third = true
+        this.fourth = false
       },
       jump1(){
         var reg1 = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/;
@@ -809,7 +836,7 @@
 
         // let index = 'http://ems.jujinkeji.net/mobile/Index'
         // location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorize?returnUrl=' + index
-
+        console.log("------------------" + this.dataForm.idCard)
         this.$http({
           url: this.$http.adornUrl('/mobile/order/create'),
           method: 'post',
@@ -828,11 +855,80 @@
             // })
             // alert(data.orderId + '---------------' + data.data.orderId)
             this.dataForm.orderId = data.data.orderId
-            // this.wechatPay(data.data.orderId)
+            this.wechatPay(data.data.orderId)
             console.log("操作成功")
-            this.$router.push("/list")
+            // this.$router.push("/list")
           } else {
             // this.$message.error(data.msg)
+            alert(data.msg)
+          }
+        })
+      },
+      // 支付
+      wechatPay(orderId){
+        this.orderNum = orderId
+        this.$http({
+          url: this.$http.adornUrl('/pay/create'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'orderId': orderId,
+            'returnUrl': 'http://ems.jujinkeji.net/mobile/orderInfo'
+          })
+        }).then(({ data }) => {
+          if (data && data.code === 0) {
+            if (typeof WeixinJSBridge == "undefined"){//微信浏览器内置对象。参考微信官方文档
+              if( document.addEventListener ){
+                document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady(data), false);
+              }else if (document.attachEvent){
+                document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady(data));
+                document.attachEvent('onWeixinJSBridgeReady',this.onBridgeReady(data));
+              }
+            }else{
+              this.onBridgeReady(data);
+            }
+          } else {
+            alert(data.msg)
+          }
+        })
+      },
+      onBridgeReady:function(data){
+        let _this = this;
+        WeixinJSBridge.invoke(
+          'getBrandWCPayRequest', {
+            "appId": data.data.payResponse.appId,     //公众号名称，由商户传入
+            "timeStamp": data.data.payResponse.timeStamp,         //时间戳，自1970年以来的秒数
+            "nonceStr": data.data.payResponse.nonceStr, //随机串
+            "package": data.data.payResponse.package,
+            "signType": data.data.payResponse.signType,         //微信签名方式：
+            "paySign": data.data.payResponse.paySign //微信签名
+          },
+          function(res){
+            if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+              setTimeout(()=>{
+                _this.updateOrderStatus()
+              },500)
+            }else if(res.err_msg == "get_brand_wcpay_request:cancel"){
+              _this.$router.push("/list")
+            } else{
+              _this.$router.push("/list")
+            }
+            //location.href = "${returnUrl}";
+          }
+        );
+      },
+      updateOrderStatus(){
+        this.$http({
+          url: this.$http.adornUrl('/mobile/order/mail'),
+          method: 'post',
+          data: this.$http.adornData({
+            orderNumber: this.orderNum
+          })
+        }).then(({ data }) => {
+          if (data && data.code === 0) {
+            // window.location.assign('http://ems.jujinkeji.net/mobile/submit')
+            this.$router.push({ name: 'submit', params:{'orderNum': this.orderNum} })
+            // this.getUserOrderList()
+          } else {
             alert(data.msg)
           }
         })
@@ -850,6 +946,7 @@
       this.getProvinceNames()
       // this.getMyLocation()
       this.getHandleAreaInfo()
+      this.getPostInfo()
     },
     // beforeRouteEnter (to, from, next) {
     //   let u = navigator.userAgent;
@@ -865,6 +962,19 @@
 </script>
 
 <style scoped>
+	.content1_tip{
+		font-size: 0.28rem;
+    width: 6rem;
+    margin: 0 auto;
+    margin-bottom: 0.1rem;
+    margin-top: 0.3rem;
+	}
+	.content1_tip_title{
+		color:#333;
+	}
+	.content1_tip_text{
+		color:#999;
+	}
 .option11{
   display:none;
 }
