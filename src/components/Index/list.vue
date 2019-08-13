@@ -227,7 +227,7 @@ export default {
 
 			//当前下单时间过了今晚12点后就无法取消改订单
 			//如果是未支付或者已取消已支付并且没超过剩余时间的跳转到新页面
-			if(status == 1||status==5){
+			if(status == 1||status==5 || status == 2){
 				this.$router.push({ name: 'detail', params:{'orderNum': orderNum} })
 			}else{
 				this.$router.push({ name: 'query', params:{'orderNum': orderNum} })
