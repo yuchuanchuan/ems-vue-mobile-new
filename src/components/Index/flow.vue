@@ -72,38 +72,51 @@
 					alert("请先同意不动产权证邮寄业务办理须知")
 				}
 			},
-      getQueryString(name){
-        let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
-        let r = window.location.search.substr(1).match(reg);
-        if (r != null) {
-          return unescape(r[2]);
-        }
-        return null;
-      },
-      getPostNotify(){
-        this.$http({
-          url: this.$http.adornUrl('/mobile/order/notify'),
-          method: 'get',
-          params: this.$http.adornParams()
-        }).then(({ data }) => {
-          if (data && data.code === 0) {
-            console.log(data)
-          }
-        })
-      },
+      // getQueryString(name){
+      //   let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+      //   let r = window.location.search.substr(1).match(reg);
+      //   if (r != null) {
+      //     return unescape(r[2]);
+      //   }
+      //   return null;
+      // },
+      // getPostNotify(){
+      //   this.$http({
+      //     url: this.$http.adornUrl('/mobile/order/notify'),
+      //     method: 'get',
+      //     params: this.$http.adornParams()
+      //   }).then(({ data }) => {
+      //     if (data && data.code === 0) {
+      //       console.log(data)
+      //     }
+      //   })
+      // },
     },
     created(){
-      localStorage.setItem("loginOpen",this.$route.params.loginOpen)
-      localStorage.setItem("areaid", this.$route.params.areaid)
+      console.log("获取页面链接地址")
+      console.log(window.location.href)
+
+      let webAddress = window.location.href
+      localStorage.setItem("openid", webAddress.split("/")[webAddress.split("/").length - 2])
+      localStorage.setItem("areaid", webAddress.split("/")[webAddress.split("/").length - 1])
+
+      console.log("openid===" + localStorage.getItem('openid'))
+      console.log("areaid===" + localStorage.getItem('areaid'))
 
       // alert("openid=====" + localStorage.getItem("loginOpen"))
       // alert(localStorage.getItem("areaid"))
 
-      this.getPostNotify()
+      // this.getPostNotify()
       this.openid = localStorage.getItem("openid")
       if(this.openid == "null" || this.openid == null || this.openid == ""){
-        let parametertext = this.getQueryString('openid');  // => ‘参数内容’
-        localStorage.setItem("openid",parametertext);
+        // // let parametertext = this.getQueryString('openid');  // => ‘参数内容’
+        // // localStorage.setItem("openid",parametertext);
+        // let webAddress = window.location.href
+        // localStorage.setItem("openid", webAddress.split("/")[webAddress.split("/").length - 2])
+        // localStorage.setItem("areaid", webAddress.split("/")[webAddress.split("/").length - 1])
+        //
+        // console.log(localStorage.getItem('openid'))
+        // console.log(localStorage.getItem('areaid'))
         this.openid = localStorage.getItem("openid")
       }
     }
