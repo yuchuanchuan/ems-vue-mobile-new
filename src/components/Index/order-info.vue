@@ -844,7 +844,6 @@
 
         // let index = 'http://ems.jujinkeji.net/mobile/Index'
         // location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorize?returnUrl=' + index
-        console.log("------------------" + this.dataForm.idCard)
         this.$http({
           url: this.$http.adornUrl('/mobile/order/create'),
           method: 'post',
