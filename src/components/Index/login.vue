@@ -105,7 +105,7 @@ export default {
 
           let index = 'http://ems.jujinkeji.net/mobile/flow/4964666/1043'
           // 微信页面
-          location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorOpenId?returnUrl=' + index
+          // location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorOpenId?returnUrl=' + index
 
           this.$route
           this.$router.push({ path:'/flow'})

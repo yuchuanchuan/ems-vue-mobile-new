@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="title">查询列表
-			<div class='sanjiao'></div>
+			
 		</div>
 
 		<ul class='info_list'>
@@ -22,6 +22,7 @@
 					<button @click="queryInfo(item.orderNumber,item.status)">订单详情</button>
 				</div>
 			</li>
+      <div class='dianzi'></div> 
 
 			<!--<li class='info'>-->
 				<!--<div class='num'>订单号：10216359874</div>-->
@@ -414,6 +415,10 @@ export default {
 }
 </script>
 <style scoped>
+.dianzi{
+  width:100%;
+  height:2.5rem;
+}
 	.quxiao_btn{
 		font-size: 0.36rem;
 		display: flex;
@@ -462,7 +467,8 @@ export default {
 	.bottom{
 		width:100%;
 		height:2.5rem;
-		position:relative;
+		position:fixed;
+    bottom:0;
 	}
 	.bottom button{
 		width:5.95rem;

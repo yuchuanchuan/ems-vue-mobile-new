@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="title">不动产登记便民邮寄</div>
-    <div class="box">发送申请<div class="sj"></div></div>
+    <div class="box">发送申请</div>
     <img src="../../img/dui.png" class="dui">
     <div class="btitle">提交成功</div>
     <div class="stitle">您的订单已经提交成功,我们会尽快检验您的信息,请耐心等待。</div>
@@ -12,9 +12,10 @@
     <div class="text">在办理过程中,遇到问题,请及时与我们联系!</div>
     <div class="text">客服电话:022-84190111</div>
     <div class="text">服务时间:周一至周五 9:00-17:00</div>
+    <div class='dianzi'></div>
     <div class="tab">
       <div class="title">方便快捷 轻松办理</div>
-      <img src="../../img/kdy.png">
+      <img src="../../img/xiaoren.png">
     </div>
   </div>
 </template>
@@ -98,9 +99,9 @@ body{
   color:#177abf;
   width:5.8rem;
   margin:0.5rem 0.85rem;
-  line-height:0.6rem;
+  line-height:0.4rem;
   text-align: center;
-  font-size:0.32rem;
+  font-size:0.24rem;
   font-weight: bold;
 }
 .btn{
@@ -123,13 +124,17 @@ body{
   margin-bottom:0.15rem;
   font-weight: bold;
 }
+.dianzi{
+  width:100%;
+  height:1.15rem;
+}
 .tab{
   font-size:0.36rem;
   font-weight: bold;
   color:#fff;
   height:1rem;
   margin-top:0.7rem;
-  background:#177abf;
+  background:#333;
   bottom:0;
   left:0;
   width:100%;
@@ -145,11 +150,11 @@ body{
   left:1rem;
 }
 .tab>img{
-  position:absolute;
-  bottom:0.1rem;
-  right:0.3rem;
-  width:2.4rem;
-	height: 1.38rem;
-  z-index:333;
+  position: absolute;
+  bottom: 0.17rem;
+  right: 0.3rem;
+  width: 1.14rem;
+  height: 2.07rem;
+  z-index: 333;
 }
 </style>

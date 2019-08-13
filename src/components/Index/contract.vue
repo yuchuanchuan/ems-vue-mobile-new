@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="title">合同知晓</div>
-    <div class="box">不动产权证办理流程<div class="sj"></div></div>
+    <div class="box">不动产权证办理流程</div>
     <div class="txt">
      <div v-html="postInfo"></div>
     </div>
@@ -84,7 +84,7 @@ body{
     width:7.5rem;
     font-size:0.28rem;
     color:#333;
-    height:66vh;
+    height:86vh;
     overflow: auto;
     padding:0.6rem 0.25rem;
     box-sizing: border-box;

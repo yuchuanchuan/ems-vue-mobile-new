@@ -2,7 +2,7 @@
   <div class="content">
     <div class="title">不动产登记便民邮寄</div>
     <img src="../../img/beijing.png" class="bj">
-    <div class="box">不动产权证办理流程<div class="sj"></div></div>
+    <div class="box">不动产权证办理流程</div>
     <div class="box1">
       <div class="item1">
           <div class="fang1">
@@ -167,15 +167,7 @@ body{
   text-align: center;
   position:relative;
 }
-.sj{
-  border-top:0.17rem solid #fff;
-  border-left:0.13rem solid transparent;
-  border-right:0.13rem solid transparent;
-  border-bottom:0.13rem solid transparent;
-  position:absolute;
-  top:0.3rem;
-  right:0.4rem;
-}
+
 .box1{
   padding:0.8rem 0 0;
 }

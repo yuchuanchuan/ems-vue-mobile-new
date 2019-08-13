@@ -41,7 +41,7 @@
       <div class="box"><div class="tui" @click="tui1"></div>EMS邮寄信息</div>
       <div class="smtitle">
         <div class="l">提示:</div>
-        <div class="r">为了确保邮件投递准确无误,请申请人准确、详细填写收件人信息为了确保邮件投递准确无误,请申请人准确、详细填写收件人信息为了确保邮件投递准确无误,请申请人准确、详细填写收件人信息为了确保邮件投递准确无误,请申请人准确、详细填写收件人信息</div>
+        <div class="r">为了确保邮件投递准确无误，请申请人准确、详细填写收件人信息、联系电话及收件地址，如因信息填写有误造成长时间无法收到邮件的，请打咨询电话：022-24013672</div>
       </div>
       <div class="item">
         <div class="title">姓名</div>
@@ -288,7 +288,11 @@
         text:'',
 
         // order页面属性
-        isShow:false
+        isShow:false,
+        //详细地址判断
+        jump_addr:''
+
+
       }
     },
     methods:{
@@ -355,12 +359,15 @@
         }if(!reg2.test(this.dataForm.phone)){
           alert("请输入正确的电话号码")
           return
+        }if(this.dataForm.postAddress == ''){
+          alert("请输入详细地址")
         }else{
           this.first = false
           this.second = false
           this.third = false
           this.fourth = true
         }
+        
       },
       radio(){
         if(this.third){
@@ -796,6 +803,7 @@
       },
       changeDizhi(e){
         var u = event.currentTarget.value;
+        console.log(u)
         if(u==""){
           this.show=true;
           this.text="请输入详细地址"
@@ -962,6 +970,34 @@
 </script>
 
 <style scoped>
+.btn_list{
+  width:100%;
+  height:0.9rem;
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top:0.4rem;
+  border-top:1px solid #dedede;
+}
+.btn_list .xiugai{
+  border-right:1px solid #dedede;
+}
+.btn_list .queding{
+  color:#09bb07;
+}
+.btn_list div{
+  font-size:0.36rem;
+  width:50%;
+  height:100%;
+  text-align: center;
+  line-height:0.9rem;
+}
+.info_list{
+  margin-top:0.45rem;
+}
+.info_list div{
+  margin-top:0.1rem;
+}
 	.content1_tip{
 		font-size: 0.28rem;
     width: 6rem;
@@ -1531,7 +1567,7 @@ body{
   font-size:0.36rem !important;
   color:#333;
   font-weight:bold;
-  margin-top:0.75rem;
+  margin-top:0.7rem;
 }
 </style>
 

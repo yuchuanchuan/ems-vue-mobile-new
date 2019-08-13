@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="title">不动产登记便民邮寄</div>
-    <div class="box">进度查询<div class="sj"></div></div>
+    <div class="box">进度查询</div>
     <div class="box1">
         <div class="item" v-for="(item,index) in orderList" :key="index">
             <div class="top">
