@@ -19,7 +19,7 @@
 		</div>
 
 		<div class='info info2'>
-			<p>订单信息</p>
+			<p>邮寄信息</p>
 			<div class='info_detail'>
 				<div class="info_left">收件人</div>
 				<div class='info_right'>{{dataForm.name}}</div>
@@ -35,6 +35,10 @@
 			<div class='info_detail'>
 				<div class="info_left">凭证编号</div>
 				<div class='info_right'>{{dataForm.idCard}}</div>
+			</div>
+			<div class='info_detail'>
+				<div class="info_left">邮寄号</div>
+				<div class='info_right'>新添加的邮寄号</div>
 			</div>
 		</div>
 

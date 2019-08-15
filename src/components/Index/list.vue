@@ -19,7 +19,12 @@
 				<div class='btn_list'>
 					<button v-if="item.status === 1" @click="wechatPay(item.orderNumber)" :class='item.status === 1?"btn_bluc":""'>付款</button>
 					<button v-if="item.status === 1 || item.status === 2" @click="quxiao(item.orderNumber, item.status)">取消订单</button>
-					<button @click="queryInfo(item.orderNumber,item.status)">订单详情</button>
+					
+          <!-------------------------------------新添加的进度查询--------------------------------------------------------->
+          <button @click="jinduchaxun">进度查询</button>
+          
+
+          <button @click="queryInfo(item.orderNumber,item.status)">订单详情</button>
 				</div>
 			</li>
       <div class='dianzi'></div> 
@@ -178,6 +183,11 @@ export default {
     document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + 'px';
   },
   methods:{
+    //添加的进度查询
+    jinduchaxun(){
+      this.$router.push("/query")
+    },
+
     // 退款
     fundPay(orderNum){
       this.$http({

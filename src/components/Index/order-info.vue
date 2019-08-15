@@ -212,6 +212,50 @@
         </div>
       </div>
     </div>
+    <!----------------------------------签名 2019-8-15 --------------------------------------->
+    <div v-show="fifth">
+      <div class='new_title'>不动产登记便民邮寄</div>  
+      <div class="new_box">
+        <div class="new_tui"></div>
+        授权委托书
+      </div>
+      <div class='new_info_title'>授权委托书</div>
+      <div class='new_yi new_info'>
+        <span>委托人：</span>
+        <span>王先森</span>
+      </div>
+      <div class='new_id new_info'>
+        <span>身份证：</span>
+        <span>120110199909099999</span>
+      </div>
+      <div class='new_num new_info'>
+        <span>凭证编号：</span>
+        <span>321321323232</span>
+      </div>
+      <div class='new_num new_info'>
+        <span>凭证编号：</span>
+        <span>321321323232</span>
+      </div>
+      <div class='new_jia new_info'>
+        <span>受托人：</span>
+        <span>中国邮政速递物流股份有限公司天津市分公司</span>
+      </div>
+      <div class='new_shi new_info'>
+        <span>委托事项：</span>
+        <span>权利人自愿委托中国邮政速递物流股份有限公司天津市分公司为合法代理人，代为领取本人申请办理的不动产权证/不动产登记证明，并邮寄送达本人，受托人在其权限范围内依法所作的一切行为，接受问询的行为及签署的一切文件，委托人均予以承认。</span>
+      </div>
+      <div class='new_white new_info'>
+        <div class='white_title'>
+          <span>委托人签名：</span>
+          <button>清空</button>
+        </div>
+        <div class='new_qianzi'></div>
+      </div>
+
+      <button class='new_sub' @click="jump5">提交</button>
+      <div class="new_dianzi"></div>
+    </div>
+
 
   </div>
 </template>
@@ -234,6 +278,7 @@
         second: false,
         third: false,
         fourth:false,
+        fifth:false,
         parentId: 1,
         provinceNames: [],
         cityNames: [],
@@ -366,6 +411,7 @@
           this.second = false
           this.third = false
           this.fourth = true
+          this.fifth = false
         }
         
       },
@@ -614,6 +660,7 @@
           this.second = false
           this.third = true
           this.fourth = false
+          this.fifth = false
         }
       },
       monidianji1(){
@@ -765,6 +812,7 @@
           this.sureInfo = true
         this.third = false
         this.fourth = false
+        this.fifth = false
         this.radio();
         }
       },
@@ -833,43 +881,55 @@
           this.dataForm.postRisk = 2
         }
       },
+      jump5(){
+        this.$router.push("/submit")
+      },
       jump2(){
-        this.payOrder = true
-        this.dataForm.ownerPositive = ownerPositive
-        this.dataForm.ownerNegative = ownerNegative
-        this.dataForm.housingAuthority = housingAuthority
-        this.dataForm.openid = localStorage.getItem("openid")
-        // this.dataForm.postRiskId = $('input:radio[name="dizhi"]:checked').val();val
+
+        // this.payOrder = true
+        // this.dataForm.ownerPositive = ownerPositive
+        // this.dataForm.ownerNegative = ownerNegative
+        // this.dataForm.housingAuthority = housingAuthority
+        // this.dataForm.openid = localStorage.getItem("openid")
+        // // this.dataForm.postRiskId = $('input:radio[name="dizhi"]:checked').val();val
 
 
-        // let index = 'http://ems.jujinkeji.net/mobile/Index'
-        // location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorize?returnUrl=' + index
-        this.$http({
-          url: this.$http.adornUrl('/mobile/order/create'),
-          method: 'post',
-          data: this.$http.adornData(this.dataForm)
-        }).then(({ data }) => {
-          if (data && data.code === 0) {
-            console.log(data)
-            // this.$message({
-            //   message: '操作成功',
-            //   type: 'success',
-            //   duration: 1500,
-            //   onClose: () => {
-            //     this.visible = false
-            //     this.$emit('refreshDataList')
-            //   }
-            // })
-            // alert(data.orderId + '---------------' + data.data.orderId)
-            this.dataForm.orderId = data.data.orderId
-            this.wechatPay(data.data.orderId)
-            console.log("操作成功")
-            // this.$router.push("/list")
-          } else {
-            // this.$message.error(data.msg)
-            alert(data.msg)
-          }
-        })
+        // // let index = 'http://ems.jujinkeji.net/mobile/Index'
+        // // location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorize?returnUrl=' + index
+        // this.$http({
+        //    url: this.$http.adornUrl('/mobile/order/create'),
+        //    method: 'post',
+        //    data: this.$http.adornData(this.dataForm)
+        //  }).then(({ data }) => {
+        //    if (data && data.code === 0) {
+        //     console.log(data)
+        //      // this.$message({
+        //     //   message: '操作成功',
+        //     //   message: '操作成功',
+        //     //   message: '操作成功',
+        //     //   type: 'success',
+        //     //   duration: 1500,
+        //     //   onClose: () => {
+        //     //     this.visible = false
+        //     //     this.$emit('refreshDataList')
+        //     //   }
+        //     // })
+        //     // alert(data.orderId + '---------------' + data.data.orderId)
+        //     this.dataForm.orderId = data.data.orderId
+        //     this.wechatPay(data.data.orderId)
+        //     console.log("操作成功")
+        //     // this.$router.push("/list")
+        //   } else {
+        //     // this.$message.error(data.msg)
+        //     alert(data.msg)
+        //   }
+        //  })
+
+        this.first = false
+        this.second = false
+        this.third = false
+        this.fourth = false
+        this.fifth = true
       },
       // 支付
       wechatPay(orderId){
@@ -1568,6 +1628,101 @@ body{
   font-weight:bold;
   margin-top:0.7rem;
 }
+.new_dianzi{
+    width:100%;
+    height:0.4rem;
+  }
+  .new_sub{
+    width:5.95rem;
+    height:1rem;
+    text-align:center;
+    line-height:1rem;
+    border-radius: 0.2rem;
+    background: #177abf;
+    outline: none;
+      border: none;
+      color:white;
+      font-size:0.36rem;
+      font-weight: bold;
+      margin:0 0.775rem;
+  }
+  .white_title button{
+    padding:0;
+    margin:0;
+    width:1rem;
+    height:0.45rem;
+    text-align:center;
+    line-height:0.45rem;
+    border-radius: 0.3rem;
+    background: #177abf;
+    outline: none;
+      border: none;
+      color:white;
+  }
+  .white_title{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .new_qianzi{
+    margin-top:0.3rem;
+    width:100%;
+    height:3.3rem;
+    background:#f2f2f2;
+  }
+  .new_info span:first-child{
+    font-size:0.28rem;
+    font-weight: bold;
+  }
+  .new_info{
+    width:6.64rem;
+    margin:0 auto;
+    font-size:0.26rem;
+    margin-bottom:0.3rem;
+    line-height:0.5rem;
+  }
+  .new_new_title{
+    font-size:0.32rem;
+    color:#333;
+    font-weight: bold;
+    text-align:center;
+    margin-top:0.4rem;
+    margin-bottom:0.3rem;
+  }
+  .new_info_title{
+    font-size:0.32rem;
+    text-align:center;
+    margin-top:0.4rem;
+    margin-bottom:0.3rem;
+  }
+  .new_box{
+    width: 7.5rem;
+      height: 0.8rem;
+      color: #fff;
+      font-size: 0.28rem;
+      line-height: 0.8rem;
+      background: #177abf;
+      text-align: center;
+      position: relative;
+  }
+  .new_tui{
+    position: absolute;
+      top: 0.25rem;
+      left: 0.3rem;
+      width: 0.3rem;
+      height: 0.3rem;
+      background: url(../../img/zuo.png);
+      background-size: 0.3rem 0.3rem;
+      background-repeat: no-repeat;
+  }
+  .new_title{
+    font-size: 0.36rem;
+      color: #fff;
+      text-align: center;
+      background: #213980;
+      height: 0.8rem;
+      line-height: 0.8rem;
+  }
 </style>
 
 
