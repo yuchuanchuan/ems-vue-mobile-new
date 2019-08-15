@@ -214,7 +214,7 @@
     </div>
     <!----------------------------------签名 2019-8-15 --------------------------------------->
     <div v-show="fifth">
-      <div class='new_title'>不动产登记便民邮寄</div>  
+      <div class='new_title'>不动产登记便民邮寄</div>
       <div class="new_box">
         <div class="new_tui"></div>
         授权委托书
@@ -222,19 +222,15 @@
       <div class='new_info_title'>授权委托书</div>
       <div class='new_yi new_info'>
         <span>委托人：</span>
-        <span>王先森</span>
+        <span>{{dataForm.shoujian_name}}</span>
       </div>
       <div class='new_id new_info'>
         <span>身份证：</span>
-        <span>120110199909099999</span>
+        <span>{{dataForm.propertyNo}}</span>
       </div>
       <div class='new_num new_info'>
         <span>凭证编号：</span>
-        <span>321321323232</span>
-      </div>
-      <div class='new_num new_info'>
-        <span>凭证编号：</span>
-        <span>321321323232</span>
+        <span>{{dataForm.idCard}}</span>
       </div>
       <div class='new_jia new_info'>
         <span>受托人：</span>
@@ -249,7 +245,9 @@
           <span>委托人签名：</span>
           <button>清空</button>
         </div>
-        <div class='new_qianzi'></div>
+        <div class='new_qianzi'>
+          <Signature></Signature>
+        </div>
       </div>
 
       <button class='new_sub' @click="jump5">提交</button>
@@ -262,6 +260,7 @@
 
 <script>
   import $ from 'jquery'
+  import Signature from './signature.vue'
   var ownerPositive = '';  // 正面身份证
   var ownerNegative = '';  // 反面身份证
   var housingAuthority = ''; // 房产证
@@ -413,7 +412,7 @@
           this.fourth = true
           this.fifth = false
         }
-        
+
       },
       radio(){
         if(this.third){
@@ -499,7 +498,6 @@
               if(lis[j].id==i){
                 this.province= lis[j].name
 
-                console.log("邮费计算----------------")
                 if(this.province != '新疆维吾尔自治区' && this.province != '西藏自治区'){
                   this.dataForm.postRiskId = this.insuredList[0].id
                   this.postPrice = this.insuredList[0].price  // 邮寄价格
@@ -509,14 +507,6 @@
                   this.postPrice = this.insuredList[1].price  // 邮寄价格
                   this.rateFree = this.insuredList[1].insuredRate  // 保险费率价格
                 }
-                console.log(this.insuredList)
-
-
-
-                console.log(this.dataForm.postRiskId)
-                console.log(this.postPrice)
-                console.log(this.rateFree)
-
               }
             }
           }
@@ -769,12 +759,14 @@
         this.second = true
         this.third = false
         this.fourth = false
+        this.fifth = false
       },
       tui2(){
         this.first = false
         this.second = false
         this.third = true
         this.fourth = false
+        this.fifth = false
       },
       jump1(){
         var reg1 = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/;
@@ -882,49 +874,46 @@
         }
       },
       jump5(){
-        this.$router.push("/submit")
+        this.payOrder = true
+        this.dataForm.ownerPositive = ownerPositive
+        this.dataForm.ownerNegative = ownerNegative
+        this.dataForm.housingAuthority = housingAuthority
+        this.dataForm.openid = localStorage.getItem("openid")
+        // this.dataForm.postRiskId = $('input:radio[name="dizhi"]:checked').val();val
+
+
+        // let index = 'http://ems.jujinkeji.net/mobile/Index'
+        // location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorize?returnUrl=' + index
+        this.$http({
+           url: this.$http.adornUrl('/mobile/order/create'),
+           method: 'post',
+           data: this.$http.adornData(this.dataForm)
+         }).then(({ data }) => {
+           if (data && data.code === 0) {
+            console.log(data)
+             // this.$message({
+            //   message: '操作成功',
+            //   message: '操作成功',
+            //   message: '操作成功',
+            //   type: 'success',
+            //   duration: 1500,
+            //   onClose: () => {
+            //     this.visible = false
+            //     this.$emit('refreshDataList')
+            //   }
+            // })
+            // alert(data.orderId + '---------------' + data.data.orderId)
+            this.dataForm.orderId = data.data.orderId
+            this.wechatPay(data.data.orderId)
+            console.log("操作成功")
+            // this.$router.push("/list")
+          } else {
+            // this.$message.error(data.msg)
+            alert(data.msg)
+          }
+         })
       },
       jump2(){
-
-        // this.payOrder = true
-        // this.dataForm.ownerPositive = ownerPositive
-        // this.dataForm.ownerNegative = ownerNegative
-        // this.dataForm.housingAuthority = housingAuthority
-        // this.dataForm.openid = localStorage.getItem("openid")
-        // // this.dataForm.postRiskId = $('input:radio[name="dizhi"]:checked').val();val
-
-
-        // // let index = 'http://ems.jujinkeji.net/mobile/Index'
-        // // location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorize?returnUrl=' + index
-        // this.$http({
-        //    url: this.$http.adornUrl('/mobile/order/create'),
-        //    method: 'post',
-        //    data: this.$http.adornData(this.dataForm)
-        //  }).then(({ data }) => {
-        //    if (data && data.code === 0) {
-        //     console.log(data)
-        //      // this.$message({
-        //     //   message: '操作成功',
-        //     //   message: '操作成功',
-        //     //   message: '操作成功',
-        //     //   type: 'success',
-        //     //   duration: 1500,
-        //     //   onClose: () => {
-        //     //     this.visible = false
-        //     //     this.$emit('refreshDataList')
-        //     //   }
-        //     // })
-        //     // alert(data.orderId + '---------------' + data.data.orderId)
-        //     this.dataForm.orderId = data.data.orderId
-        //     this.wechatPay(data.data.orderId)
-        //     console.log("操作成功")
-        //     // this.$router.push("/list")
-        //   } else {
-        //     // this.$message.error(data.msg)
-        //     alert(data.msg)
-        //   }
-        //  })
-
         this.first = false
         this.second = false
         this.third = false
@@ -1025,6 +1014,9 @@
     //     next()
     //   }
     // },
+    components:{
+      Signature
+    }
   }
 </script>
 

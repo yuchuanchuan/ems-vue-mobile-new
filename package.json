@@ -16,6 +16,7 @@
     "axios": "^0.18.0",
     "jquery": "^3.4.1",
     "moment": "^2.24.0",
+    "signature_pad": "^3.0.0-beta.3",
     "vue": "^2.5.2",
     "vue-cookie": "^1.1.4",
     "vue-router": "^3.0.1"
