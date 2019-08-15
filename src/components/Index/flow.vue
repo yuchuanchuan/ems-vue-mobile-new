@@ -72,6 +72,21 @@
 					alert("请先同意不动产权证邮寄业务办理须知")
 				}
 			},
+      validateLogin(){
+        this.$http({
+          url: this.$http.adornUrl('/wechat/validateLogin'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'openid': this.openid
+          })
+        }).then(({ data }) => {
+          if (data && data.code === 0) {
+            console.log("登陆成功")
+          } else {
+            console.log("授权失败")
+          }
+        })
+      },
       // getQueryString(name){
       //   let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
       //   let r = window.location.search.substr(1).match(reg);
@@ -119,6 +134,7 @@
         // console.log(localStorage.getItem('areaid'))
         this.openid = localStorage.getItem("openid")
       }
+      this.validateLogin()
     }
   }
 </script>
