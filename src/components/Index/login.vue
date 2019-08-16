@@ -101,9 +101,9 @@ export default {
         if (data && data.code === 0) {
           localStorage.removeItem("openid")
           this.$cookie.set('token', data.data)
-          // let index = 'http://ems.jujinkeji.net/mobile/flow'
+          let index = 'http://ems.jujinkeji.net/mobile/flow'
 
-          let index = 'http://ems.jujinkeji.net/mobile/flow/4964666/1043'
+          // let index = 'http://ems.jujinkeji.net/mobile/flow/4964666/1043'
           // 微信页面
           // location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorOpenId?returnUrl=' + index
 

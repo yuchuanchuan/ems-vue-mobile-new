@@ -149,7 +149,17 @@
         <div class="item">
           <div class="title">受理地址</div>
           <div class="dz">
-            <div>{{detailRiskName}}</div>
+            <!-- <div>{{detailRiskName}}</div>-->
+            <div>
+              <select>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+              </select>
+            </div>
             <!-- <img src="../../img/dz.png"> -->
           </div>
         </div>
@@ -216,7 +226,7 @@
     <div v-show="fifth">
       <div class='new_title'>不动产登记便民邮寄</div>
       <div class="new_box">
-        <div class="new_tui"></div>
+        <div class="new_tui" @click="new_tui()"></div>
         授权委托书
       </div>
       <div class='new_info_title'>授权委托书</div>
@@ -768,6 +778,13 @@
         this.fourth = false
         this.fifth = false
       },
+      new_tui(){
+          this.first = false
+          this.second = false
+          this.third = false
+          this.fourth = true
+          this.fifth = false
+      },
       jump1(){
         var reg1 = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/;
         var reg2 = /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/;
@@ -1024,13 +1041,20 @@
 </script>
 
 <style scoped>
+.dz select{
+  width:100%;
+  height:0.8rem;
+  background:none;
+  border:none;
+  outline:none;
+}
 .btn_list{
   width:100%;
   height:0.9rem;
   display:flex;
   justify-content: space-between;
   align-items: center;
-  margin-top:0.4rem;
+  margin-top:0.6rem;
   border-top:1px solid #dedede;
 }
 .btn_list .xiugai{
@@ -1460,7 +1484,7 @@ body{
     display: block;
 }
 .content3 .dz>div{
-    width:3.65rem;
+    width:3.8rem;
     overflow-x: auto;
     white-space: nowrap;
 }
@@ -1621,7 +1645,7 @@ body{
   font-size:0.36rem !important;
   color:#333;
   font-weight:bold;
-  margin-top:0.7rem;
+  margin-top:0.5rem;
 }
 .new_dianzi{
     width:100%;
@@ -1673,7 +1697,7 @@ body{
     width:6.64rem;
     margin:0 auto;
     font-size:0.26rem;
-    margin-bottom:0.3rem;
+    margin-bottom:0.15rem;
     line-height:0.5rem;
   }
   .new_new_title{
@@ -1689,8 +1713,10 @@ body{
     text-align:center;
     margin-top:0.4rem;
     margin-bottom:0.3rem;
+    display:none;
   }
   .new_box{
+      margin-bottom:0.15rem;
     width: 7.5rem;
       height: 0.8rem;
       color: #fff;
