@@ -243,10 +243,10 @@
       <div class='new_white new_info'>
         <div class='white_title'>
           <span>委托人签名：</span>
-          <button>清空</button>
+          <button @click="overwrite">清空</button>
         </div>
         <div class='new_qianzi'>
-          <Signature></Signature>
+          <Signature ref="signaturePic"></Signature>
         </div>
       </div>
 
@@ -988,6 +988,9 @@
             alert(data.msg)
           }
         })
+      },
+      overwrite(){
+        this.$refs.signaturePic.overwrite()
       }
     },
     mounted(){
