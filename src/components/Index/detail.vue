@@ -38,7 +38,7 @@
 			</div>
 			<div class='info_detail'>
 				<div class="info_left">邮寄号</div>
-				<div class='info_right'>新添加的邮寄号</div>
+				<div class='info_right'>{{dataForm.mailNum}}</div>
 			</div>
 		</div>
 
@@ -67,6 +67,7 @@ export default {
         idCard: '', // 产权证号
         phone: '',
         postAddress: '',
+        mailNum:'', //邮件号
 
 
 

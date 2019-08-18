@@ -37,11 +37,10 @@ http.interceptors.request.use(config => {
  * 响应拦截
  */
 http.interceptors.response.use(response => {
-  console.log("====响应请求====")
-  console.log(response)
   if (response.data && response.data.code === 401) { // 401, token失效
     clearLoginInfo()
-    router.push({ name: 'login' })
+    // router.push({ name: 'login' })
+    window.location.href = 'http://www.tjsbdcdjzx.com'
   }
   return response
 }, error => {

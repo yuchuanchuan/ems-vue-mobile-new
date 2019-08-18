@@ -151,20 +151,15 @@
           <div class="dz">
             <!-- <div>{{detailRiskName}}</div>-->
             <div>
-              <select>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                <option>6</option>
+              <select v-model="dataForm.handleId">
+                <option v-for="(item,index) in handleAreas" :key="index" :value="item.id">{{item.handleAddress}}</option>
               </select>
             </div>
             <!-- <img src="../../img/dz.png"> -->
           </div>
         </div>
       </div>
-      <button class="btn" @click="jump2" :disabled="payOrder">下一步</button>
+      <button class="btn" @click="jump2">下一步</button>
     </div>
 
 
@@ -260,7 +255,7 @@
         </div>
       </div>
 
-      <button class='new_sub' @click="jump5">提交</button>
+      <button class='new_sub' @click="jump5" :disabled="payOrder">提交</button>
       <div class="new_dianzi"></div>
     </div>
 
@@ -393,6 +388,27 @@
             this.dataForm.handleAreaId = data.data.areaId
             this.detailRiskName = data.data.handleAddress
             this.dataForm.handleId = data.data.id
+          }
+        }).then(()=>{
+          this.getHandleAreaList()
+        })
+      },
+
+      getHandleAreaList(){
+        this.$http({
+          url: this.$http.adornUrl('/mobile/handlerArea/list'),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({ data }) => {
+          if (data && data.code === 0) {
+            this.handleAreas = []
+            data.data.forEach((item)=>{
+              this.handleAreas.push({
+                id: item.id,
+                areaId: item.areaId,
+                handleAddress: item.handleAddress
+              })
+            })
           }
         })
       },
@@ -936,6 +952,14 @@
         this.third = false
         this.fourth = false
         this.fifth = true
+
+        if(this.dataForm.handleAreaId === ''){
+          this.handleAreas.forEach((item) => {
+            if(item.id === this.dataForm.handleId){
+              this.dataForm.handleAreaId = item.areaId
+            }
+          })
+        }
       },
       // 支付
       wechatPay(orderId){
