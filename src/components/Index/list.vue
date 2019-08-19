@@ -1,8 +1,6 @@
 <template>
 	<div>
-		<div class="title">查询列表
-
-		</div>
+		<div class="title"><div class="tui" @click="tui()"></div>查询列表</div>
 
 		<ul class='info_list'>
 			<li class='info' v-for="(item, index) in orderList" :key="index">
@@ -183,6 +181,11 @@ export default {
     document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + 'px';
   },
   methods:{
+
+    tui(){
+      this.$router.go(-1);
+    },
+
     //添加的进度查询
     jinduchaxun(orderNum,status){
       this.$router.push({ name: 'query', params:{'orderNum': orderNum} })
@@ -598,4 +601,14 @@ export default {
 		background:#177abf!important;
 		color:white!important;
 	}
+  .tui{
+  position: absolute;
+  top:0.25rem;
+  left:0.3rem;
+  width:0.3rem;
+  height:0.3rem;
+  background:url("../../img/zuo.png");
+  background-size:0.3rem 0.3rem;
+  background-repeat: no-repeat;
+}
 </style>

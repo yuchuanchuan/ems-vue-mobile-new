@@ -39,7 +39,7 @@
 		 <input type="checkbox" class='is_agree' v-model="checked">
 		 <p>
 			<span class='meiyongde'>同意</span>
-			<router-link to="/contract" class='bind_tap' >《不动产权证邮寄业务办理须知》</router-link>
+			<router-link to="/contract" class='bind_tap' >《邮寄业务办理须知》</router-link>
 		 </p>
 		</div>
 			<div class="tab">

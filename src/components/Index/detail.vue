@@ -48,9 +48,9 @@
 		</div>
 
 		<div class='fuceng' v-if="is_show" @click="show_img">
-			<img :src="dataForm.ownerPositive">
-			<img :src="dataForm.ownerNegative">
-			<img :src="dataForm.housingAuthority">
+			<img v-image-preview :src="dataForm.ownerPositive">
+			<img v-image-preview :src="dataForm.ownerNegative">
+			<img v-image-preview :src="dataForm.housingAuthority">
 		</div>
   </div>
 </template>

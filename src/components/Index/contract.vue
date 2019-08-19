@@ -1,14 +1,14 @@
 <template>
   <div class="content">
-    <div class="title">合同知晓</div>
-    <div class="box">不动产权证办理流程</div>
+    <div class="title">邮寄业务办理须知</div>
+    <div class="box"><div class="tui" @click="tui()"></div>邮寄业务办理须知</div>
     <div class="txt">
      <div v-html="postInfo"></div>
     </div>
     <!-- <div class="tab">
         <div class="top">
             <input type="checkbox" @click="xuan">
-            <div>我已阅读《不动产权证邮寄业务办理须知》</div>
+            <div>我已阅读《邮寄业务办理须知》</div>
         </div>
         <button v-bind:disabled="mybtn" @click="jump">同意并进入</button>
     </div> -->
@@ -43,6 +43,9 @@ export default {
           }
         })
       },
+      tui(){
+        this.$router.go(-1);
+      }
     },
   created(){
       this.getPostInfo()
@@ -70,6 +73,16 @@ body{
     background:#177abf;
     text-align: center;
     position:relative;
+}
+.tui{
+  position: absolute;
+  top:0.33rem;
+  left:0.3rem;
+  width:0.3rem;
+  height:0.3rem;
+  background:url("../../img/zuo.png");
+  background-size:0.3rem 0.3rem;
+  background-repeat: no-repeat;
 }
 .sj{
     border-top:0.17rem solid #fff;

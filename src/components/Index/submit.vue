@@ -5,7 +5,7 @@
     <img src="../../img/dui.png" class="dui">
     <div class="btitle">提交成功</div>
     <div class="stitle">您的订单已经提交成功,我们会尽快检验您的信息,请耐心等待。</div>
-    <div class="atitle">申请审核通过后的15个工作日，我们将安排为您邮寄，请密切还珠短信及短话通知</div>
+    <div class="atitle">申请审核通过后的5-10个工作日，我们将安排为您邮寄，请密切关注短信及电话通知。</div>
     <button class="btn" @click="jump3">再来一单</button>
     <button class="btn" @click="jump2">查看订单</button>
     <button class="btn" @click="jump1">返回首页</button>
@@ -90,7 +90,7 @@ body{
 .stitle{
   color:#333;
   line-height: 0.4rem;
-  width:4rem;
+  width:5.5rem;
   margin:0 auto;
   font-size:0.28rem;
   text-align: center;

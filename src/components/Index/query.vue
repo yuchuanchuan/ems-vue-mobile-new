@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="title">不动产登记便民邮寄</div>
-    <div class="box">进度查询</div>
+    <div class="box"><div class="tui" @click="tui()"></div>进度查询</div>
     <div class="box1">
         <div class="item" v-for="(item,index) in orderList" :key="index">
             <div class="top">
@@ -128,6 +128,11 @@ export default {
         }
     },
     methods:{
+
+      tui(){
+        this.$router.go(-1);
+      },
+
       jump(){
         this.$router.push({name: 'flow'})
       },
@@ -297,8 +302,18 @@ body{
     position:absolute;
     bottom:0.1rem;
     width:2.4rem;
-	height: 1.38rem;
+  height: 1.38rem;
     right:0.8rem;
     z-index:9999;
+}
+.tui{
+  position: absolute;
+  top:0.33rem;
+  left:0.3rem;
+  width:0.3rem;
+  height:0.3rem;
+  background:url("../../img/zuo.png");
+  background-size:0.3rem 0.3rem;
+  background-repeat: no-repeat;
 }
 </style>
