@@ -654,6 +654,30 @@
         }
       },
       monidianji1(){
+       // alert("执行拍照")
+       //  let $this = this;
+       //  wx.chooseImage({
+       //    count: 1, // 最多可以选择的图片张数，默认9
+       //    sizeType: ['original', 'compressed'], // original 原图，compressed 压缩图，默认二者都有
+       //    sourceType: ['camera'], // album 从相册选图，camera 使用相机，默认二者都有
+       //    success: function(res) {
+       //      alert(res);
+       //      alert(res.localIds);
+       //      // $this.images.localId = res.localIds;
+       //      // let obj={};
+       //      // obj.src=res.localIds;
+       //      // $this.ioslocId.push(obj);
+       //      // $this.scrollFn();
+       //      // $this.uploadImge();
+       //      // if ($this.ioslocId.length >= 9) {
+       //      //   $this.imgBoolean = false;
+       //      // }
+       //
+       //    },
+       //    fail: function (res) {
+       //      alert("微信调取摄像头失败")
+       //    }
+       //  })
         document.getElementById('saveImage1').click()
       },
       yulan1(){
@@ -991,6 +1015,41 @@
       },
       overwrite(){
         this.$refs.signaturePic.overwrite()
+      },
+
+      /********** 微信调用摄像头 ***********/
+      getWxPhoto(){
+          alert('获取摄像头appid')
+          let that = this;
+          that.$http({
+            url: that.$http.adornUrl('/wechatJs/location'),
+            method: 'get',
+            params: that.$http.adornParams({
+              'url': window.location.href.replace(location.hash, '')
+            })
+          }).then(({ data }) => {
+            if (data && data.code === 0) {
+              wx.config({
+                debug: false,
+                appId: data.data.appId,
+                nonceStr: data.data.nonceStr,
+                timestamp: data.data.timestamp,
+                url: data.data.url,
+                signature: data.data.signature,
+                jsApiList: [
+                  'checkJsApi',
+                  'chooseImage',
+                  'previewImage',
+                  'uploadImage',
+                  'downloadImage'
+                ],
+              });
+            }else{
+              alert(data.msg)
+            }
+          }).catch(()=>{
+            alert("网络连接异常...")
+          })
       }
     },
     mounted(){
@@ -1006,17 +1065,20 @@
       // this.getMyLocation()
       this.getHandleAreaInfo()
       this.getPostInfo()
+
+      // 微信调取摄像头
+      //this.getWxPhoto()
     },
-    // beforeRouteEnter (to, from, next) {
-    //   let u = navigator.userAgent;
-    //   let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-    //   // XXX: 修复iOS版微信HTML5 History兼容性问题
-    //   if (isiOS && "/mobile" + to.path !== window.location.pathname) {
-    //     window.location.assign('http://ems.jujinkeji.net/mobile/orderInfo')
-    //   } else {
-    //     next()
-    //   }
-    // },
+    beforeRouteEnter (to, from, next) {
+      let u = navigator.userAgent;
+      let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+      // XXX: 修复iOS版微信HTML5 History兼容性问题
+      if (isiOS && "/mobile" + to.path !== window.location.pathname) {
+        window.location.assign('http://ems.jujinkeji.net/mobile/orderInfo')
+      } else {
+        next()
+      }
+    },
     components:{
       Signature
     }
