@@ -3,19 +3,19 @@
     <!--第二步-->
     <div class="content1" v-show="second">
       <div class="title">不动产登记便民邮寄</div>
-      <div class="box">上传凭证</div>
+      <div class="box"><div class="tui" @click="tui()"></div>上传凭证</div>
       <div class="box1-title">
         <img src="../../img/ren.png">
         <div>产权人身份证明</div>
       </div>
       <div @click="monidianji1" class="box1">
-        <div v-show="show1">身份证正面</div>
-        <img :src=imageSave1 id="portrait1" class="img"/>
+        <div v-show="show1">身份证正面</div> 
+        <img :src=imageSave1 id="portrait1" class="img" :style="{'z-index': (show1==false ? '2':'-1')}" />
       </div>
       <input type="file" id="saveImage1" name="myphoto" class="myinput" ref="closeUp" accept="image/*" capture="camera">
       <div @click="monidianji2" class="box1">
         <div v-show="show2">身份证反面</div>
-        <img :src=imageSave2 id="portrait2" class="img"/>
+        <img :src=imageSave2 id="portrait2" class="img" :style="{'z-index': (show2==false ? '2':'-1')}" />
       </div>
       <input type="file" id="saveImage2" name="myphoto" class="myinput" ref="closeUp" accept="image/*" capture="camera">
       <div class="box1-title">
@@ -24,7 +24,7 @@
       </div>
       <div @click="monidianji3" class="box1">
         <div v-show="show3">上传凭证</div>
-        <img :src=imageSave3 id="portrait3" class="img"/>
+        <img :src=imageSave3 id="portrait3" class="img" :style="{'z-index': (show3==false ? '2':'-1')}" />
       </div>
       <input type="file" id="saveImage3" name="myphoto" class="myinput" ref="closeUp" accept="image/*" capture="camera">
 
@@ -148,20 +148,19 @@
         </div>
         <div class="item">
           <div class="title">受理地址</div>
-          <div class="dz">
-            <div>{{detailRiskName}}</div>
-            <!-- <img src="../../img/dz.png"> -->
-          </div>
+          <select v-model="dataForm.handleId" class='addr_select'>
+            <option v-for="(item,index) in handleAreas" :key="index" :value="item.id">{{item.handleAddress}}</option>
+          </select>
         </div>
       </div>
-      <button class="btn" @click="jump2" :disabled="payOrder">下一步</button>
+      <button class="btn" @click="jump2">下一步</button>
     </div>
 
 
     <!----------------------------------受理人信息-  第一步--------------------------------------->
     <div v-show="first">
       <div class='title'>
-        <div>不动产登记受理凭证信息</div>
+        <div><div class="tui" @click="shangyiye"></div>不动产登记受理凭证信息</div>
         <!--<div class='jiantou'></div>-->
       </div>
 
@@ -173,8 +172,8 @@
 
       <div class="inp_list">
         <div class='user_name'>
-          <div class='left'>授权人</div>
-          <input type="text" v-model="dataForm.shoujian_name"  @blur.prevent="changeName()">
+          <div class='left'>申请人</div>
+          <input type="text" v-model="dataForm.shoujian_name"  @blur.prevent="changeName()" >
         </div>
 
         <div class='user_phone'>
@@ -189,7 +188,7 @@
 
         <div class='user_num'>
           <div class='left'>凭证编号</div>
-          <input type="text" v-model="dataForm.idCard">
+          <input type="text" v-model="dataForm.idCard" @blur.prevent="goback()">
         </div>
       </div>
       <button class='next' @click="jump1()">下一步</button>
@@ -201,7 +200,7 @@
         <div class='fuceng_title'>请确认信息</div>
 
         <div class='info_list'>
-          <div class='user_name'>授权人：{{dataForm.shoujian_name}}</div>
+          <div class='user_name'>申请人：{{dataForm.shoujian_name}}</div>
           <div class='user_id'>身份证号：{{dataForm.propertyNo}}</div>
           <div class='user_phone'>手机号：{{dataForm.shoujian_phone}}</div>
           <div class='user_num'>凭证编号：{{dataForm.idCard}}</div>
@@ -216,7 +215,7 @@
     <div v-show="fifth">
       <div class='new_title'>不动产登记便民邮寄</div>
       <div class="new_box">
-        <div class="new_tui"></div>
+        <div class="new_tui" @click="new_tui()"></div>
         授权委托书
       </div>
       <div class='new_info_title'>授权委托书</div>
@@ -250,7 +249,7 @@
         </div>
       </div>
 
-      <button class='new_sub' @click="jump5">提交</button>
+      <button class='new_sub' @click="jump5" :disabled="payOrder">提交</button>
       <div class="new_dianzi"></div>
     </div>
 
@@ -340,6 +339,9 @@
       }
     },
     methods:{
+      shangyiye(){
+         this.$router.go(-1);
+      },
       getPostInfo(){
         this.$http({
           url: this.$http.adornUrl('/mobile/bussiness/list'),
@@ -384,6 +386,27 @@
             this.detailRiskName = data.data.handleAddress
             this.dataForm.handleId = data.data.id
           }
+        }).then(()=>{
+          this.getHandleAreaList()
+        })
+      },
+
+      getHandleAreaList(){
+        this.$http({
+          url: this.$http.adornUrl('/mobile/handlerArea/list'),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({ data }) => {
+          if (data && data.code === 0) {
+            this.handleAreas = []
+            data.data.forEach((item)=>{
+              this.handleAreas.push({
+                id: item.id,
+                areaId: item.areaId,
+                handleAddress: item.handleAddress
+              })
+            })
+          }
         })
       },
 
@@ -403,15 +426,20 @@
         }if(!reg2.test(this.dataForm.phone)){
           alert("请输入正确的电话号码")
           return
-        }if(this.dataForm.postAddress == ''){
+        }if(this.dataForm.postProvinceId == '' || this.dataForm.postCityId=='' || this.dataForm.postCountyId ==''){
           alert("请输入详细地址")
+          return
+        }if(this.dataForm.postAddress == ''){
+          alert("请选择收件地址")
         }else{
+          console.log(this.dataForm.postAddress)
           this.first = false
           this.second = false
           this.third = false
           this.fourth = true
           this.fifth = false
         }
+        
 
       },
       radio(){
@@ -778,6 +806,13 @@
       },
 
       //  info页面方法
+      tui(){
+        this.first = true
+        this.second = false
+        this.third = false
+        this.fourth = false
+        this.fifth = false
+      },
       tui1(){
         this.first = false
         this.second = true
@@ -791,6 +826,13 @@
         this.third = true
         this.fourth = false
         this.fifth = false
+      },
+      new_tui(){
+          this.first = false
+          this.second = false
+          this.third = false
+          this.fourth = true
+          this.fifth = false
       },
       jump1(){
         var reg1 = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/;
@@ -842,6 +884,7 @@
           this.text="请输入正确的姓名"
           return;
         }
+        window.scrollTo(0, 0);
       },
       changePhone(e){
         var u = event.currentTarget.value;
@@ -853,6 +896,7 @@
           this.text="请输入正确的手机号"
           return;
         }
+        window.scrollTo(0, 0);
       },
       changeId(e){
         var u = event.currentTarget.value;
@@ -864,6 +908,10 @@
           this.text="请输入正确的身份证号"
           return;
         }
+        window.scrollTo(0, 0);
+      },
+      goback(){
+        window.scrollTo(0, 0);
       },
       changeDizhi(e){
         var u = event.currentTarget.value;
@@ -875,6 +923,7 @@
         }else{
           this.show=false;
         }
+        window.scrollTo(0, 0);
       },
       changeBianhao(e){
         var u = event.currentTarget.value;
@@ -938,11 +987,23 @@
          })
       },
       jump2(){
-        this.first = false
-        this.second = false
-        this.third = false
-        this.fourth = false
-        this.fifth = true
+        if(this.dataForm.postType == ""){
+          alert("请选择邮寄文件类型")
+        }else{
+          this.first = false
+          this.second = false
+          this.third = false
+          this.fourth = false
+          this.fifth = true
+        }
+
+        if(this.dataForm.handleAreaId === ''){
+          this.handleAreas.forEach((item) => {
+            if(item.id === this.dataForm.handleId){
+              this.dataForm.handleAreaId = item.areaId
+            }
+          })
+        }
       },
       // 支付
       wechatPay(orderId){
@@ -1086,14 +1147,22 @@
 </script>
 
 <style scoped>
+.dz select{
+  width:100%;
+  height:0.8rem;
+  background:none;
+  border:none;
+  outline:none;
+}
 .btn_list{
   width:100%;
   height:0.9rem;
   display:flex;
   justify-content: space-between;
   align-items: center;
-  margin-top:0.4rem;
+  margin-top:0.35rem;
   border-top:1px solid #dedede;
+
 }
 .btn_list .xiugai{
   border-right:1px solid #dedede;
@@ -1112,7 +1181,7 @@
   margin-top:0.45rem;
 }
 .info_list div{
-  margin-top:0.1rem;
+  margin:0.1rem 0;
 }
 	.content1_tip{
 		font-size: 0.28rem;
@@ -1132,6 +1201,9 @@
 }
 body{
     width:100%;
+}
+.addr_select{
+  width:4.35rem !important;
 }
 .content1>.title,.content2>.title,.content3>.title{
   font-size:0.36rem;
@@ -1184,7 +1256,8 @@ body{
     display: block;
     height:100%;
     position:absolute;
-    z-index:2;
+    z-index:-1;
+    width:100%;
 }
 .content1 .box1>div{
     font-size:0.28rem;
@@ -1354,11 +1427,11 @@ body{
 }
 .content3 .item>.title{
     font-weight: bold;
-    font-size:0.32rem;
+    font-size:0.28rem;
     height:0.8rem;
     line-height: 0.8rem;
     text-align: center;
-    width:2.1rem;
+    width:2.42rem;
     background:#f2f2f2;
     border:1px solid #666;
     border-radius: 5px;
@@ -1400,7 +1473,8 @@ body{
     margin-bottom:0;
 }
 .content3 .item>select{
-    width:4.6rem;
+    flex-shrink: 0;
+    width: 4.35rem !important;
     height:0.8rem;
     border:0;
     outline: none;
@@ -1522,7 +1596,7 @@ body{
     display: block;
 }
 .content3 .dz>div{
-    width:3.65rem;
+    width:3.8rem;
     overflow-x: auto;
     white-space: nowrap;
 }
@@ -1570,8 +1644,8 @@ body{
   }
   .inp_list>div{
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     margin-bottom: 0.3rem;
   }
   .inp_list{
@@ -1593,6 +1667,7 @@ body{
     height: 0.8rem;
     text-align: center;
     line-height: 0.8rem;
+    margin-right:0.15rem;
     color:#333;
     background:#f2f2f2;
     border:1px solid black;
@@ -1600,10 +1675,7 @@ body{
     border-radius: 0.15rem;
   }
   .tip_title{
-    width:13%;
-  }
-  .tip_info{
-    width:87%;
+    white-space: nowrap;
   }
   .tip{
     color:#666666;
@@ -1683,7 +1755,7 @@ body{
   font-size:0.36rem !important;
   color:#333;
   font-weight:bold;
-  margin-top:0.7rem;
+  margin-top:0.5rem;
 }
 .new_dianzi{
     width:100%;
@@ -1735,7 +1807,7 @@ body{
     width:6.64rem;
     margin:0 auto;
     font-size:0.26rem;
-    margin-bottom:0.3rem;
+    margin-bottom:0.15rem;
     line-height:0.5rem;
   }
   .new_new_title{
@@ -1751,8 +1823,10 @@ body{
     text-align:center;
     margin-top:0.4rem;
     margin-bottom:0.3rem;
+    display:none;
   }
   .new_box{
+      margin-bottom:0.15rem;
     width: 7.5rem;
       height: 0.8rem;
       color: #fff;

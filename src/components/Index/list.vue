@@ -1,8 +1,6 @@
 <template>
 	<div>
-		<div class="title">查询列表
-			
-		</div>
+		<div class="title"><div class="tui" @click="tui()"></div>查询列表</div>
 
 		<ul class='info_list'>
 			<li class='info' v-for="(item, index) in orderList" :key="index">
@@ -19,15 +17,15 @@
 				<div class='btn_list'>
 					<button v-if="item.status === 1" @click="wechatPay(item.orderNumber)" :class='item.status === 1?"btn_bluc":""'>付款</button>
 					<button v-if="item.status === 1 || item.status === 2" @click="quxiao(item.orderNumber, item.status)">取消订单</button>
-					
+
           <!-------------------------------------新添加的进度查询--------------------------------------------------------->
-          <button @click="jinduchaxun">进度查询</button>
-          
+          <button @click="jinduchaxun(item.orderNumber,item.status)" v-if="item.status !== 1">进度查询</button>
+
 
           <button @click="queryInfo(item.orderNumber,item.status)">订单详情</button>
 				</div>
 			</li>
-      <div class='dianzi'></div> 
+      <div class='dianzi'></div>
 
 			<!--<li class='info'>-->
 				<!--<div class='num'>订单号：10216359874</div>-->
@@ -183,9 +181,14 @@ export default {
     document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + 'px';
   },
   methods:{
+
+    tui(){
+      this.$router.go(-1);
+    },
+
     //添加的进度查询
-    jinduchaxun(){
-      this.$router.push("/query")
+    jinduchaxun(orderNum,status){
+      this.$router.push({ name: 'query', params:{'orderNum': orderNum} })
     },
 
     // 退款
@@ -235,14 +238,14 @@ export default {
 			//  : '' }}
       console.log(status)
 
-
+      this.$router.push({ name: 'detail', params:{'orderNum': orderNum} })
 			//当前下单时间过了今晚12点后就无法取消改订单
 			//如果是未支付或者已取消已支付并且没超过剩余时间的跳转到新页面
-			if(status == 1||status==5 || status == 2){
-				this.$router.push({ name: 'detail', params:{'orderNum': orderNum} })
-			}else{
-				this.$router.push({ name: 'query', params:{'orderNum': orderNum} })
-			}
+			// if(status == 1||status==5 || status == 2){
+			// 	this.$router.push({ name: 'detail', params:{'orderNum': orderNum} })
+			// }else{
+			// 	this.$router.push({ name: 'query', params:{'orderNum': orderNum} })
+			// }
     },
     jump(){
       console.log("跳转")
@@ -598,4 +601,14 @@ export default {
 		background:#177abf!important;
 		color:white!important;
 	}
+  .tui{
+  position: absolute;
+  top:0.25rem;
+  left:0.3rem;
+  width:0.3rem;
+  height:0.3rem;
+  background:url("../../img/zuo.png");
+  background-size:0.3rem 0.3rem;
+  background-repeat: no-repeat;
+}
 </style>

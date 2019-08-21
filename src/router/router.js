@@ -14,6 +14,11 @@ import list from "../components/Index/list.vue"
 import tip from "../components/Index/tip.vue"
 import detail from "../components/Index/detail.vue"
 
+import VueDirectiveImagePreviewer from 'vue-directive-image-previewer'
+import 'vue-directive-image-previewer/dist/assets/style.css'
+
+
+Vue.use(VueDirectiveImagePreviewer)
 Vue.use(Router)
 export default new Router({
   base: '/mobile/',
