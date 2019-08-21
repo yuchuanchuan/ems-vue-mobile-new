@@ -1098,7 +1098,7 @@
   display:flex;
   justify-content: space-between;
   align-items: center;
-  margin-top:0.5rem;
+  margin-top:0.35rem;
   border-top:1px solid #dedede;
 
 }
@@ -1141,7 +1141,7 @@ body{
     width:100%;
 }
 .addr_select{
-  width:4.4rem !important;
+  width:4.35rem !important;
 }
 .content1>.title,.content2>.title,.content3>.title{
   font-size:0.36rem;
@@ -1365,7 +1365,7 @@ body{
 }
 .content3 .item>.title{
     font-weight: bold;
-    font-size:0.32rem;
+    font-size:0.28rem;
     height:0.8rem;
     line-height: 0.8rem;
     text-align: center;
@@ -1411,7 +1411,8 @@ body{
     margin-bottom:0;
 }
 .content3 .item>select{
-    width:4.6rem;
+    flex-shrink: 0;
+    width: 4.35rem !important;
     height:0.8rem;
     border:0;
     outline: none;
@@ -1582,6 +1583,7 @@ body{
   .inp_list>div{
     display: flex;
     align-items: center;
+    justify-content: space-between;
     margin-bottom: 0.3rem;
   }
   .inp_list{
