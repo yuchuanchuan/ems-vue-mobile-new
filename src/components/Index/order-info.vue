@@ -682,85 +682,85 @@
         }
       },
       monidianji1(){
-          let that = this;
-          that.$http({
-              url: that.$http.adornUrl('/wechatJs/location'),
-              method: 'get',
-              params: that.$http.adornParams({
-                'url': window.location.href.replace(location.hash, '')
-              })
-            }).then(({ data }) => {
-            if (data && data.code === 0) {
-              wx.config({
-                debug: true,
-                appId: data.data.appId,
-                nonceStr: data.data.nonceStr,
-                timestamp: data.data.timestamp,
-                url: data.data.url,
-                signature: data.data.signature,
-                jsApiList: [
-                  'checkJsApi',
-                  'chooseImage',
-                  'previewImage',
-                  'uploadImage',
-                  'downloadImage'
-                ],
-              });
-
-              wx.checkJsApi({
-                jsApiList: ['chooseImage'],
-                success: function (res) {
-                  if (res.checkResult.chooseImage == false) {
-                    alert('你的微信版本太低，不支持微信JS接口，请升级到最新的微信版本！');
-                    return;
-                  }
-                }
-              });
-
-              wx.ready(function () {
-                wx.chooseImage({
-                   count: 1, // 最多可以选择的图片张数，默认9
-                   sizeType: ['original', 'compressed'], // original 原图，compressed 压缩图，默认二者都有
-                   sourceType: ['camera'], // album 从相册选图，camera 使用相机，默认二者都有
-                  success: function (res) {
-                    alert("---success--");
-                    alert(res.localIds);
-                    this.imageSave1 = res.localIds;
-                    wx.uploadImage({
-                      localId: this.imageSave1.toString(), // 需要上传的图片的ID，由chooseImage接口获得
-                      isShowProgressTips: 1, // 进度提示
-                      success: function (res) {
-                        alert("上传照片");
-                        // var mediaId = res.serverId; // 返回图片的服务器端ID，即mediaId
-                        // //将获取到的 mediaId 传入后台 方法savePicture
-                        // $.post(path+"/getImage/savePicture",{"mediaId":mediaId,"tmp":"填写证件的正反面参数"},function(res){
-                        //   //填写你自己的业务逻辑
-                        // });
-                      },
-                      fail: function (res) {
-                        // alert('图片上传失败，请重试');
-                      }
-                    });
-                  },
-                  cancel: function (res) {
-                    // alert('用户拒绝开启摄像头信息');
-                    // that.getShopFjStudio()
-                  },
-                  fail: function (res) {
-                    alert(JSON.stringify(res))
-                    // alert("获取摄像头失败1")
-                  }
-                });
-              });
-
-              wx.error(function (res) {
-                alert(JSON.stringify(res))
-                // alert("获取摄像头失败2");
-              });
-            } else {
-              alert(data.msg)
-            }
-          })
+          // let that = this;
+          // that.$http({
+          //     url: that.$http.adornUrl('/wechatJs/location'),
+          //     method: 'get',
+          //     params: that.$http.adornParams({
+          //       'url': window.location.href.replace(location.hash, '')
+          //     })
+          //   }).then(({ data }) => {
+          //   if (data && data.code === 0) {
+          //     wx.config({
+          //       debug: true,
+          //       appId: data.data.appId,
+          //       nonceStr: data.data.nonceStr,
+          //       timestamp: data.data.timestamp,
+          //       url: data.data.url,
+          //       signature: data.data.signature,
+          //       jsApiList: [
+          //         'checkJsApi',
+          //         'chooseImage',
+          //         'previewImage',
+          //         'uploadImage',
+          //         'downloadImage'
+          //       ],
+          //     });
+          //
+          //     wx.checkJsApi({
+          //       jsApiList: ['chooseImage'],
+          //       success: function (res) {
+          //         if (res.checkResult.chooseImage == false) {
+          //           alert('你的微信版本太低，不支持微信JS接口，请升级到最新的微信版本！');
+          //           return;
+          //         }
+          //       }
+          //     });
+          //
+          //     wx.ready(function () {
+          //       wx.chooseImage({
+          //          count: 1, // 最多可以选择的图片张数，默认9
+          //          sizeType: ['original', 'compressed'], // original 原图，compressed 压缩图，默认二者都有
+          //          sourceType: ['camera'], // album 从相册选图，camera 使用相机，默认二者都有
+          //         success: function (res) {
+          //           alert("---success--");
+          //           alert(res.localIds);
+          //           this.imageSave1 = res.localIds;
+          //           wx.uploadImage({
+          //             localId: this.imageSave1.toString(), // 需要上传的图片的ID，由chooseImage接口获得
+          //             isShowProgressTips: 1, // 进度提示
+          //             success: function (res) {
+          //               alert("上传照片");
+          //               // var mediaId = res.serverId; // 返回图片的服务器端ID，即mediaId
+          //               // //将获取到的 mediaId 传入后台 方法savePicture
+          //               // $.post(path+"/getImage/savePicture",{"mediaId":mediaId,"tmp":"填写证件的正反面参数"},function(res){
+          //               //   //填写你自己的业务逻辑
+          //               // });
+          //             },
+          //             fail: function (res) {
+          //               // alert('图片上传失败，请重试');
+          //             }
+          //           });
+          //         },
+          //         cancel: function (res) {
+          //           // alert('用户拒绝开启摄像头信息');
+          //           // that.getShopFjStudio()
+          //         },
+          //         fail: function (res) {
+          //           alert(JSON.stringify(res))
+          //           // alert("获取摄像头失败1")
+          //         }
+          //       });
+          //     });
+          //
+          //     wx.error(function (res) {
+          //       alert(JSON.stringify(res))
+          //       // alert("获取摄像头失败2");
+          //     });
+          //   } else {
+          //     alert(data.msg)
+          //   }
+          // })
        // alert("执行拍照")
        //  let $this = this;
        //  wx.chooseImage({
@@ -786,7 +786,7 @@
        //      alert("微信调取摄像头失败")
        //    }
        //  })
-        // document.getElementById('saveImage1').click()
+        document.getElementById('saveImage1').click()
       },
       yulan1(){
         var that =this
