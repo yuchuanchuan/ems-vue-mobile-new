@@ -887,6 +887,7 @@
 
       //  info页面方法
       tui(){
+        alert("fsfsfsdfs");
         this.first = true
         this.second = false
         this.third = false
@@ -1201,7 +1202,6 @@
       this.yulan1();
       this.yulan2();
       this.yulan3();
-      // this.getInsuredList()
     },
     created(){
       this.getInsuredList()
@@ -1222,6 +1222,9 @@
       } else {
         next()
       }
+    },
+    beforeDestroy(){
+      // window.removeEventListener('popstate',this.pushHistory());
     },
     components:{
       Signature
