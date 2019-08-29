@@ -222,12 +222,13 @@
         console.log(file)
         var formdata1 = new FormData()// 创建form对象
         formdata1.append('file', file) // 通过append向form对象添加数据,可以通过append继续添加数//或formdata1.append('img',file);
+        formdata1.append('type', 3)
         let config = {
           headers: { 'Content-Type': 'multipart/form-data' }
         }
-        config.headers['Authorization'] = Vue.cookie.get('Authorization') // 请求头带上token
+        config.headers['token'] = Vue.cookie.get('token') // 请求头带上token
         // 添加请求头
-        axios.post('/api/mongodb/uploadFile', formdata1, config).then(res => {
+        axios.post(process.env.BASE_API + '/sys/file/uploadImg', formdata1, config).then(res => {
           console.log(res)
           if (res && res.data.code === 1) {
             this.$emit('handle', res.data.data)

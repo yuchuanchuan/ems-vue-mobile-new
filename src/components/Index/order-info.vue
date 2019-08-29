@@ -218,35 +218,40 @@
         <div class="new_tui" @click="new_tui()"></div>
         授权委托书
       </div>
-      <div class='new_info_title'>授权委托书</div>
-      <div class='new_yi new_info'>
-        <span>委托人：</span>
-        <span>{{dataForm.shoujian_name}}</span>
-      </div>
-      <div class='new_id new_info'>
-        <span>身份证：</span>
-        <span>{{dataForm.propertyNo}}</span>
-      </div>
-      <div class='new_num new_info'>
-        <span>凭证编号：</span>
-        <span>{{dataForm.idCard}}</span>
-      </div>
-      <div class='new_jia new_info'>
-        <span>受托人：</span>
-        <span>中国邮政速递物流股份有限公司天津市分公司</span>
-      </div>
-      <div class='new_shi new_info'>
-        <span>委托事项：</span>
-        <span>权利人自愿委托中国邮政速递物流股份有限公司天津市分公司为合法代理人，代为领取本人申请办理的不动产权证/不动产登记证明，并邮寄送达本人，受托人在其权限范围内依法所作的一切行为，接受问询的行为及签署的一切文件，委托人均予以承认。</span>
-      </div>
-      <div class='new_white new_info'>
-        <div class='white_title'>
-          <span>委托人签名：</span>
-          <button @click="overwrite">清空</button>
+      <!-- 截取授权委托书图片开始 -->
+      <div ref="imageTofile">
+        <div class='new_info_title'>授权委托书</div>
+        <div class='new_yi new_info'>
+          <span>委托人：</span>
+          <span>{{dataForm.shoujian_name}}</span>
         </div>
-        <div class='new_qianzi'>
-          <Signature ref="signaturePic"></Signature>
+        <div class='new_id new_info'>
+          <span>身份证：</span>
+          <span>{{dataForm.propertyNo}}</span>
         </div>
+        <div class='new_num new_info'>
+          <span>凭证编号：</span>
+          <span>{{dataForm.idCard}}</span>
+        </div>
+        <div class='new_jia new_info'>
+          <span>受托人：</span>
+          <span>中国邮政速递物流股份有限公司天津市分公司</span>
+        </div>
+        <div class='new_shi new_info'>
+          <span>委托事项：</span>
+          <span>权利人自愿委托中国邮政速递物流股份有限公司天津市分公司为合法代理人，代为领取本人申请办理的不动产权证/不动产登记证明，并邮寄送达本人，受托人在其权限范围内依法所作的一切行为，接受问询的行为及签署的一切文件，委托人均予以承认。</span>
+        </div>
+        <div class='new_white new_info'>
+          <div class='white_title'>
+            <span>委托人签名：</span>
+            <button @click="overwrite">清空</button>
+          </div>
+          <div class='new_qianzi'>
+            <Signature ref="signaturePic"></Signature>
+          </div>
+        </div>
+        <div style="height: 10px;"></div>
+        <!-- 截取授权委托书图片结束 -->
       </div>
 
       <button class='new_sub' @click="jump5" :disabled="payOrder">提交</button>
@@ -259,10 +264,12 @@
 
 <script>
   import $ from 'jquery'
+  import html2canvas from 'html2canvas'
   import Signature from './signature.vue'
   var ownerPositive = '';  // 正面身份证
   var ownerNegative = '';  // 反面身份证
   var housingAuthority = ''; // 房产证
+  var commission = '';  // 授权委托书
   export default {
     name: 'order-info',
     data(){
@@ -309,7 +316,8 @@
           postAddress: '',
           handleAreaId: '',
           openid: '',
-          handleId: ''
+          handleId: '',
+          commission: ''
         },
         //地址
         province:'',
@@ -801,6 +809,7 @@
           let formData = new FormData();
           //接口接收参数 键值形式 添加到formData中
           formData.append("file",$(this)[0].files[0]);
+          formData.append("type", 1);
           $.ajax({
             url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
             type:'post',
@@ -834,6 +843,7 @@
           let formData = new FormData();
           //接口接收参数 键值形式 添加到formData中
           formData.append("file",$(this)[0].files[0]);
+          formData.append("type", 1);
           $.ajax({
             url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
             type:'post',
@@ -867,6 +877,7 @@
           let formData = new FormData();
           //接口接收参数 键值形式 添加到formData中
           formData.append("file",$(this)[0].files[0]);
+          formData.append("type", 2);
           $.ajax({
             url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
             type:'post',
@@ -1028,10 +1039,14 @@
         }
       },
       jump5(){
+        // 截图 授权委托书
+        this.toImage()
+
         this.payOrder = true
         this.dataForm.ownerPositive = ownerPositive
         this.dataForm.ownerNegative = ownerNegative
         this.dataForm.housingAuthority = housingAuthority
+        this.dataForm.commission = commission
         this.dataForm.openid = localStorage.getItem("openid")
         // this.dataForm.postRiskId = $('input:radio[name="dizhi"]:checked').val();val
 
@@ -1195,6 +1210,68 @@
           }).catch(()=>{
             alert("网络连接异常...")
           })
+      },
+      toImage() {
+        // 第一个参数是需要生成截图的元素,第二个是自己需要配置的参数,宽高等
+        html2canvas(this.$refs.imageTofile, {
+          backgroundColor: null,
+          width: 750,
+          height: 1000
+        }).then((canvas) => {
+          let url = canvas.toDataURL('image/png');
+          this.dataURLtoFile(url)
+        })
+      },
+      dataURLtoFile (dataurl, filename = new Date().getTime()) {
+        let _this = this
+        let arr = dataurl.split(',')
+        let mime = arr[0].match(/:(.*?);/)[1]
+        let suffix = mime.split('/')[1]
+        let bstr = atob(arr[1])
+        let n = bstr.length
+        let u8arr = new Uint8Array(n)
+        while (n--) {
+          u8arr[n] = bstr.charCodeAt(n)
+        }
+        let file = new File([u8arr], `${filename}.${suffix}`, { type: mime })
+        let formdata1 = new FormData()// 创建form对象
+        formdata1.append('file', file) // 通过append向form对象添加数据,可以通过append继续添加数//或formdata1.append('img',file);
+        formdata1.append('type', 3)
+        $.ajax({
+          url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
+          type:'post',
+          data: formdata1,
+          contentType: false,
+          processData: false,
+          success:function(res){
+            if(res.code === 0){
+              commission = res.data
+              setTimeout(()=>{
+                _this.updateCommission(commission)
+              },1000)
+              // success
+            }else{
+              console.log(res.msg)
+            }
+          }
+        })
+      },
+      updateCommission(commission){
+        // alert('------------' + commission + '-------------' + this.dataForm.orderId)
+        this.$http({
+          url: this.$http.adornUrl('/mobile/order/updateCommission'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'commission': commission,
+            'orderNum': this.dataForm.orderId
+          })
+        }).then(({ data }) => {
+          if (data && data.code === 0) {
+           // success
+          } else {
+            alert(data.msg)
+          }
+        })
       }
     },
     mounted(){
@@ -1227,7 +1304,8 @@
       // window.removeEventListener('popstate',this.pushHistory());
     },
     components:{
-      Signature
+      Signature,
+      html2canvas
     }
   }
 </script>

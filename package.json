@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "html2canvas": "^1.0.0-rc.3",
     "jquery": "^3.4.1",
     "moment": "^2.24.0",
     "signature_pad": "^3.0.0-beta.3",
