@@ -36,6 +36,10 @@
 				<div class="info_left">凭证编号</div>
 				<div class='info_right'>{{dataForm.idCard}}</div>
 			</div>
+      <div class='info_detail'>
+        <div class="info_left">邮寄类型</div>
+        <div class='info_right'>{{postText}}</div>
+      </div>
 			<div class='info_detail'>
 				<div class="info_left">邮寄号</div>
 				<div class='info_right'>{{dataForm.mailNum}}</div>
@@ -59,6 +63,8 @@ export default {
   data(){
     return{
       is_show:false,
+      postTypes:[],
+      postText: '',
       dataForm:{
         orderId: '',
         orderNumber: '',
@@ -81,7 +87,8 @@ export default {
 
         handleAreaId: '',
         openid: '',
-        handleId: ''
+        handleId: '',
+        postType:''
       }
     }
   },
@@ -110,9 +117,25 @@ export default {
           alert(data.msg)
         }
       })
+    },
+    getPostInfo(){
+      this.$http({
+        url: this.$http.adornUrl('/mobile/bussiness/list'),
+        method: 'get',
+        params: this.$http.adornParams()
+      }).then(({ data }) => {
+        if (data && data.code === 0) {
+          data.data.forEach((item)=>{
+            if(item.id === this.postType){
+              this.postText = item.bussinessName
+            }
+          })
+        }
+      })
     }
 	},
   created(){
+    this.getPostInfo()
     this.getOrderInfo(this.$route.params.orderNum)
   }
 }

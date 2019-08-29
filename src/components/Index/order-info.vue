@@ -76,10 +76,10 @@
         <div class="title">详细地址</div>
         <input type="text" placeholder="输入详细地址" @blur.prevent="changeDizhi()" v-model="dataForm.postAddress">
       </div>
-      <div class="item">
-        <div class="title">凭证编号</div>
-        <input type="text" v-model="dataForm.idCard" disabled>
-      </div>
+      <!--<div class="item">-->
+        <!--<div class="title">凭证编号</div>-->
+        <!--<input type="text" v-model="dataForm.idCard" disabled>-->
+      <!--</div>-->
       <div class="tishi" v-show="show">
         <img src="../../img/i.png">
         <div>{{text}}</div>
@@ -123,7 +123,7 @@
       </div>
       <div class="item">
         <div class="title">邮寄文件类型</div>
-        <select v-model="dataForm.postType">
+        <select v-model="dataForm.postType" @click="selectPostType">
           <option v-for="(item,index) in postTypes" :key="index" :value="item.id">{{item.value}}</option>
         </select>
       </div>
@@ -347,6 +347,12 @@
       }
     },
     methods:{
+      selectPostType(){
+        alert('---------click post type-----------')
+        if(this.dataForm.postType === ''){
+          this.dataForm.postType = this.postTypes[0].id
+        }
+      },
       shangyiye(){
          this.$router.go(-1);
       },
@@ -1215,8 +1221,8 @@
         // 第一个参数是需要生成截图的元素,第二个是自己需要配置的参数,宽高等
         html2canvas(this.$refs.imageTofile, {
           backgroundColor: null,
-          width: 750,
-          height: 1000
+          width: 480,
+          height: 800
         }).then((canvas) => {
           let url = canvas.toDataURL('image/png');
           this.dataURLtoFile(url)
