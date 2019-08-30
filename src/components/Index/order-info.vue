@@ -348,7 +348,7 @@
     },
     methods:{
       selectPostType(){
-        alert('---------click post type-----------')
+        // alert('---------click post type-----------')
         if(this.dataForm.postType === ''){
           this.dataForm.postType = this.postTypes[0].id
         }
