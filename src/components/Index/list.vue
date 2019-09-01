@@ -1,6 +1,8 @@
 <template>
 	<div>
-		<div class="title"><div class="tui" @click="tui()"></div>查询列表</div>
+		<div class="title">
+      <!--<div class="tui" @click="tui()"></div>-->
+      查询列表</div>
 
 		<ul class='info_list'>
 			<li class='info' v-for="(item, index) in orderList" :key="index">
@@ -107,7 +109,7 @@ export default {
     return {
       showCanceldjs: false,
       orderList: [],
-	  tanchuang_status:false,
+	    tanchuang_status:false,
       tempOrderNum: '',
       tempOrderStatus: '',
       orderNum: ''
@@ -303,10 +305,8 @@ export default {
         method: 'get',
         params: this.$http.adornParams()
       }).then(({ data }) => {
+        this.orderList = []
         if (data && data.code === 0) {
-          console.log(data)
-          this.orderList = []
-
           data.data.forEach((item) => {
             if(item.status == 1){
               data.data.map( (obj,index)=>{

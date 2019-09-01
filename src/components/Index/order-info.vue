@@ -904,7 +904,6 @@
 
       //  info页面方法
       tui(){
-        alert("fsfsfsdfs");
         this.first = true
         this.second = false
         this.third = false
@@ -1285,6 +1284,14 @@
       this.yulan1();
       this.yulan2();
       this.yulan3();
+      document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+        // 通过下面这个API隐藏右上角按钮
+        WeixinJSBridge.call('hideOptionMenu');
+      });
+      document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+        // 通过下面这个API隐藏底部导航栏
+        WeixinJSBridge.call('hideToolbar');
+      });
     },
     created(){
       this.getInsuredList()

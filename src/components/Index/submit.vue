@@ -28,7 +28,7 @@ export default {
     },
     methods:{
       jump3(){
-        this.$router.push({name:"orderInfo"})
+        this.$router.push({name:"firstOrder"})
       },
       jump1(){
         this.$router.push({name: 'flow'})

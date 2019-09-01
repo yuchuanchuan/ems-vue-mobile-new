@@ -1,0 +1,560 @@
+<template>
+  <!--第二步-->
+  <div class="content1">
+    <div class="title">不动产登记便民邮寄</div>
+    <div class="box"><div class="tui" @click="tui()"></div>上传凭证</div>
+    <div class="box1-title">
+      <img src="../../img/ren.png">
+      <div>产权人身份证明</div>
+    </div>
+    <div @click="monidianji1" class="box1">
+      <div v-show="show1">身份证正面</div>
+      <img :src=imageSave1 id="portrait1" class="img" :style="{'z-index': (show1==false ? '2':'-1')}" />
+    </div>
+    <input type="file" id="saveImage1" name="myphoto" class="myinput" ref="closeUp" accept="image/*" capture="camera">
+    <div @click="monidianji2" class="box1">
+      <div v-show="show2">身份证反面</div>
+      <img :src=imageSave2 id="portrait2" class="img" :style="{'z-index': (show2==false ? '2':'-1')}" />
+    </div>
+    <input type="file" id="saveImage2" name="myphoto" class="myinput" ref="closeUp" accept="image/*" capture="camera">
+    <div class="box1-title">
+      <img src="../../img/shu.png">
+      <div>不动产登记受理凭证(上传图片)</div>
+    </div>
+    <div @click="monidianji3" class="box1">
+      <div v-show="show3">上传凭证</div>
+      <img :src=imageSave3 id="portrait3" class="img" :style="{'z-index': (show3==false ? '2':'-1')}" />
+    </div>
+    <input type="file" id="saveImage3" name="myphoto" class="myinput" ref="closeUp" accept="image/*" capture="camera">
+
+    <p class='content1_tip'>
+      <span class='content1_tip_title'>温馨提示：</span>
+      <span class='content1_tip_text'>上传的图片需要边框整齐字体清晰，如材料有误或不清晰的，可能需要重新上传。</span>
+    </p>
+    <button class="btn" @click="jump">下一步</button>
+  </div>
+</template>
+
+<script>
+  var ownerPositive = '';  // 正面身份证
+  var ownerNegative = '';  // 反面身份证
+  var housingAuthority = ''; // 房产证
+  export default {
+    data(){
+      return{
+        imageSave1:"",
+        imageSave2:'',
+        imageSave3:'',
+        show1:true,
+        show2:true,
+        show3:true,
+      }
+    },
+    methods:{
+      tui(){
+        this.$router.push({name: 'firstOrder'})
+      },
+      monidianji1(){
+        document.getElementById('saveImage1').click()
+      },
+      yulan1() {
+        var that = this
+        document.getElementById('saveImage1').onchange = function () {
+          that.show1 = false
+          var imgFile = this.files[0];
+          var fr = new FileReader();
+          fr.onload = function () {
+            document.getElementById('portrait1').src = fr.result;
+            sessionStorage.setItem('img1', fr.result)
+          };
+          fr.readAsDataURL(imgFile);
+          let formData = new FormData();
+          //接口接收参数 键值形式 添加到formData中
+          formData.append("file", $(this)[0].files[0]);
+          formData.append("type", 1);
+          $.ajax({
+            url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
+            type: 'post',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+              console.log(res);
+              if (res.code === 0) {
+                ownerPositive = res.data
+                sessionStorage.setItem('ownerPositive', ownerPositive)
+              } else {
+                console.log(res.msg)
+              }
+            }
+          })
+        }
+      },
+      monidianji2(){
+        document.getElementById('saveImage2').click()
+      },
+      yulan2(){
+        var that =this
+        document.getElementById('saveImage2').onchange = function () {
+          that.show2=false
+          var imgFile = this.files[0];
+          var fr = new FileReader();
+          fr.onload = function () {
+            document.getElementById('portrait2').src = fr.result;
+            sessionStorage.setItem('img2', fr.result)
+          };
+          fr.readAsDataURL(imgFile);
+          let formData = new FormData();
+          //接口接收参数 键值形式 添加到formData中
+          formData.append("file",$(this)[0].files[0]);
+          formData.append("type", 1);
+          $.ajax({
+            url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
+            type:'post',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success:function(res){
+              console.log(res);
+              if(res.code === 0){
+                ownerNegative = res.data
+                sessionStorage.setItem('ownerNegative', ownerNegative)
+              }else{
+                console.log(res.msg)
+              }
+            }
+          })
+        }
+      },
+      monidianji3(){
+        document.getElementById('saveImage3').click()
+      },
+      yulan3() {
+        var that = this
+        document.getElementById('saveImage3').onchange = function () {
+          that.show3 = false
+          var imgFile = this.files[0];
+          var fr = new FileReader();
+          fr.onload = function () {
+            document.getElementById('portrait3').src = fr.result;
+            sessionStorage.setItem('img3', fr.result)
+          };
+          fr.readAsDataURL(imgFile);
+          let formData = new FormData();
+          //接口接收参数 键值形式 添加到formData中
+          formData.append("file", $(this)[0].files[0]);
+          formData.append("type", 2);
+          $.ajax({
+            url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
+            type: 'post',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+              console.log(res);
+              if (res.code === 0) {
+                housingAuthority = res.data
+                sessionStorage.setItem('housingAuthority', housingAuthority)
+              } else {
+                console.log(res.msg)
+              }
+            }
+          })
+        }
+      },
+      jump(){
+        if(sessionStorage.getItem('ownerPositive') == ''){
+          alert('请上传身份证正面照')
+        }else if(sessionStorage.getItem('ownerNegative') == ''){
+          alert('请上传身份证反面照')
+        }else if(sessionStorage.getItem('housingAuthority') == ''){
+          alert('请上传不动产登记受理凭证')
+        }else{
+          this.$router.push({name: 'thirdOrder'})
+        }
+      }
+    },
+    mounted(){
+      document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + 'px';
+      this.yulan1();
+      this.yulan2();
+      this.yulan3();
+    },
+    created(){
+      if(sessionStorage.getItem('img1')){
+        this.imageSave1 = sessionStorage.getItem('img1')
+        this.show1 = false
+      }
+      if(sessionStorage.getItem('img2')){
+        this.imageSave2 = sessionStorage.getItem('img2')
+        this.show2 = false
+      }
+      if(sessionStorage.getItem('img3')){
+        this.imageSave3 = sessionStorage.getItem('img3')
+        this.show3 = false
+      }
+    }
+  }
+</script>
+
+<style scoped>
+  .dz select{
+    width:100%;
+    height:0.8rem;
+    background:none;
+    border:none;
+    outline:none;
+  }
+  .btn_list div{
+    font-size:0.36rem;
+    width:50%;
+    height:100%;
+    text-align: center;
+    line-height:0.9rem;
+  }
+  .info_list div{
+    margin:0.1rem 0;
+  }
+  .content1_tip{
+    font-size: 0.28rem;
+    width: 6rem;
+    margin: 0 auto;
+    margin-bottom: 0.1rem;
+    margin-top: 0.3rem;
+  }
+  .content1_tip_title{
+    color:#333;
+  }
+  .content1_tip_text{
+    color:#999;
+  }
+  body{
+    width:100%;
+  }
+  .content1>.title,.content2>.title,.content3>.title{
+    font-size:0.36rem;
+    color:#fff;
+    text-align: center;
+    background:#213980;
+    height:0.8rem;
+    line-height: 0.8rem;
+  }
+  .box{
+    width:7.5rem;
+    height:0.8rem;
+    color:#fff;
+    font-size: 0.28rem;
+    line-height: 0.8rem;
+    background:#177abf;
+    text-align: center;
+    position:relative;
+  }
+  .tui{
+    position: absolute;
+    top:0.25rem;
+    left:0.3rem;
+    width:0.3rem;
+    height:0.3rem;
+    background:url("../../img/zuo.png");
+    background-size:0.3rem 0.3rem;
+    background-repeat: no-repeat;
+  }
+  .content1 .box1{
+    width:5.2rem;
+    height:3rem;
+    background:#f2f2f2;
+    margin:0 1.25rem 0.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position:relative;
+  }
+  .content1 .img{
+    display: block;
+    height:100%;
+    position:absolute;
+    z-index:-1;
+    width:100%;
+  }
+  .content1 .box1>div{
+    font-size:0.28rem;
+    position: absolute;
+    z-index:1;
+  }
+  .content1 .box1-title{
+    height:1rem;
+    display: flex;
+    align-items: center;
+    padding:0 0.6rem;
+    font-size:0.28rem;
+    color:#333;
+  }
+  .content1 .box1-title>img{
+    width:0.4rem;
+    margin-right: 0.1rem;
+  }
+  .content1 .myinput{
+    display:none;
+  }
+  .btn{
+    background:#177abf;
+    width:6rem;
+    height:1rem;
+    line-height: 1rem;
+    color:#fff;
+    font-size:0.32rem;
+    text-align: center;
+    border-radius: 5px;
+    margin:0 0.75rem 0.6rem;
+    outline: none;
+    border:none;
+  }
+  .content2 .item>.title{
+    font-weight: bold;
+    font-size:0.32rem;
+    height:0.8rem;
+    line-height: 0.8rem;
+    text-align: center;
+    width:2.1rem;
+    background:#f2f2f2;
+    border:1px solid #666;
+    border-radius: 5px;
+    margin-right: 0.2rem;
+    color:#333;
+  }
+  .content2 .item>input{
+    font-size:0.28rem;
+    border-radius: 5px;
+    background:#f0f0f0;
+    border:0;
+    outline: none;
+    width:3.8rem;
+    height:0.75rem;
+    padding:0 0.4rem;
+  }
+  .content2 .select>select{
+    background:#f2f2f2;
+    font-size:0.2rem;
+    border-radius: 5px;
+    border:0;
+    outline: none;
+    color:#666;
+    width:1.4rem;
+    height:0.8rem;
+    text-overflow: ellipsis;
+    appearance:none;
+    -moz-appearance:none;
+    -webkit-appearance:none;
+    padding:0 0.2rem;
+    background:url("../../img/down.png");
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 0.2rem;
+  }
+  .content2 .select>select::-ms-expand { display: none; }
+  .content2 .tishi{
+    font-size:0.28rem;
+    color:#f00;
+    display: flex;
+    align-items: center;
+    padding-left:0.3rem;
+  }
+  .content2 .tishi>img{
+    width:0.4rem;
+    margin-right: 0.1rem;
+  }
+
+  .content2 .box1{
+    width:5.2rem;
+    height:3rem;
+    background:#f2f2f2;
+    margin:0 1.25rem 0.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position:relative;
+  }
+  .content2 .img{
+    display: block;
+    height:100%;
+    position:absolute;
+    z-index:2;
+  }
+  .content2 .box1>div{
+    font-size:0.28rem;
+    position: absolute;
+    z-index:1;
+  }
+  .content2 .box1-title{
+    height:1rem;
+    display: flex;
+    align-items: center;
+    padding:0 0.6rem;
+    font-size:0.28rem;
+    color:#333;
+  }
+  .content2 .box1-title>img{
+    width:0.4rem;
+    margin-right: 0.1rem;
+  }
+  .content2 .myinput{
+    display:none;
+  }
+  .content3 .box1-title{
+    height:1rem;
+    display: flex;
+    align-items: center;
+    padding:0 0.6rem;
+    font-size:0.28rem;
+    color:#333;
+  }
+  .content3 .box1-title>img{
+    width:0.4rem;
+    margin-right: 0.1rem;
+  }
+  .content3 .item{
+    margin:0 0.3rem 0.3rem;
+    height:0.8rem;
+    align-items: center;
+    display: flex;
+  }
+  .content3 .item>.title{
+    font-weight: bold;
+    font-size:0.28rem;
+    height:0.8rem;
+    line-height: 0.8rem;
+    text-align: center;
+    width:2.42rem;
+    background:#f2f2f2;
+    border:1px solid #666;
+    border-radius: 5px;
+    margin-right: 0.2rem;
+  }
+
+  .content3 .item>select{
+    flex-shrink: 0;
+    width: 4.35rem !important;
+    height:0.8rem;
+    border:0;
+    outline: none;
+    background:#f2f2f2;
+    border-radius: 5px;
+    color:#666;
+    padding:0 0.3rem;
+  }
+
+  .content3 .box2>.title{
+    font-size:0.32rem;
+    color:#333;
+    font-weight: bold;
+    height:1rem;
+    line-height: 1rem;
+  }
+
+  .content3 .top1>.price>span{
+    font-size:0.18rem;
+  }
+
+  .content3 input[type=radio] {
+    display:block;
+    width:0.3rem;
+    height:0.3rem;
+    -webkit-appearance:none;
+    border-radius: 50%;
+    border:1px solid #dadada;
+    background-color: transparent;
+    outline: 0 !important;
+    line-height: 5vw;}
+  .content3 input[type=radio]:after {
+    content:"";
+    display:block;
+    width:0.3rem;
+    height:0.3rem;
+    border-radius:50%;
+    text-align:center;
+    line-height:0.3rem;
+    font-size:0.2rem;
+    box-sizing:border-box;}
+  .content3 input[type=radio]:checked{border:0;}
+  .content3 input[type=radio]:checked:after {
+    content: "L";
+    color:#fff;
+    transform:matrix(-0.766044,-0.642788,-0.642788,0.766044,0,0);
+    -webkit-transform:matrix(-0.766044,-0.642788,-0.642788,0.766044,0,0);
+    border-color:2px solid #177abf;
+    background-color: #177abf;}
+
+  .content3 .item>.price>span{
+    font-size: 0.2rem;
+    color:#999;
+  }
+
+  .content3 .dz>img{
+    width:0.3rem;
+    display: block;
+  }
+  .content3 .dz>div{
+    width:3.8rem;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .content3 .dz>div::-webkit-scrollbar{
+    display: none;
+  }
+
+  .inp_list>div{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.3rem;
+  }
+
+  .inp_list input{
+    width:4.6rem;
+    height: 0.8rem;
+    background: #f2f2f2;
+    border:none;
+    outline: none;
+    border-radius: 0.15rem;
+    text-indent: 0.64rem;
+  }
+
+  .title{
+    margin-top: 0;
+    height: 0.8rem;
+    width:100%;
+    background:white;
+    font-size: 0.32rem;
+    font-weight: bold;
+    color:white;
+    background: #177abf;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  .content3 .item .title{
+    color:#333!important;
+  }
+
+  .white_title button{
+    padding:0;
+    margin:0;
+    width:1rem;
+    height:0.45rem;
+    text-align:center;
+    line-height:0.45rem;
+    border-radius: 0.3rem;
+    background: #177abf;
+    outline: none;
+    border: none;
+    color:white;
+  }
+
+  .new_info span:first-child{
+    font-size:0.28rem;
+    font-weight: bold;
+  }
+
+</style>
