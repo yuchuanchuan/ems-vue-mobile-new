@@ -93,6 +93,7 @@
           this.payOrder = true
           // 截图 授权委托书
           this.toImage()
+          this.createOrderInfo()
         }else {
           alert('请签字确认')
         }
@@ -106,8 +107,6 @@
         }).then((canvas) => {
           let url = canvas.toDataURL('image/png');
           this.dataURLtoFile(url)
-        }).then(()=>{
-          this.createOrderInfo()
         })
       },
       dataURLtoFile (dataurl, filename = new Date().getTime()) {
@@ -135,9 +134,9 @@
           success:function(res){
             if(res.code === 0){
               commission = res.data
-              // setTimeout(()=>{
-              //   _this.updateCommission(commission)
-              // },1000)
+              setTimeout(()=>{
+                _this.updateCommission(commission)
+              },1000)
               // success
             }else{
               console.log(res.msg)
