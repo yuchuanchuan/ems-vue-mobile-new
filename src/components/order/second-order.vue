@@ -72,6 +72,7 @@
           //接口接收参数 键值形式 添加到formData中
           formData.append("file", $(this)[0].files[0]);
           formData.append("type", 1);
+          formData.append("name", sessionStorage.getItem('applyName'));
           $.ajax({
             url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
             type: 'post',
@@ -108,6 +109,7 @@
           //接口接收参数 键值形式 添加到formData中
           formData.append("file",$(this)[0].files[0]);
           formData.append("type", 1);
+          formData.append("name", sessionStorage.getItem('applyName'));
           $.ajax({
             url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
             type:'post',
@@ -144,6 +146,7 @@
           //接口接收参数 键值形式 添加到formData中
           formData.append("file", $(this)[0].files[0]);
           formData.append("type", 2);
+          formData.append("name", sessionStorage.getItem('applyName'));
           $.ajax({
             url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
             type: 'post',

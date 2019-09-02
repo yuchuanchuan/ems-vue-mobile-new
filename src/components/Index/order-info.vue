@@ -173,12 +173,12 @@
       <div class="inp_list">
         <div class='user_name'>
           <div class='left'>申请人</div>
-          <input type="text" v-model="dataForm.shoujian_name"  @blur.prevent="changeName()" >
+          <input type="text" v-model="dataForm.applyName"  @blur.prevent="changeName()" >
         </div>
 
         <div class='user_phone'>
           <div class='left'>手机号</div>
-          <input type="text" v-model="dataForm.shoujian_phone" @blur.prevent="changePhone()">
+          <input type="text" v-model="dataForm.applyPhone" @blur.prevent="changePhone()">
         </div>
 
         <div class='item'>
@@ -200,9 +200,9 @@
         <div class='fuceng_title'>请确认信息</div>
 
         <div class='info_list'>
-          <div class='user_name'>申请人：{{dataForm.shoujian_name}}</div>
+          <div class='user_name'>申请人：{{dataForm.applyName}}</div>
           <div class='user_id'>身份证号：{{dataForm.propertyNo}}</div>
-          <div class='user_phone'>手机号：{{dataForm.shoujian_phone}}</div>
+          <div class='user_phone'>手机号：{{dataForm.applyPhone}}</div>
           <div class='user_num'>凭证编号：{{dataForm.idCard}}</div>
         </div>
         <div class='btn_list'>
@@ -223,7 +223,7 @@
         <div class='new_info_title'>授权委托书</div>
         <div class='new_yi new_info'>
           <span>委托人：</span>
-          <span>{{dataForm.shoujian_name}}</span>
+          <span>{{dataForm.applyName}}</span>
         </div>
         <div class='new_id new_info'>
           <span>身份证：</span>
@@ -296,8 +296,8 @@
         postTypes:[],
         dataForm:{
           orderId: '',
-          shoujian_name:'',
-          shoujian_phone:'',
+          applyName:'',
+          applyPhone:'',
           propertyNo: '', //身份证号
           name: '',
           idCard: '', // 产权证号
@@ -935,18 +935,18 @@
         var reg1 = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/;
         var reg2 = /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/;
         var reg3 = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
-        if(this.dataForm.shoujian_name==''){
+        if(this.dataForm.applyName==''){
           alert("请输入姓名")
           return
-        }if(!reg1.test(this.dataForm.shoujian_name)){
+        }if(!reg1.test(this.dataForm.applyName)){
           alert("请输入正确的姓名")
           return
         }
-        if(this.dataForm.shoujian_phone==""){
+        if(this.dataForm.applyPhone==""){
           alert("请输入电话号码")
           return
         }
-        if(!reg2.test(this.dataForm.shoujian_phone)){
+        if(!reg2.test(this.dataForm.applyPhone)){
           alert("请输入正确的电话号码")
           return
         }

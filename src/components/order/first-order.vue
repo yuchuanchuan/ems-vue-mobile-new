@@ -18,12 +18,12 @@
     <div class="inp_list">
       <div class='user_name'>
         <div class='left'>申请人</div>
-        <input type="text" v-model="dataForm.shoujian_name">
+        <input type="text" v-model="dataForm.applyName">
       </div>
 
       <div class='user_phone'>
         <div class='left'>手机号</div>
-        <input type="text" v-model="dataForm.shoujian_phone">
+        <input type="text" v-model="dataForm.applyPhone">
       </div>
 
       <div class='item'>
@@ -46,9 +46,9 @@
         <div class='fuceng_title'>请确认信息</div>
 
         <div class='info_list'>
-          <div class='user_name'>申请人：{{dataForm.shoujian_name}}</div>
+          <div class='user_name'>申请人：{{dataForm.applyName}}</div>
           <div class='user_id'>身份证号：{{dataForm.propertyNo}}</div>
-          <div class='user_phone'>手机号：{{dataForm.shoujian_phone}}</div>
+          <div class='user_phone'>手机号：{{dataForm.applyPhone}}</div>
           <div class='user_num'>凭证编号：{{dataForm.idCard}}</div>
         </div>
         <div class='btn_list'>
@@ -67,8 +67,8 @@
       return{
         sureInfo: false,
         dataForm:{
-          shoujian_name: '',
-          shoujian_phone: '',
+          applyName: '',
+          applyPhone: '',
           propertyNo: '',
           idCard: ''
         },
@@ -82,8 +82,8 @@
       },
       sureNext(){
         this.sureInfo = false
-        sessionStorage.setItem('shoujian_name', this.dataForm.shoujian_name)
-        sessionStorage.setItem('shoujian_phone', this.dataForm.shoujian_phone)
+        sessionStorage.setItem('applyName', this.dataForm.applyName)
+        sessionStorage.setItem('applyPhone', this.dataForm.applyPhone)
         sessionStorage.setItem('propertyNo', this.dataForm.propertyNo)
         sessionStorage.setItem('idCard', this.dataForm.idCard)
 
@@ -98,9 +98,9 @@
         window.scrollTo(0, 0);
       },
       jump1 () {
-        if(this.dataForm.shoujian_name == '' || this.dataForm.shoujian_name == null){
+        if(this.dataForm.applyName == '' || this.dataForm.applyName == null){
           alert('请输入申请人姓名')
-        } else if(this.dataForm.shoujian_phone == '' || this.dataForm.shoujian_phone == null){
+        } else if(this.dataForm.applyPhone == '' || this.dataForm.applyPhone == null){
           alert('请输入手机号')
         } else if(this.dataForm.propertyNo == '' || this.dataForm.propertyNo == null){
           alert('请输入身份证号')
@@ -108,9 +108,9 @@
           alert('请输入凭证编号')
         }else{
           let flag = true
-          if(this.dataForm.shoujian_name){
+          if(this.dataForm.applyName){
             let reg = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/;
-            if (!reg.test(this.dataForm.shoujian_name)) {
+            if (!reg.test(this.dataForm.applyName)) {
               flag = false
               alert('请输入正确的申请人姓名')
               return;
@@ -118,9 +118,9 @@
             window.scrollTo(0, 0);
           }
 
-          if(this.dataForm.shoujian_phone){
+          if(this.dataForm.applyPhone){
             let reg = /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/;
-            if (!reg.test(this.dataForm.shoujian_phone)) {
+            if (!reg.test(this.dataForm.applyPhone)) {
               flag = false
               alert('请输入正确的手机号')
               return;
@@ -148,11 +148,11 @@
       document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + 'px';
     },
     created(){
-      if(this.dataForm.shoujian_name == ''){
-        this.dataForm.shoujian_name = sessionStorage.getItem('shoujian_name')
+      if(this.dataForm.applyName == ''){
+        this.dataForm.applyName = sessionStorage.getItem('applyName')
       }
-      if(this.dataForm.shoujian_phone == ''){
-        this.dataForm.shoujian_phone = sessionStorage.getItem('shoujian_phone')
+      if(this.dataForm.applyPhone == ''){
+        this.dataForm.applyPhone = sessionStorage.getItem('applyPhone')
       }
       if(this.dataForm.propertyNo == ''){
         this.dataForm.propertyNo = sessionStorage.getItem('propertyNo')

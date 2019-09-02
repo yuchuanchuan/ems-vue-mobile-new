@@ -10,7 +10,7 @@
       <div class='new_info_title'>授权委托书</div>
       <div class='new_yi new_info'>
         <span>委托人：</span>
-        <span>{{dataForm.shoujian_name}}</span>
+        <span>{{dataForm.applyName}}</span>
       </div>
       <div class='new_id new_info'>
         <span>身份证：</span>
@@ -56,8 +56,8 @@
         payOrder: false,
         dataForm: {
           orderId: '',
-          shoujian_name: sessionStorage.getItem('shoujian_name'),
-          shoujian_phone: sessionStorage.getItem('shoujian_phone'),
+          applyName: sessionStorage.getItem('applyName'),
+          applyPhone: sessionStorage.getItem('applyPhone'),
           propertyNo: sessionStorage.getItem('propertyNo'), //身份证号
           name: sessionStorage.getItem('name'),
           idCard: sessionStorage.getItem('idCard'), // 产权证号
@@ -125,6 +125,7 @@
         let formdata1 = new FormData()// 创建form对象
         formdata1.append('file', file) // 通过append向form对象添加数据,可以通过append继续添加数//或formdata1.append('img',file);
         formdata1.append('type', 3)
+        formdata1.append("name", sessionStorage.getItem('applyName'))
         $.ajax({
           url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
           type:'post',
