@@ -141,32 +141,30 @@
   }
 </script>
 <style scoped>
-	.tab div{
+  .tab div{
   width:50%;
   height:100%;
   text-align: center;
  }
-	.bind_tap{
-		color:#177abf !important;
-		text-decoration-line:none;
-	}
-	.agree{
-		display: flex;
-		justify-content: flex-start;
-		align-items: center;
-	}
-	.is_agree{
-		margin-right: 0.2rem;
+  .bind_tap{
+    color:#177abf !important;
+    text-decoration-line:none;
+  }
+  .agree{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .is_agree{
+    margin-right: 0.2rem;
   width:0.3rem;
   height: 0.3rem;
-	margin-left: 0.4rem;
+  margin-left: 0.4rem;
  }
  .meiyongde{
   color:#333333!important;
  }
  .agree{
-  margin-top:0.9rem;
-  margin-bottom: 0.4rem;
   font-size: 0.28rem;
  }
 body{
@@ -200,13 +198,13 @@ body{
 }
 
 .box1{
-  padding:0.8rem 0 0;
+  padding:0.1rem 0 0;
 }
 .item1{
   display: flex;
   align-items: center;
   padding-left: 2.9rem;
-  margin-bottom:0.6rem;
+  margin-bottom:0.4rem;
 }
 .item2{
   display: flex;
