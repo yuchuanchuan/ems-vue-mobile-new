@@ -40,7 +40,7 @@ export default new Router({
     {path: '/submit/:orderNum',name: 'submit',component: submit},
     {path: '/query/:orderNum',name: 'query',component: query},
     // {path: '/orderInfo', name:'orderInfo', component:orderInfo},
-    {path: '/list', name: 'list', component: list},
+    {path: '/list/:loginOpen', name: 'list', component: list},
     {path:'/tip',name:'tip',component:tip},
 		{path:'/detail/:orderNum',name:'detail',component:detail},
 

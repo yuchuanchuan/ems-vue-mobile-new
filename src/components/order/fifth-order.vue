@@ -221,9 +221,9 @@
                 _this.updateOrderStatus()
               },500)
             }else if(res.err_msg == "get_brand_wcpay_request:cancel"){
-              _this.$router.push("/list")
+              _this.$router.push({name:"list"})
             } else{
-              _this.$router.push("/list")
+              _this.$router.push({name:"list"})
             }
           }
         );

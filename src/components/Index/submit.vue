@@ -31,11 +31,12 @@ export default {
         this.$router.push({name:"firstOrder"})
       },
       jump1(){
-        this.$router.push({name: 'flow'})
+        // this.$router.push({name: 'flow'})
+        this.$router.push({path: `/flow/${localStorage.getItem('openid')}/${localStorage.getItem('areaid')}`})
       },
       jump2(){
         // this.$router.push({ name: 'query', params:{'orderNum': this.orderNum} })
-        this.$router.push("/list")
+        this.$router.push({name:"list"})
       }
     },
   created(){

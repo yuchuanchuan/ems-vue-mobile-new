@@ -134,7 +134,7 @@ export default {
       },
 
       jump(){
-        this.$router.push({name: 'flow'})
+        this.$router.push({path: `/flow/${localStorage.getItem('openid')}/${localStorage.getItem('areaid')}`})
       },
       getOrderInfo(orderNum){
           ///
