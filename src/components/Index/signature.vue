@@ -22,6 +22,7 @@
   export default {
     data () {
       return {
+        touchBegin: false,
         tempImgUrl: '',
         signatureTime: '',
         showPop: false,
@@ -66,6 +67,8 @@
     methods: {
       // mobile
       touchStart (ev) {
+        this.touchBegin = true
+
         let canvas = this.$refs.canvasF
         this.canvasTxt = canvas.getContext('2d')
         this.stageInfo = canvas.getBoundingClientRect()

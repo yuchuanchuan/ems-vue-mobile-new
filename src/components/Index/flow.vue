@@ -109,8 +109,8 @@
       // },
     },
     created(){
-      console.log("获取页面链接地址")
-      console.log(window.location.href)
+      // alert("获取页面链接地址")
+      // alert(window.location.href)
 
       let webAddress = window.location.href
       localStorage.setItem("openid", webAddress.split("/")[webAddress.split("/").length - 2])
@@ -135,6 +135,7 @@
         // console.log(localStorage.getItem('areaid'))
         this.openid = localStorage.getItem("openid")
       }
+      this.$cookie.set('token', this.openid)
       this.validateLogin()
     }
   }

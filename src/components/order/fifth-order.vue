@@ -89,12 +89,12 @@
         this.$refs.signaturePic.overwrite()
       },
       jump5(){
-        if(commission == ''){
-          alert('请签字确认')
-        }else{
+        if(this.$refs.signaturePic.touchBegin){
           this.payOrder = true
           // 截图 授权委托书
           this.toImage()
+        }else {
+          alert('请签字确认')
         }
       },
       toImage() {

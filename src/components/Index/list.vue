@@ -250,8 +250,7 @@ export default {
 			// }
     },
     jump(){
-      console.log("跳转")
-      this.$router.push({name: 'flow'})
+      this.$router.push({path: `/flow/${localStorage.getItem('openid')}/${localStorage.getItem('areaid')}`})
     },
     InitTime(endtime){
       endtime = endtime + 1800000
@@ -419,6 +418,7 @@ export default {
   },
   created(){
     // alert('零点时间戳===' + new Date(new Date(new Date().getTime() - 60*60*1000).setHours(0,0,0,0)).getTime())
+    // alert('openid---------' + localStorage.getItem("openid"))
     this.getUserOrderList()
   },
   destroyed(){

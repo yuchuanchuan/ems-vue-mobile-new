@@ -240,10 +240,11 @@
         }if(!reg2.test(this.dataForm.phone)){
           alert("请输入正确的电话号码")
           return
-        }if(this.dataForm.postProvinceId == '' || this.dataForm.postCityId=='' || this.dataForm.postCountyId ==''){
+        }if(this.dataForm.postProvinceId == '' || this.dataForm.postCityId=='' || this.dataForm.postCountyId =='' ||
+          this.dataForm.postProvinceId == null || this.dataForm.postCityId==null || this.dataForm.postCountyId ==null){
           alert("请输入收件地址")
           return
-        }if(this.dataForm.postAddress == ''){
+        }if(this.dataForm.postAddress == '' || this.dataForm.postAddress == null){
           alert("请选择详细地址")
         }else{
           sessionStorage.setItem('name', this.dataForm.name)

@@ -163,11 +163,11 @@
         }
       },
       jump(){
-        if(sessionStorage.getItem('ownerPositive') == ''){
+        if(sessionStorage.getItem('ownerPositive') == '' || sessionStorage.getItem('ownerPositive') == null || sessionStorage.getItem('ownerPositive') == 'null'){
           alert('请上传身份证正面照')
-        }else if(sessionStorage.getItem('ownerNegative') == ''){
+        }else if(sessionStorage.getItem('ownerNegative') == '' || sessionStorage.getItem('ownerNegative') == null || sessionStorage.getItem('ownerNegative') == 'null'){
           alert('请上传身份证反面照')
-        }else if(sessionStorage.getItem('housingAuthority') == ''){
+        }else if(sessionStorage.getItem('housingAuthority') == '' || sessionStorage.getItem('housingAuthority') == null || sessionStorage.getItem('housingAuthority') == 'null'){
           alert('请上传不动产登记受理凭证')
         }else{
           this.$router.push({name: 'thirdOrder'})

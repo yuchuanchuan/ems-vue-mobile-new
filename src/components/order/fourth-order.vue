@@ -133,9 +133,9 @@
         })
       },
       jump2(){
-        if(this.dataForm.postType == ""){
+        if(this.dataForm.postType == "" || this.dataForm.postType == null || this.dataForm.postType == 'null'){
           alert("请选择邮寄文件类型")
-        }else if(this.dataForm.handleId == ''){
+        }else if(this.dataForm.handleId == '' || this.dataForm.handleId == null || this.dataForm.handleId == 'null'){
           alert("请选择受理地址")
         }else{
           if(this.dataForm.handleAreaId == '' || this.dataForm.handleAreaId == null || this.dataForm.handleAreaId == 'null'){
@@ -160,7 +160,7 @@
     created(){
       this.getPostInfo()
       this.getHandleAreaList()
-      this.this.getHandleAreaInfo()
+      this.getHandleAreaInfo()
       if(this.dataForm.postType == ''){
         this.dataForm.postType = sessionStorage.getItem('postType')
       }

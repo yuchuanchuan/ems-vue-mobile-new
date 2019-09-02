@@ -116,6 +116,8 @@ export default {
         } else {
           alert(data.msg)
         }
+      }).then(()=>{
+        this.getPostInfo()
       })
     },
     getPostInfo(){
@@ -126,7 +128,7 @@ export default {
       }).then(({ data }) => {
         if (data && data.code === 0) {
           data.data.forEach((item)=>{
-            if(item.id === this.postType){
+            if(item.id === this.dataForm.postType){
               this.postText = item.bussinessName
             }
           })
@@ -135,7 +137,6 @@ export default {
     }
 	},
   created(){
-    this.getPostInfo()
     this.getOrderInfo(this.$route.params.orderNum)
   }
 }
