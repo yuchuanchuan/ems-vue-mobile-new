@@ -110,9 +110,9 @@ export default {
       }).then(({ data }) => {
         if (data && data.code === 0) {
           this.dataForm = data.data
-          this.dataForm.ownerNegative = decodeURIComponent("http://ems.jujinkeji.net/mobile/" + data.data.ownerNegative)
-          this.dataForm.ownerPositive = decodeURIComponent("http://ems.jujinkeji.net/mobile/" + data.data.ownerPositive)
-          this.dataForm.housingAuthority = decodeURIComponent("http://ems.jujinkeji.net/mobile/" + data.data.housingAuthority)
+          this.dataForm.ownerNegative = decodeURIComponent("http://ems.jujinkeji.net/" + data.data.ownerNegative)
+          this.dataForm.ownerPositive = decodeURIComponent("http://ems.jujinkeji.net/" + data.data.ownerPositive)
+          this.dataForm.housingAuthority = decodeURIComponent("http://ems.jujinkeji.net/zip/受理凭证/" + data.data.housingAuthority)
         } else {
           alert(data.msg)
         }
