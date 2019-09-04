@@ -55,7 +55,9 @@
         this.$router.push({name: 'firstOrder'})
       },
       monidianji1(){
-        document.getElementById('saveImage1').click()
+        if(confirm("（home键向右横版照相）")){
+          document.getElementById('saveImage1').click()
+        } 
       },
       yulan1() {
         var that = this
@@ -92,7 +94,11 @@
         }
       },
       monidianji2(){
-        document.getElementById('saveImage2').click()
+        monidianji2(){
+          if(confirm("（home键向右横版照相）")){
+            document.getElementById('saveImage2').click()
+          } 
+        },
       },
       yulan2(){
         var that =this
