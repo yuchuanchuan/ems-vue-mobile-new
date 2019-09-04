@@ -94,7 +94,8 @@ export default {
   },
 	methods:{
 		prev(){
-			this.$router.go(-1)
+			// this.$router.go(-1)
+      this.$router.push({path:`/list/${localStorage.getItem('openid')}`})
 		},
 		show_img(){
 			this.is_show=!this.is_show

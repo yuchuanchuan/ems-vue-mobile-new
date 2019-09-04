@@ -36,7 +36,7 @@ export default {
       },
       jump2(){
         // this.$router.push({ name: 'query', params:{'orderNum': this.orderNum} })
-        this.$router.push({name:"list"})
+        this.$router.push({path:`/list/${localStorage.getItem('openid')}`})
       }
     },
   created(){

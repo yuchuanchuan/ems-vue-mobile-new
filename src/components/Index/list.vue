@@ -417,6 +417,8 @@ export default {
     },
   },
   created(){
+    // alert('获取页面访问路径')
+    // alert(window.location.href)
     // alert('零点时间戳===' + new Date(new Date(new Date().getTime() - 60*60*1000).setHours(0,0,0,0)).getTime())
     // alert('openid---------' + localStorage.getItem("openid"))
     this.getUserOrderList()
