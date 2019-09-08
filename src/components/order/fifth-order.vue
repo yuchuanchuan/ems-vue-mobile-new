@@ -78,7 +78,8 @@
           openid: '',
           handleId: sessionStorage.getItem('handleId'),
           commission: ''
-        }
+        },
+        prepayId: ''
       }
     },
     methods:{
@@ -179,41 +180,77 @@
       },
       // 支付
       wechatPay(orderId){
+        // 预支付
         this.orderNum = orderId
         this.$http({
-          url: this.$http.adornUrl('/pay/create'),
+          url: this.$http.adornUrl('/pay/prepayOrder'),
           method: 'get',
           params: this.$http.adornParams({
-            'orderId': orderId,
-            'returnUrl': 'http://ems.jujinkeji.net/mobile/orderInfo'
+            'orderId': orderId
           })
         }).then(({ data }) => {
           if (data && data.code === 0) {
-            if (typeof WeixinJSBridge == "undefined"){//微信浏览器内置对象。参考微信官方文档
-              if( document.addEventListener ){
-                document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady(data), false);
-              }else if (document.attachEvent){
-                document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady(data));
-                document.attachEvent('onWeixinJSBridgeReady',this.onBridgeReady(data));
+            // alert("预付单号===" + data.data)
+            if (data && data.code === 0) {
+              if (typeof WeixinJSBridge == "undefined"){//微信浏览器内置对象。参考微信官方文档
+                if( document.addEventListener ){
+                  document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady(data), false);
+                }else if (document.attachEvent){
+                  document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady(data));
+                  document.attachEvent('onWeixinJSBridgeReady',this.onBridgeReady(data));
+                }
+              }else{
+                this.onBridgeReady(data);
               }
-            }else{
-              this.onBridgeReady(data);
+            } else {
+              alert(data.msg)
             }
-          } else {
-            alert(data.msg)
           }
+        }).then(()=>{
+        //   // 发起支付
+        //   this.$http({
+        //     url: this.$http.adornUrl('/pay/create'),
+        //     method: 'get',
+        //     params: this.$http.adornParams({
+        //       'orderId': orderId,
+        //       'returnUrl': 'http://ems.jujinkeji.net/mobile/orderInfo'
+        //     })
+        //   }).then(({ data }) => {
+        //     if (data && data.code === 0) {
+        //       if (typeof WeixinJSBridge == "undefined"){//微信浏览器内置对象。参考微信官方文档
+        //         if( document.addEventListener ){
+        //           document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady(data), false);
+        //         }else if (document.attachEvent){
+        //           document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady(data));
+        //           document.attachEvent('onWeixinJSBridgeReady',this.onBridgeReady(data));
+        //         }
+        //       }else{
+        //         this.onBridgeReady(data);
+        //       }
+        //     } else {
+        //       alert(data.msg)
+        //     }
+        //   })
         })
       },
       onBridgeReady:function(data){
         let _this = this;
         WeixinJSBridge.invoke(
           'getBrandWCPayRequest', {
-            "appId": data.data.payResponse.appId,     //公众号名称，由商户传入
-            "timeStamp": data.data.payResponse.timeStamp,         //时间戳，自1970年以来的秒数
-            "nonceStr": data.data.payResponse.nonceStr, //随机串
-            "package": data.data.payResponse.package,
-            "signType": data.data.payResponse.signType,         //微信签名方式：
-            "paySign": data.data.payResponse.paySign //微信签名
+            "appId": data.data.appId,     //公众号名称，由商户传入
+            "timeStamp": data.data.timeStamp,         //时间戳，自1970年以来的秒数
+            "nonceStr": data.data.nonceStr, //随机串
+            "package": data.data.package,
+            "signType": data.data.signType,         //微信签名方式：
+            "paySign": data.data.paySign //微信签名
+
+            // "appId": data.data.payResponse.appId,     //公众号名称，由商户传入
+            // "timeStamp": data.data.payResponse.timeStamp,         //时间戳，自1970年以来的秒数
+            // "nonceStr": data.data.payResponse.nonceStr, //随机串
+            // "package": data.data.payResponse.package,
+            // "package": _this.prepayId,
+            // "signType": data.data.payResponse.signType,         //微信签名方式：
+            // "paySign": data.data.payResponse.paySign //微信签名
           },
           function(res){
             if(res.err_msg == "get_brand_wcpay_request:ok" ) {
@@ -229,21 +266,22 @@
         );
       },
       updateOrderStatus(){
-        this.$http({
-          url: this.$http.adornUrl('/mobile/order/mail'),
-          method: 'post',
-          data: this.$http.adornData({
-            orderNumber: this.orderNum
-          })
-        }).then(({ data }) => {
-          if (data && data.code === 0) {
-            // window.location.assign('http://ems.jujinkeji.net/mobile/submit')
-            this.$router.push({ name: 'submit', params:{'orderNum': this.orderNum} })
-            // this.getUserOrderList()
-          } else {
-            alert(data.msg)
-          }
-        })
+        this.$router.push({ name: 'submit', params:{'orderNum': this.orderNum} })
+        // this.$http({
+        //   url: this.$http.adornUrl('/mobile/order/mail'),
+        //   method: 'post',
+        //   data: this.$http.adornData({
+        //     orderNumber: this.orderNum
+        //   })
+        // }).then(({ data }) => {
+        //   if (data && data.code === 0) {
+        //     // window.location.assign('http://ems.jujinkeji.net/mobile/submit')
+        //     this.$router.push({ name: 'submit', params:{'orderNum': this.orderNum} })
+        //     // this.getUserOrderList()
+        //   } else {
+        //     alert(data.msg)
+        //   }
+        // })
       }
     },
     components:{

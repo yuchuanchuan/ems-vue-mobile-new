@@ -354,11 +354,10 @@ export default {
     wechatPay(orderId){
       this.orderNum = orderId
       this.$http({
-        url: this.$http.adornUrl('/pay/create'),
+        url: this.$http.adornUrl('/pay/prepayOrder'),
         method: 'get',
         params: this.$http.adornParams({
-          'orderId': orderId,
-          'returnUrl': 'http://ems.jujinkeji.net/mobile/list'
+          'orderId': orderId
         })
       }).then(({ data }) => {
         if (data && data.code === 0) {
@@ -381,12 +380,12 @@ export default {
       let _this = this;
       WeixinJSBridge.invoke(
         'getBrandWCPayRequest', {
-          "appId": data.data.payResponse.appId,     //公众号名称，由商户传入
-          "timeStamp": data.data.payResponse.timeStamp,         //时间戳，自1970年以来的秒数
-          "nonceStr": data.data.payResponse.nonceStr, //随机串
-          "package": data.data.payResponse.package,
-          "signType": data.data.payResponse.signType,         //微信签名方式：
-          "paySign": data.data.payResponse.paySign //微信签名
+          "appId": data.data.appId,     //公众号名称，由商户传入
+          "timeStamp": data.data.timeStamp,         //时间戳，自1970年以来的秒数
+          "nonceStr": data.data.nonceStr, //随机串
+          "package": data.data.package,
+          "signType": data.data.signType,         //微信签名方式：
+          "paySign": data.data.paySign //微信签名
         },
         function(res){
           if(res.err_msg == "get_brand_wcpay_request:ok" ) {
@@ -399,21 +398,22 @@ export default {
       );
     },
     updateOrderStatus(){
-      this.$http({
-        url: this.$http.adornUrl('/mobile/order/mail'),
-        method: 'post',
-        data: this.$http.adornData({
-          orderNumber: this.orderNum
-        })
-      }).then(({ data }) => {
-        if (data && data.code === 0) {
-          // window.location.assign('http://ems.jujinkeji.net/mobile/submit')
-          this.$router.push({ name: 'submit', params:{'orderNum': this.orderNum} })
-          // this.getUserOrderList()
-        } else {
-          alert(data.msg)
-        }
-      })
+      this.$router.push({ name: 'submit', params:{'orderNum': this.orderNum} })
+      // this.$http({
+      //   url: this.$http.adornUrl('/mobile/order/mail'),
+      //   method: 'post',
+      //   data: this.$http.adornData({
+      //     orderNumber: this.orderNum
+      //   })
+      // }).then(({ data }) => {
+      //   if (data && data.code === 0) {
+      //     // window.location.assign('http://ems.jujinkeji.net/mobile/submit')
+      //     this.$router.push({ name: 'submit', params:{'orderNum': this.orderNum} })
+      //     // this.getUserOrderList()
+      //   } else {
+      //     alert(data.msg)
+      //   }
+      // })
     },
   },
   created(){
