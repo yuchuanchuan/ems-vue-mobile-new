@@ -5,7 +5,7 @@
     <div class="box"><div class="tui" @click="tui()"></div>上传凭证</div>
     <div class="box1-title">
       <img src="../../img/ren.png">
-      <div>产权人身份证明<span>（home键向右横版照相）</span></div>
+      <div>产权人身份证明<span>（温馨提示：为了保证证件清晰，请您home键向右横版拍照）</span></div>
     </div>
     <div @click="monidianji1" class="box1">
       <div v-show="show1">身份证正面</div>
@@ -55,7 +55,7 @@
         this.$router.push({name: 'firstOrder'})
       },
       monidianji1(){
-        if(confirm("（home键向右横版照相）")){
+        if(confirm("温馨提示：为了保证证件清晰，请您home键向右横版拍照")){
           document.getElementById('saveImage1').click()
         }
       },
