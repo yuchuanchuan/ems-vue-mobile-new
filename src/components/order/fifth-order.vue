@@ -93,7 +93,7 @@
         if(this.$refs.signaturePic.touchBegin){
           this.payOrder = true
           // 截图 授权委托书
-          this.toImage()
+          // this.toImage()
           this.createOrderInfo()
         }else {
           alert('请签字确认')
@@ -135,9 +135,7 @@
           success:function(res){
             if(res.code === 0){
               commission = res.data
-              setTimeout(()=>{
-                _this.updateCommission(commission)
-              },1000)
+              _this.updateCommission(commission)
               // success
             }else{
               console.log(res.msg)
@@ -156,7 +154,8 @@
         }).then(({ data }) => {
           if (data && data.code === 0) {
             this.dataForm.orderId = data.data.orderId
-            this.wechatPay(data.data.orderId)
+            this.toImage()
+            // this.wechatPay(data.data.orderId)
           } else {
             alert(data.msg)
           }
@@ -173,6 +172,7 @@
         }).then(({ data }) => {
           if (data && data.code === 0) {
             // success
+            this.wechatPay(data.data.orderId)
           } else {
             alert(data.msg)
           }
