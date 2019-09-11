@@ -94,7 +94,7 @@
         }
       },
       monidianji2(){
-        if(confirm("（home键向右横版照相）")){
+        if(confirm("温馨提示：为了保证证件清晰，请您home键向右横版拍照")){
           document.getElementById('saveImage2').click()
         }
       },
