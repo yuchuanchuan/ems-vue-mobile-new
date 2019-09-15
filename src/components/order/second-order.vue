@@ -67,7 +67,7 @@
           var fr = new FileReader();
           fr.onload = function () {
             document.getElementById('portrait1').src = fr.result;
-            sessionStorage.setItem('img1', fr.result)
+            // sessionStorage.setItem('img1', fr.result)
           };
           fr.readAsDataURL(imgFile);
           let formData = new FormData();
@@ -106,7 +106,7 @@
           var fr = new FileReader();
           fr.onload = function () {
             document.getElementById('portrait2').src = fr.result;
-            sessionStorage.setItem('img2', fr.result)
+            // sessionStorage.setItem('img2', fr.result)
           };
           fr.readAsDataURL(imgFile);
           let formData = new FormData();
@@ -133,7 +133,9 @@
         }
       },
       monidianji3(){
-        document.getElementById('saveImage3').click()
+        if(confirm("温馨提示：为了保证证件清晰，请您home键向右横版拍照")){
+          document.getElementById('saveImage3').click()
+        }
       },
       yulan3() {
         var that = this
@@ -143,7 +145,7 @@
           var fr = new FileReader();
           fr.onload = function () {
             document.getElementById('portrait3').src = fr.result;
-            sessionStorage.setItem('img3', fr.result)
+            // sessionStorage.setItem('img3', fr.result)
           };
           fr.readAsDataURL(imgFile);
           let formData = new FormData();
@@ -188,16 +190,28 @@
       this.yulan3();
     },
     created(){
-      if(sessionStorage.getItem('img1')){
-        this.imageSave1 = sessionStorage.getItem('img1')
+      // if(sessionStorage.getItem('img1')){
+      //   this.imageSave1 = sessionStorage.getItem('img1')
+      //   this.show1 = false
+      // }
+      if(sessionStorage.getItem("ownerPositive")){
+        this.imageSave1 = decodeURIComponent("http://ems.jujinkeji.net/" + sessionStorage.getItem("ownerPositive"))
         this.show1 = false
       }
-      if(sessionStorage.getItem('img2')){
-        this.imageSave2 = sessionStorage.getItem('img2')
+      // if(sessionStorage.getItem('img2')){
+      //   this.imageSave2 = sessionStorage.getItem('img2')
+      //   this.show2 = false
+      // }
+      if(sessionStorage.getItem("ownerNegative")){
+        this.imageSave2 = decodeURIComponent("http://ems.jujinkeji.net/" + sessionStorage.getItem("ownerNegative"))
         this.show2 = false
       }
-      if(sessionStorage.getItem('img3')){
-        this.imageSave3 = sessionStorage.getItem('img3')
+      // if(sessionStorage.getItem('img3')){
+      //   this.imageSave3 = sessionStorage.getItem('img3')
+      //   this.show3 = false
+      // }
+      if(sessionStorage.getItem("housingAuthority")){
+        this.imageSave3 = decodeURIComponent("http://ems.jujinkeji.net/zip/受理凭证/" + sessionStorage.getItem("housingAuthority"))
         this.show3 = false
       }
     }

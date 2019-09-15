@@ -13,12 +13,12 @@
 					<p>
             当前状态：{{item.status ===1 ? '未支付' : item.status ===2 ? '已支付' : item.status === 3 ? '待收货' : item.status === 4 ? '已收货' : item.status === 5 ? '已取消' : item.status === 6 ? '受理中' : item.status === 7 ? '审核中' : item.status === 8 ? '制证中' : item.status === 9 ? '发证中' : '' }}
             <span v-if="item.status ===1">(剩余{{item.djs}}）</span>
-            <span v-if="item.status ===2 && showCanceldjs">(剩余{{item.djs}}）</span>
+            <span v-if="item.status ===2 && item.showCancelBtn">(剩余{{item.djs1}}）</span>
           </p>
 				</div>
 				<div class='btn_list'>
 					<button v-if="item.status === 1" @click="wechatPay(item.orderNumber)" :class='item.status === 1?"btn_bluc":""'>付款</button>
-					<button v-if="item.status === 1 || item.status === 2" @click="quxiao(item.orderNumber, item.status)">取消订单</button>
+					<button v-if="item.status === 1 || (item.status === 2 && item.showCancelBtn)" @click="quxiao(item.orderNumber, item.status)">取消订单</button>
 
           <!-------------------------------------新添加的进度查询--------------------------------------------------------->
           <button @click="jinduchaxun(item.orderNumber,item.status)" v-if="item.status !== 1">进度查询</button>
@@ -135,6 +135,12 @@ export default {
              ss = "0" + ss
            }
            this.orderList[key]["djs"] = "00:" + mm + ":" + ss;
+         }else{
+           // 自动取消订单，无退款
+           if(this.orderList[key]["status"] === 1){
+             this.updateCancelStatus(this.orderList[key]["orderNumber"], 0)
+           }
+
          }
          // else{
          //   alert("退款-----99999")
@@ -153,28 +159,39 @@ export default {
         var dd, hh, mm, ss = null
         for (var key in this.orderList) {
           if(this.orderList[key]["status"] === 2){
-          let startTime = new Date().getTime()
-          let endTime = new Date(new Date(new Date().getTime() - 60*60*1000).setHours(0,0,0,0)).getTime() + 86400000
-          let rightTime = endTime - startTime;
-          if (rightTime >= 0) {
-            hh = Math.floor(rightTime / 1000 / 60 / 60 % 24);
-            mm = Math.floor((rightTime / 1000 / 60) % 60);
-            ss = Math.floor((rightTime / 1000) % 60);
-            if( hh.toString().length === 1){
-              hh = "0" + hh
+            let startTime = new Date().getTime()
+            let endTime = new Date(new Date(new Date().getTime() - 60*60*1000).setHours(0,0,0,0)).getTime() + 86400000
+            let rightTime = endTime - startTime;
+            if (rightTime >= 0) {
+              hh = Math.floor(rightTime / 1000 / 60 / 60 % 24);
+              mm = Math.floor((rightTime / 1000 / 60) % 60);
+              ss = Math.floor((rightTime / 1000) % 60);
+              if( hh.toString().length === 1){
+                hh = "0" + hh
+              }
+              if( mm.toString().length === 1){
+                mm = "0" + mm
+              }
+              if(ss.toString().length === 1){
+                ss = "0" + ss
+              }
+              this.orderList[key]["djs1"] = hh + ":" + mm + ":" + ss;
+              // this.showCanceldjs = true
+              if(new Date(this.orderList[key]["createTimestamp"]).toDateString() === new Date().toDateString()){
+                this.orderList[key]["showCancelBtn"] = true
+              }else{
+                this.orderList[key]["showCancelBtn"] = false
+              }
+            }else{
+              this.orderList[key]["showCancelBtn"] = false
+
+              // this.showCanceldjs = false
+              // 已支付，且不能取消订单操作
+              // if(this.orderList[key]["status"] === 2){
+              //   this.updateCancelStatus(this.orderList[key]["orderNumber"])
+              // }
             }
-            if( mm.toString().length === 1){
-              mm = "0" + mm
-            }
-            if(ss.toString().length === 1){
-              ss = "0" + ss
-            }
-            this.orderList[key]["djs"] = hh + ":" + mm + ":" + ss;
-            this.showCanceldjs = true
-          }else{
-            this.showCanceldjs = false
-          }
-        }
+         }
         }
       }
     }, 1000);
@@ -203,13 +220,13 @@ export default {
         })
       }).then(({ data }) => {
         if (data && data.code === 0) {
-          this.updateCancelStatus(orderNum)
+          this.updateCancelStatus(orderNum,1)
         } else {
           alert(data.msg)
         }
       })
     },
-    updateCancelStatus(orderNum){
+    updateCancelStatus(orderNum, flag){
       this.$http({
         url: this.$http.adornUrl('/mobile/order/updateCancelStatus'),
         method: 'get',
@@ -219,9 +236,11 @@ export default {
       }).then(({ data }) => {
         if (data && data.code === 0) {
           this.getUserOrderList()
-          this.$nextTick(()=>{
-            alert("订单取消成功");
-          })
+          if(flag === 1){
+            this.$nextTick(()=>{
+              alert("订单取消成功");
+            })
+          }
         } else {
           alert(data.msg)
         }
@@ -291,10 +310,10 @@ export default {
           ss = "0" + ss
         }
         str = hh + ":" + mm+":"+ss;
-        this.showCanceldjs = true
+        // this.showCanceldjs = true
         return str;
       }else{
-        this.showCanceldjs = false
+        // this.showCanceldjs = false
         return "00:00:00"
       }
     },
@@ -306,26 +325,35 @@ export default {
       }).then(({ data }) => {
         this.orderList = []
         if (data && data.code === 0) {
-          data.data.forEach((item) => {
-            if(item.status == 1){
-              data.data.map( (obj,index)=>{
-                this.$set(
-                  obj,"djs",this.InitTime(obj.createTimestamp)
-                );
-              })
+          data.data.map( (obj,index)=>{
+            if(obj.status === 1){
+              this.$set(
+                obj,"djs",this.InitTime(obj.createTimestamp)
+              );
             }
 
-            if(item.status == 2){
-              data.data.map( (obj,index)=>{
+            if(obj.status === 2){
+              // 创建订单日期为今天，则开启到0点后，不能再次倒计时
+              // alert(new Date(obj.createTimestamp).toDateString() + "---------" + new Date().toDateString())
+              if(new Date(obj.createTimestamp).toDateString() === new Date().toDateString()){
                 this.$set(
-                  obj,"djs",this.cancelOrderTime()
+                  obj,"djs1",this.cancelOrderTime()
                 );
-              })
+                this.$set(
+                  obj,"showCancelBtn", true
+                )
+              }else{
+                this.$set(
+                  obj,"djs1","",
+                );
+                this.$set(
+                  obj,"showCancelBtn", false
+                )
+              }
             }
           })
 
           this.orderList = data.data
-
           // console.log(this.orderList[0].djs)
 
         } else {
@@ -343,7 +371,7 @@ export default {
     },
     yes(){
       if(this.tempOrderStatus == 1){
-        this.updateCancelStatus(this.tempOrderNum)
+        this.updateCancelStatus(this.tempOrderNum, 1)
       }else{
         this.fundPay(this.tempOrderNum)
       }
