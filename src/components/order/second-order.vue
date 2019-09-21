@@ -67,6 +67,8 @@
         //去获取拍照时的信息，解决拍出来的照片旋转问题
         Exif.getData(file, function(){
           Orientation = Exif.getTag(this, 'Orientation');
+          alert('图片旋转')
+          alert(Orientation)
         });
         // 看支持不支持FileReader
         if (!file || !window.FileReader) return;
@@ -88,7 +90,7 @@
               console.log(this.result)
               alert("result")
               alert(this.result)
-              document.getElementById('portrait1').src = this.result;
+              // document.getElementById('portrait1').src = this.result;
               self.postImg()
             }else {
               img.onload = function () {
@@ -96,7 +98,7 @@
                 console.log("----------data------------")
                 alert("--------data-----------")
                 alert(data)
-                document.getElementById('portrait1').src = data;
+                // document.getElementById('portrait1').src = data;
                 // self.headerImage = data;
                 self.postImg()
               }
@@ -105,30 +107,30 @@
         }
       },
       postImg () {
-          let formData = new FormData();
-          //接口接收参数 键值形式 添加到formData中
+        let formData = new FormData();
+        //接口接收参数 键值形式 添加到formData中
         alert('图片0000000000')
-          alert(this.$refs.imgSave1.files[0])
-          formData.append("file", this.$refs['imgSave1'].files[0]);
-          formData.append("type", 1);
-          formData.append("name", sessionStorage.getItem('applyName'));
-          $.ajax({
-            url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
-            type: 'post',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function (res) {
-              console.log(res);
-              if (res.code === 0) {
-                ownerPositive = res.data
-                sessionStorage.setItem('ownerPositive', ownerPositive)
-              } else {
-                console.log(res.msg)
-              }
+        alert(this.$refs.imgSave1.files[0])
+        formData.append("file", this.$refs['imgSave1'].files[0]);
+        formData.append("type", 1);
+        formData.append("name", sessionStorage.getItem('applyName'));
+        $.ajax({
+          url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
+          type: 'post',
+          data: formData,
+          contentType: false,
+          processData: false,
+          success: function (res) {
+            console.log(res);
+            if (res.code === 0) {
+              ownerPositive = res.data
+              sessionStorage.setItem('ownerPositive', ownerPositive)
+            } else {
+              console.log(res.msg)
             }
-          })
-        },
+          }
+        })
+      },
       compress(img,Orientation) {
         let canvas = document.createElement("canvas");
         let ctx = canvas.getContext('2d');
@@ -172,6 +174,8 @@
         } else {
           ctx.drawImage(img, 0, 0, width, height);
         }
+        alert('----图片旋转度数---')
+        alert(Orientation)
         //修复ios上传图片的时候 被旋转的问题
         if(Orientation != "" && Orientation != 1){
           switch(Orientation){
@@ -203,6 +207,10 @@
         //img的高度和宽度不能在img元素隐藏后获取，否则会出错
         let height = img.height;
         let width = img.width;
+
+        alert('imgWidth==' + width)
+        alert('imgHeight===' + height)
+
         let step = 2;
         if (step == null) {
           step = min_step;
@@ -243,6 +251,10 @@
             ctx.drawImage(img, -width, 0);
             break;
         }
+        alert('==========获取canvas对象======')
+        alert(canvas)
+        alert(canvas.toDataURL('Image/jpeg',1))
+        document.getElementById('portrait1').src = canvas.toDataURL('Image/jpeg',1)
       },
       yulan1() {
         var that = this
@@ -250,34 +262,34 @@
           that.show1 = false
 
           var imgFile = this.files[0];
-          var fr = new FileReader();
+          // var fr = new FileReader();
           // fr.onload = function () {
-            // document.getElementById('portrait1').src = fr.result;
+          // document.getElementById('portrait1').src = fr.result;
           //   // sessionStorage.setItem('img1', fr.result)
           // };
           that.imgPreview(imgFile);
-        //   fr.readAsDataURL(imgFile);
-        //   let formData = new FormData();
-        //   //接口接收参数 键值形式 添加到formData中
-        //   formData.append("file", $(this)[0].files[0]);
-        //   formData.append("type", 1);
-        //   formData.append("name", sessionStorage.getItem('applyName'));
-        //   $.ajax({
-        //     url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
-        //     type: 'post',
-        //     data: formData,
-        //     contentType: false,
-        //     processData: false,
-        //     success: function (res) {
-        //       console.log(res);
-        //       if (res.code === 0) {
-        //         ownerPositive = res.data
-        //         sessionStorage.setItem('ownerPositive', ownerPositive)
-        //       } else {
-        //         console.log(res.msg)
-        //       }
-        //     }
-        //   })
+          //   fr.readAsDataURL(imgFile);
+          //   let formData = new FormData();
+          //   //接口接收参数 键值形式 添加到formData中
+          //   formData.append("file", $(this)[0].files[0]);
+          //   formData.append("type", 1);
+          //   formData.append("name", sessionStorage.getItem('applyName'));
+          //   $.ajax({
+          //     url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
+          //     type: 'post',
+          //     data: formData,
+          //     contentType: false,
+          //     processData: false,
+          //     success: function (res) {
+          //       console.log(res);
+          //       if (res.code === 0) {
+          //         ownerPositive = res.data
+          //         sessionStorage.setItem('ownerPositive', ownerPositive)
+          //       } else {
+          //         console.log(res.msg)
+          //       }
+          //     }
+          //   })
         }
       },
       monidianji2(){
@@ -689,7 +701,7 @@
     color:#fff;
     transform:matrix(-0.766044,-0.642788,-0.642788,0.766044,0,0);
     -webkit-transform:matrix(-0.766044,-0.642788,-0.642788,0.766044,0,0);
-    border-color:2px solid #177abf;
+    border-color:#177abf;
     background-color: #177abf;}
 
   .content3 .item>.price>span{
