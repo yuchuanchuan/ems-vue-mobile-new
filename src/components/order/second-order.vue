@@ -81,7 +81,28 @@
                   self.xuanzhuan1 = false
                 }
               },50)
-            }
+            };
+            let formData = new FormData();
+            //接口接收参数 键值形式 添加到formData中
+            formData.append("file", e.target.files[0]);
+            formData.append("type", 1);
+            formData.append("name", sessionStorage.getItem('applyName'));
+            $.ajax({
+              url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
+              type: 'post',
+              data: formData,
+              contentType: false,
+              processData: false,
+              success: function (res) {
+                console.log(res);
+                if (res.code === 0) {
+                  ownerPositive = res.data
+                  sessionStorage.setItem('ownerPositive', ownerPositive)
+                } else {
+                  console.log(res.msg)
+                }
+              }
+            })
           }
         }
       },
@@ -108,7 +129,28 @@
                   self.xuanzhuan2 = false
                 }
               },50)
-            }
+            };
+            let formData = new FormData();
+            //接口接收参数 键值形式 添加到formData中
+            formData.append("file",e.target.files[0]);
+            formData.append("type", 1);
+            formData.append("name", sessionStorage.getItem('applyName'));
+            $.ajax({
+              url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
+              type:'post',
+              data: formData,
+              contentType: false,
+              processData: false,
+              success:function(res){
+                console.log(res);
+                if(res.code === 0){
+                  ownerNegative = res.data
+                  sessionStorage.setItem('ownerNegative', ownerNegative)
+                }else{
+                  console.log(res.msg)
+                }
+              }
+            })
           }
         }
       },
@@ -135,7 +177,28 @@
                   self.xuanzhuan3 = false
                 }
               },50)
-            }
+            };
+            let formData = new FormData();
+            //接口接收参数 键值形式 添加到formData中
+            formData.append("file", e.target.files[0]);
+            formData.append("type", 2);
+            formData.append("name", sessionStorage.getItem('applyName'));
+            $.ajax({
+              url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
+              type: 'post',
+              data: formData,
+              contentType: false,
+              processData: false,
+              success: function (res) {
+                console.log(res);
+                if (res.code === 0) {
+                  housingAuthority = res.data
+                  sessionStorage.setItem('housingAuthority', housingAuthority)
+                } else {
+                  console.log(res.msg)
+                }
+              }
+            })
           }
         }
       },
