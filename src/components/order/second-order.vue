@@ -9,12 +9,12 @@
     </div>
     <div @click="monidianji1" class="box1">
       <div v-show="show1">身份证正面</div>
-      <img :src=imageSave1 ref="imgSave1" id="portrait1" class="img" :style="{'z-index': (show1==false ? '2':'-1')}" />
+      <img :src=imageSave1 ref="imgSave1" id="portrait1" :class="xuanzhuan1?'img xuanzhuan':'img'" :style="{'z-index': (show1==false ? '2':'-1')}" />
     </div>
     <input type="file" id="saveImage1" name="myphoto" class="myinput" ref="closeUp" accept="image/*" capture="camera">
     <div @click="monidianji2" class="box1">
       <div v-show="show2">身份证反面</div>
-      <img :src=imageSave2 id="portrait2" class="img" :style="{'z-index': (show2==false ? '2':'-1')}" />
+      <img :src=imageSave2 id="portrait2" :class="xuanzhuan2?'img xuanzhuan':'img'" :style="{'z-index': (show2==false ? '2':'-1')}" />
     </div>
     <input type="file" id="saveImage2" name="myphoto" class="myinput" ref="closeUp" accept="image/*" capture="camera">
     <div class="box1-title">
@@ -23,7 +23,7 @@
     </div>
     <div @click="monidianji3" class="box1">
       <div v-show="show3">上传凭证</div>
-      <img :src=imageSave3 id="portrait3" class="img" :style="{'z-index': (show3==false ? '2':'-1')}" />
+      <img :src=imageSave3 id="portrait3" :class="xuanzhuan3?'img xuanzhuan':'img'" :style="{'z-index': (show3==false ? '2':'-1')}" />
     </div>
     <input type="file" id="saveImage3" name="myphoto" class="myinput" ref="closeUp" accept="image/*" capture="camera">
 
@@ -36,7 +36,6 @@
 </template>
 
 <script>
-  import Exif from 'exif-js'
   var ownerPositive = '';  // 正面身份证
   var ownerNegative = '';  // 反面身份证
   var housingAuthority = ''; // 房产证
@@ -49,327 +48,98 @@
         show1:true,
         show2:true,
         show3:true,
+        xuanzhuan1:false,
+        xuanzhuan2:false,
+        xuanzhuan3:false
       }
     },
     methods:{
       tui(){
         this.$router.push({name: 'firstOrder'})
       },
-      monidianji1(){
+
+      //身份证正面旋转功能  如果图片高度大于宽度?旋转:不旋转
+      monidianji1(event){
+        var self = this
         if(confirm("温馨提示：为了保证证件清晰，请您home键向右横版拍照")){
           document.getElementById('saveImage1').click()
-        }
-      },
-      imgPreview (file) {
-        alert('执行imgPreview')
-        let self = this;
-        let Orientation;
-        //去获取拍照时的信息，解决拍出来的照片旋转问题
-        Exif.getData(file, function(){
-          Orientation = Exif.getTag(this, 'Orientation');
-          alert('图片旋转')
-          alert(Orientation)
-        });
-        // 看支持不支持FileReader
-        if (!file || !window.FileReader) return;
-
-        if (/^image/.test(file.type)) {
-          // 创建一个reader
-          let reader = new FileReader();
-          // 将图片2将转成 base64 格式
-          reader.readAsDataURL(file);
-          // 读取成功后的回调
-          reader.onloadend = function () {
-            let result = this.result;
-            let img = new Image();
-            img.src = result;
-            //判断图片是否大于1M,是就直接上传，反之压缩图片
-            if (this.result.length <= (1024 * 1024)) {
-              // self.headerImage = this.result;
-              console.log('**************************')
-              console.log(this.result)
-              alert("result")
-              alert(this.result)
-              // document.getElementById('portrait1').src = this.result;
-              self.postImg()
-            }else {
-              img.onload = function () {
-                let data = self.compress(img,Orientation);
-                console.log("----------data------------")
-                alert("--------data-----------")
-                alert(data)
-                // document.getElementById('portrait1').src = data;
-                // self.headerImage = data;
-                self.postImg()
-              }
+          document.getElementById('saveImage1').onchange = function(e){
+            var reader = new FileReader();
+            reader.readAsDataURL(e.target.files[0]);
+            reader.onload = function(){
+              self.imageSave1 = this.result
+              self.show1 = false
+              console.log(self.show1)
+              var img = new Image();
+              img.src = this.result
+              setTimeout(function(){
+                var width = img.width
+                var height = img.height
+                if(height > width){
+                  self.xuanzhuan1 = true
+                }else{
+                  self.xuanzhuan1 = false
+                }
+              },50)
             }
           }
         }
       },
-      postImg () {
-        let formData = new FormData();
-        //接口接收参数 键值形式 添加到formData中
-        alert('图片0000000000')
-        alert(this.$refs.imgSave1.files[0])
-        formData.append("file", this.$refs['imgSave1'].files[0]);
-        formData.append("type", 1);
-        formData.append("name", sessionStorage.getItem('applyName'));
-        $.ajax({
-          url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
-          type: 'post',
-          data: formData,
-          contentType: false,
-          processData: false,
-          success: function (res) {
-            console.log(res);
-            if (res.code === 0) {
-              ownerPositive = res.data
-              sessionStorage.setItem('ownerPositive', ownerPositive)
-            } else {
-              console.log(res.msg)
-            }
-          }
-        })
-      },
-      compress(img,Orientation) {
-        let canvas = document.createElement("canvas");
-        let ctx = canvas.getContext('2d');
-        //瓦片canvas
-        let tCanvas = document.createElement("canvas");
-        let tctx = tCanvas.getContext("2d");
-        let initSize = img.src.length;
-        let width = img.width;
-        let height = img.height;
-        //如果图片大于四百万像素，计算压缩比并将大小压至400万以下
-        let ratio;
-        if ((ratio = width * height / 4000000) > 1) {
-          console.log("大于400万像素");
-          ratio = Math.sqrt(ratio);
-          width /= ratio;
-          height /= ratio;
-        } else {
-          ratio = 1;
-        }
-        canvas.width = width;
-        canvas.height = height;
-        //        铺底色
-        ctx.fillStyle = "#fff";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        //如果图片像素大于100万则使用瓦片绘制
-        let count;
-        if ((count = width * height / 1000000) > 1) {
-          console.log("超过100W像素");
-          count = ~~(Math.sqrt(count) + 1); //计算要分成多少块瓦片
-          //            计算每块瓦片的宽和高
-          let nw = ~~(width / count);
-          let nh = ~~(height / count);
-          tCanvas.width = nw;
-          tCanvas.height = nh;
-          for (let i = 0; i < count; i++) {
-            for (let j = 0; j < count; j++) {
-              tctx.drawImage(img, i * nw * ratio, j * nh * ratio, nw * ratio, nh * ratio, 0, 0, nw, nh);
-              ctx.drawImage(tCanvas, i * nw, j * nh, nw, nh);
-            }
-          }
-        } else {
-          ctx.drawImage(img, 0, 0, width, height);
-        }
-        alert('----图片旋转度数---')
-        alert(Orientation)
-        //修复ios上传图片的时候 被旋转的问题
-        if(Orientation != "" && Orientation != 1){
-          switch(Orientation){
-            case 6://需要顺时针（向左）90度旋转
-              this.rotateImg(img,'left',canvas);
-              break;
-            case 8://需要逆时针（向右）90度旋转
-              this.rotateImg(img,'right',canvas);
-              break;
-            case 3://需要180度旋转
-              this.rotateImg(img,'right',canvas);//转两次
-              this.rotateImg(img,'right',canvas);
-              break;
-          }
-        }
-        //进行最小压缩
-        let ndata = canvas.toDataURL('image/jpeg/gif', 0.5);
-        console.log('压缩前：' + initSize);
-        console.log('压缩后：' + ndata.length);
-        console.log('压缩率：' + ~~(100 * (initSize - ndata.length) / initSize) + "%");
-        tCanvas.width = tCanvas.height = canvas.width = canvas.height = 0;
-        return ndata;
-      },
-      rotateImg (img, direction,canvas) {
-        //最小与最大旋转方向，图片旋转4次后回到原方向
-        const min_step = 0;
-        const max_step = 3;
-        if (img == null)return;
-        //img的高度和宽度不能在img元素隐藏后获取，否则会出错
-        let height = img.height;
-        let width = img.width;
 
-        alert('imgWidth==' + width)
-        alert('imgHeight===' + height)
-
-        let step = 2;
-        if (step == null) {
-          step = min_step;
-        }
-        if (direction == 'right') {
-          step++;
-          //旋转到原位置，即超过最大值
-          step > max_step && (step = min_step);
-        } else {
-          step--;
-          step < min_step && (step = max_step);
-        }
-        //旋转角度以弧度值为参数
-        let degree = step * 90 * Math.PI / 180;
-        let ctx = canvas.getContext('2d');
-        switch (step) {
-          case 0:
-            canvas.width = width;
-            canvas.height = height;
-            ctx.drawImage(img, 0, 0);
-            break;
-          case 1:
-            canvas.width = height;
-            canvas.height = width;
-            ctx.rotate(degree);
-            ctx.drawImage(img, 0, -height);
-            break;
-          case 2:
-            canvas.width = width;
-            canvas.height = height;
-            ctx.rotate(degree);
-            ctx.drawImage(img, -width, -height);
-            break;
-          case 3:
-            canvas.width = height;
-            canvas.height = width;
-            ctx.rotate(degree);
-            ctx.drawImage(img, -width, 0);
-            break;
-        }
-        alert('==========获取canvas对象======')
-        alert(canvas)
-        alert(canvas.toDataURL('Image/jpeg',1))
-        document.getElementById('portrait1').src = canvas.toDataURL('Image/jpeg',1)
-      },
-      yulan1() {
-        var that = this
-        document.getElementById('saveImage1').onchange = function () {
-          that.show1 = false
-
-          var imgFile = this.files[0];
-          // var fr = new FileReader();
-          // fr.onload = function () {
-          // document.getElementById('portrait1').src = fr.result;
-          //   // sessionStorage.setItem('img1', fr.result)
-          // };
-          that.imgPreview(imgFile);
-          //   fr.readAsDataURL(imgFile);
-          //   let formData = new FormData();
-          //   //接口接收参数 键值形式 添加到formData中
-          //   formData.append("file", $(this)[0].files[0]);
-          //   formData.append("type", 1);
-          //   formData.append("name", sessionStorage.getItem('applyName'));
-          //   $.ajax({
-          //     url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
-          //     type: 'post',
-          //     data: formData,
-          //     contentType: false,
-          //     processData: false,
-          //     success: function (res) {
-          //       console.log(res);
-          //       if (res.code === 0) {
-          //         ownerPositive = res.data
-          //         sessionStorage.setItem('ownerPositive', ownerPositive)
-          //       } else {
-          //         console.log(res.msg)
-          //       }
-          //     }
-          //   })
-        }
-      },
-      monidianji2(){
+      //身份证正面旋转功能  如果图片高度大于宽度?旋转:不旋转
+      monidianji2(event){
+        var self = this
         if(confirm("温馨提示：为了保证证件清晰，请您home键向右横版拍照")){
           document.getElementById('saveImage2').click()
-        }
-      },
-      yulan2(){
-        var that =this
-        document.getElementById('saveImage2').onchange = function () {
-          that.show2=false
-          var imgFile = this.files[0];
-          var fr = new FileReader();
-          fr.onload = function () {
-            document.getElementById('portrait2').src = fr.result;
-            // sessionStorage.setItem('img2', fr.result)
-          };
-          fr.readAsDataURL(imgFile);
-          let formData = new FormData();
-          //接口接收参数 键值形式 添加到formData中
-          formData.append("file",$(this)[0].files[0]);
-          formData.append("type", 1);
-          formData.append("name", sessionStorage.getItem('applyName'));
-          $.ajax({
-            url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
-            type:'post',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success:function(res){
-              console.log(res);
-              if(res.code === 0){
-                ownerNegative = res.data
-                sessionStorage.setItem('ownerNegative', ownerNegative)
-              }else{
-                console.log(res.msg)
-              }
+          document.getElementById('saveImage2').onchange = function(e){
+            var reader = new FileReader();
+            reader.readAsDataURL(e.target.files[0]);
+            reader.onload = function(){
+              self.imageSave2 = this.result
+              self.show2 = false
+              var img = new Image();
+              img.src = this.result
+              setTimeout(function(){
+                var width = img.width
+                var height = img.height
+                if(height > width){
+                  self.xuanzhuan2 = true
+                }else{
+                  self.xuanzhuan2 = false
+                }
+              },50)
             }
-          })
+          }
         }
       },
-      monidianji3(){
+
+      monidianji3(event){
+        var self = this
         if(confirm("温馨提示：为了保证证件清晰，请您home键向右横版拍照")){
           document.getElementById('saveImage3').click()
-        }
-      },
-      yulan3() {
-        var that = this
-        document.getElementById('saveImage3').onchange = function () {
-          that.show3 = false
-          var imgFile = this.files[0];
-          var fr = new FileReader();
-          fr.onload = function () {
-            document.getElementById('portrait3').src = fr.result;
-            // sessionStorage.setItem('img3', fr.result)
-          };
-          fr.readAsDataURL(imgFile);
-          let formData = new FormData();
-          //接口接收参数 键值形式 添加到formData中
-          formData.append("file", $(this)[0].files[0]);
-          formData.append("type", 2);
-          formData.append("name", sessionStorage.getItem('applyName'));
-          $.ajax({
-            url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
-            type: 'post',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function (res) {
-              console.log(res);
-              if (res.code === 0) {
-                housingAuthority = res.data
-                sessionStorage.setItem('housingAuthority', housingAuthority)
-              } else {
-                console.log(res.msg)
-              }
+          document.getElementById('saveImage3').onchange = function(e){
+            var reader = new FileReader();
+            reader.readAsDataURL(e.target.files[0]);
+            reader.onload = function(){
+              self.imageSave3 = this.result
+              self.show3 = false
+              console.log(self.show3)
+              var img = new Image();
+              img.src = this.result
+              setTimeout(function(){
+                var width = img.width
+                var height = img.height
+                if(height > width){
+                  self.xuanzhuan3 = true
+                }else{
+                  self.xuanzhuan3 = false
+                }
+              },50)
             }
-          })
+          }
         }
       },
+
       jump(){
         if(sessionStorage.getItem('ownerPositive') == '' || sessionStorage.getItem('ownerPositive') == null || sessionStorage.getItem('ownerPositive') == 'null'){
           alert('请上传身份证正面照')
@@ -384,9 +154,7 @@
     },
     mounted(){
       document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + 'px';
-      this.yulan1();
-      this.yulan2();
-      this.yulan3();
+
     },
     created(){
       // if(sessionStorage.getItem('img1')){
@@ -480,6 +248,7 @@
     background-repeat: no-repeat;
   }
   .content1 .box1{
+    overflow: hidden;
     width:5.2rem;
     height:3rem;
     background:#f2f2f2;
@@ -701,7 +470,7 @@
     color:#fff;
     transform:matrix(-0.766044,-0.642788,-0.642788,0.766044,0,0);
     -webkit-transform:matrix(-0.766044,-0.642788,-0.642788,0.766044,0,0);
-    border-color:#177abf;
+    border-color:2px solid #177abf;
     background-color: #177abf;}
 
   .content3 .item>.price>span{
@@ -779,5 +548,10 @@
   .box1-title span{
     font-size:0.26rem;
     color:red;
+  }
+  .xuanzhuan{
+    transform: rotateZ(-90deg);
+    height: 5.2rem!important;
+    width: 3rem!important;
   }
 </style>
