@@ -157,7 +157,7 @@
 
       monidianji3(event){
         var self = this
-        if(confirm("温馨提示：为了保证证件清晰，请您home键向右横版拍照")){
+        if(confirm("温馨提示：为了保证证件清晰，请您home键向下竖版照相")){
           document.getElementById('saveImage3').click()
           document.getElementById('saveImage3').onchange = function(e){
             var reader = new FileReader();
@@ -172,7 +172,7 @@
                 var width = img.width
                 var height = img.height
                 if(height > width){
-                  self.xuanzhuan3 = true
+                  self.xuanzhuan3 = false
                 }else{
                   self.xuanzhuan3 = false
                 }
