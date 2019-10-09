@@ -82,12 +82,13 @@
       },
       sureNext(){
         this.sureInfo = false
-        sessionStorage.setItem('applyName', this.dataForm.applyName)
-        sessionStorage.setItem('applyPhone', this.dataForm.applyPhone)
-        sessionStorage.setItem('propertyNo', this.dataForm.propertyNo)
-        sessionStorage.setItem('idCard', this.dataForm.idCard)
-
-        this.$router.push({name: 'secondOrder'})
+        if(confirm("天津市不动产登记受理凭证”原件请务必交回现场邮政EMS人员！")){
+            sessionStorage.setItem('applyName', this.dataForm.applyName)
+            sessionStorage.setItem('applyPhone', this.dataForm.applyPhone)
+            sessionStorage.setItem('propertyNo', this.dataForm.propertyNo)
+            sessionStorage.setItem('idCard', this.dataForm.idCard)
+            this.$router.push({name: 'secondOrder'})
+        }
       },
       goback () {
         if(this.dataForm.idCard === ''){
