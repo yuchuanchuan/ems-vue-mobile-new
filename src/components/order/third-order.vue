@@ -36,9 +36,17 @@
         </select>
       </div>
     </div>
+    <!--<div class="item">-->
+      <!--<div class="title">详细地址</div>-->
+      <!--<input type="text" placeholder="输入详细地址" v-model="dataForm.postAddress">-->
+    <!--</div>-->
     <div class="item">
-      <div class="title">详细地址</div>
-      <input type="text" placeholder="输入详细地址" v-model="dataForm.postAddress">
+      <div class="title">街道/路</div>
+      <input type="text" placeholder="输入街道/路" v-model="dataForm.street">
+    </div>
+    <div class="item">
+      <div class="title">门牌号码</div>
+      <input type="text" placeholder="输入门牌号码" v-model="dataForm.houseNum">
     </div>
     <!--<div class="item">-->
     <!--<div class="title">凭证编号</div>-->
@@ -72,7 +80,9 @@
           postCityId: '',
           postCountyId: '',
           postAddress: '',
-          postRiskId: ''
+          postRiskId: '',
+          street: '',
+          houseNum: ''
         }
       }
     },
@@ -244,8 +254,10 @@
           this.dataForm.postProvinceId == null || this.dataForm.postCityId==null || this.dataForm.postCountyId ==null){
           alert("请输入收件地址")
           return
-        }if(this.dataForm.postAddress == '' || this.dataForm.postAddress == null){
-          alert("请选择详细地址")
+        }if(this.dataForm.street == '' || this.dataForm.street == null){
+          alert("请输入街道/路名称")
+        }if(this.dataForm.houseNum == '' || this.dataForm.houseNum == null){
+          alert("请输入门牌号码")
         }else{
           sessionStorage.setItem('name', this.dataForm.name)
           sessionStorage.setItem('phone', this.dataForm.phone)
@@ -256,6 +268,8 @@
           sessionStorage.setItem('postRiskId', this.dataForm.postRiskId)
           sessionStorage.setItem('postPrice', this.postPrice)
           sessionStorage.setItem('rateFree', this.rateFree)
+          sessionStorage.setItem('street', this.dataForm.street)
+          sessionStorage.setItem('houseNum', this.dataForm.houseNum)
 
           this.$router.push({name: 'fourthOrder'})
         }

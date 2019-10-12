@@ -77,7 +77,9 @@
           handleAreaId: sessionStorage.getItem('handleAreaId'),
           openid: '',
           handleId: sessionStorage.getItem('handleId'),
-          commission: ''
+          commission: '',
+          street: sessionStorage.getItem('street'),
+          houseNum: sessionStorage.getItem('houseNum')
         },
         prepayId: ''
       }
