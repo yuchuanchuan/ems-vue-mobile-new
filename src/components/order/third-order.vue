@@ -297,8 +297,14 @@
           this.getCountyNames()
         },100)
       }
-      if(this.dataForm.postAddress === ''){
-        this.dataForm.postAddress = sessionStorage.getItem('postAddress')
+      // if(this.dataForm.postAddress === ''){
+      //   this.dataForm.postAddress = sessionStorage.getItem('postAddress')
+      // }
+      if(this.dataForm.street === ''){
+        this.dataForm.street = sessionStorage.getItem('street')
+      }
+      if(this.dataForm.houseNum === ''){
+        this.dataForm.houseNum = sessionStorage.getItem('houseNum')
       }
     }
   }
