@@ -264,7 +264,7 @@
           sessionStorage.setItem('postProvinceId', this.dataForm.postProvinceId)
           sessionStorage.setItem('postCityId', this.dataForm.postCityId)
           sessionStorage.setItem('postCountyId', this.dataForm.postCountyId)
-          sessionStorage.setItem('postAddress', this.dataForm.postAddress)
+          // sessionStorage.setItem('postAddress', this.dataForm.postAddress)
           sessionStorage.setItem('postRiskId', this.dataForm.postRiskId)
           sessionStorage.setItem('postPrice', this.postPrice)
           sessionStorage.setItem('rateFree', this.rateFree)

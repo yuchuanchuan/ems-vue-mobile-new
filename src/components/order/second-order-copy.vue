@@ -57,44 +57,6 @@
       tui(){
         this.$router.push({name: 'firstOrder'})
       },
-      dataURLtoFile(dataurl, filename = 'file') {
-        let arr = dataurl.split(',')
-        let mime = arr[0].match(/:(.*?);/)[1]
-        let suffix = mime.split('/')[1]
-        let bstr = atob(arr[1])
-        let n = bstr.length
-        let u8arr = new Uint8Array(n)
-        while (n--) {
-          u8arr[n] = bstr.charCodeAt(n)
-        }
-        return new File([u8arr], `${filename}.${suffix}`, {
-          type: mime
-        })
-      },
-      postImg(fileData, type, imgName){
-        let formData = new FormData();
-        //接口接收参数 键值形式 添加到formData中
-        formData.append("file", fileData);
-        formData.append("type", 1);
-        formData.append("name", sessionStorage.getItem('applyName'));
-        $.ajax({
-          url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
-          type: 'post',
-          data: formData,
-          contentType: false,
-          processData: false,
-          success: function (res) {
-            console.log(res);
-            if (res.code === 0) {
-              // ownerPositive = res.data
-              // sessionStorage.setItem('ownerPositive', ownerPositive)
-              sessionStorage.setItem(imgName, res.data)
-            } else {
-              console.log(res.msg)
-            }
-          }
-        })
-      },
 
       //身份证正面旋转功能  如果图片高度大于宽度?旋转:不旋转
       monidianji1(event){
@@ -102,28 +64,14 @@
         if(confirm("温馨提示：为了保证证件清晰，请您home键向右横版拍照")){
           document.getElementById('saveImage1').click()
           document.getElementById('saveImage1').onchange = function(e){
-            let reader = new FileReader();
-            let fileData = "";
+            var reader = new FileReader();
             reader.readAsDataURL(e.target.files[0]);
-            reader.onload = function(){
+            reader.onload = function(e){
+              self.imageSave1 = this.result
               self.show1 = false
+              console.log(self.show1)
               var img = new Image();
               img.src = this.result
-              //判断图片是否大于100K,是就直接上传，反之压缩图片
-              if (this.result.length <= (100 * 1024)) {
-                self.imageSave1 = this.result
-                fileData = e.target.files[0]
-                self.postImg(fileData, 1, 'ownerPositive');
-              }else {
-                img.onload = function () {
-                  let ndata = self.compress(img);
-                  self.imageSave1 = ndata;
-                  //BASE64转图片
-                  fileData = self.dataURLtoFile(ndata)
-                  self.postImg(fileData, 1, 'ownerPositive');
-                }
-              }
-
               setTimeout(function(){
                 var width = img.width
                 var height = img.height
@@ -134,6 +82,27 @@
                 }
               },50)
             };
+            let formData = new FormData();
+            //接口接收参数 键值形式 添加到formData中
+            formData.append("file", e.target.files[0]);
+            formData.append("type", 1);
+            formData.append("name", sessionStorage.getItem('applyName'));
+            $.ajax({
+              url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
+              type: 'post',
+              data: formData,
+              contentType: false,
+              processData: false,
+              success: function (res) {
+                console.log(res);
+                if (res.code === 0) {
+                  ownerPositive = res.data
+                  sessionStorage.setItem('ownerPositive', ownerPositive)
+                } else {
+                  console.log(res.msg)
+                }
+              }
+            })
           }
         }
       },
@@ -144,27 +113,13 @@
         if(confirm("温馨提示：为了保证证件清晰，请您home键向右横版拍照")){
           document.getElementById('saveImage2').click()
           document.getElementById('saveImage2').onchange = function(e){
-            let reader = new FileReader();
-            let fileData = "";
+            var reader = new FileReader();
             reader.readAsDataURL(e.target.files[0]);
             reader.onload = function(){
+              self.imageSave2 = this.result
               self.show2 = false
               var img = new Image();
               img.src = this.result
-              //判断图片是否大于100K,是就直接上传，反之压缩图片
-              if (this.result.length <= (100 * 1024)) {
-                self.imageSave2 = this.result
-                fileData = e.target.files[0]
-                self.postImg(fileData, 1, 'ownerNegative');
-              }else {
-                img.onload = function () {
-                  let ndata = self.compress(img);
-                  self.imageSave2 = ndata;
-                  //BASE64转图片
-                  fileData = self.dataURLtoFile(ndata)
-                  self.postImg(fileData, 1, 'ownerNegative');
-                }
-              }
               setTimeout(function(){
                 var width = img.width
                 var height = img.height
@@ -175,6 +130,27 @@
                 }
               },50)
             };
+            let formData = new FormData();
+            //接口接收参数 键值形式 添加到formData中
+            formData.append("file",e.target.files[0]);
+            formData.append("type", 1);
+            formData.append("name", sessionStorage.getItem('applyName'));
+            $.ajax({
+              url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
+              type:'post',
+              data: formData,
+              contentType: false,
+              processData: false,
+              success:function(res){
+                console.log(res);
+                if(res.code === 0){
+                  ownerNegative = res.data
+                  sessionStorage.setItem('ownerNegative', ownerNegative)
+                }else{
+                  console.log(res.msg)
+                }
+              }
+            })
           }
         }
       },
@@ -184,27 +160,14 @@
         if(confirm("温馨提示：为了保证证件清晰，请您home键向下竖版照相")){
           document.getElementById('saveImage3').click()
           document.getElementById('saveImage3').onchange = function(e){
-            let reader = new FileReader();
-            let fileData = "";
+            var reader = new FileReader();
             reader.readAsDataURL(e.target.files[0]);
             reader.onload = function(){
+              self.imageSave3 = this.result
               self.show3 = false
+              console.log(self.show3)
               var img = new Image();
               img.src = this.result
-              //判断图片是否大于100K,是就直接上传，反之压缩图片
-              if (this.result.length <= (100 * 1024)) {
-                self.imageSave3 = this.result
-                fileData = e.target.files[0]
-                self.postImg(fileData, 2, 'housingAuthority');
-              }else {
-                img.onload = function () {
-                  let ndata = self.compress(img);
-                  self.imageSave3 = ndata;
-                  //BASE64转图片
-                  fileData = self.dataURLtoFile(ndata)
-                  self.postImg(fileData, 2, 'housingAuthority');
-                }
-              }
               setTimeout(function(){
                 var width = img.width
                 var height = img.height
@@ -215,6 +178,27 @@
                 }
               },50)
             };
+            let formData = new FormData();
+            //接口接收参数 键值形式 添加到formData中
+            formData.append("file", e.target.files[0]);
+            formData.append("type", 2);
+            formData.append("name", sessionStorage.getItem('applyName'));
+            $.ajax({
+              url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
+              type: 'post',
+              data: formData,
+              contentType: false,
+              processData: false,
+              success: function (res) {
+                console.log(res);
+                if (res.code === 0) {
+                  housingAuthority = res.data
+                  sessionStorage.setItem('housingAuthority', housingAuthority)
+                } else {
+                  console.log(res.msg)
+                }
+              }
+            })
           }
         }
       },
@@ -229,61 +213,6 @@
         }else{
           this.$router.push({name: 'thirdOrder'})
         }
-      },
-      /*********图片压缩********/
-      compress(img) {
-        let canvas = document.createElement("canvas");
-        let ctx = canvas.getContext('2d');
-        //瓦片canvas
-        let tCanvas = document.createElement("canvas");
-        let tctx = tCanvas.getContext("2d");
-        let initSize = img.src.length;
-        let width = img.width;
-        let height = img.height;
-        //如果图片大于四百万像素，计算压缩比并将大小压至400万以下
-        let ratio;
-        if ((ratio = width * height / 4000000) > 1) {
-          console.log("大于400万像素")
-          ratio = Math.sqrt(ratio);
-          width /= ratio;
-          height /= ratio;
-        } else {
-          ratio = 1;
-        }
-        canvas.width = width;
-        canvas.height = height;
-        //        铺底色
-        ctx.fillStyle = "#fff";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        //如果图片像素大于100万则使用瓦片绘制
-        let count;
-        if ((count = width * height / 1000000) > 1) {
-          console.log("超过100W像素");
-          count = ~~(Math.sqrt(count) + 1); //计算要分成多少块瓦片
-          // 计算每块瓦片的宽和高
-          let nw = ~~(width / count);
-          let nh = ~~(height / count);
-          tCanvas.width = nw;
-          tCanvas.height = nh;
-          for (let i = 0; i < count; i++) {
-            for (let j = 0; j < count; j++) {
-              tctx.drawImage(img, i * nw * ratio, j * nh * ratio, nw * ratio, nh * ratio, 0, 0, nw, nh);
-              ctx.drawImage(tCanvas, i * nw, j * nh, nw, nh);
-            }
-          }
-        } else {
-          ctx.drawImage(img, 0, 0, width, height);
-        }
-
-        //进行最小压缩
-        let ndata = canvas.toDataURL('image/jpeg', 0.1);
-        console.log('压缩前：' + initSize);
-        console.log('压缩后：' + ndata.length);
-        console.log('压缩率：' + ~~(100 * (initSize - ndata.length) / initSize) + "%");
-        tCanvas.width = tCanvas.height = canvas.width = canvas.height = 0;
-        console.log("压缩成功返回结果")
-        console.log(ndata)
-        return ndata;
       }
     },
     mounted(){

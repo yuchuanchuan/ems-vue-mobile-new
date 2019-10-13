@@ -101,11 +101,11 @@ export default {
         if (data && data.code === 0) {
           localStorage.removeItem("openid")
           this.$cookie.set('token', data.data)
-          let index = 'http://ems.jujinkeji.net/mobile/flow'
+          let index = 'http://ems.tjeasytech.cn/mobile/flow'
 
-          // let index = 'http://ems.jujinkeji.net/mobile/flow/4964666/1043'
+          // let index = 'http://ems.tjeasytech.cn/mobile/flow/4964666/1043'
           // 微信页面
-          // location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorOpenId?returnUrl=' + index
+          // location.href = 'http://ems.tjeasytech.cn/mobile-ems/wechat/authorOpenId?returnUrl=' + index
 
           this.$route
           this.$router.push({ path:'/flow'})
@@ -119,9 +119,9 @@ export default {
         },
         weChatLogin(){
           localStorage.removeItem("openid")
-          // let index = 'http://ems.jujinkeji.net/mobile/flow'
-          let index = 'http://ems.jujinkeji.net/mobile/flow/4964666/1043'
-          location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorize?returnUrl=' + index
+          // let index = 'http://ems.tjeasytech.cn/mobile/flow'
+          let index = 'http://ems.tjeasytech.cn/mobile/flow/4964666/1043'
+          location.href = 'http://ems.tjeasytech.cn/mobile-ems/wechat/authorize?returnUrl=' + index
         }
     }
 }
