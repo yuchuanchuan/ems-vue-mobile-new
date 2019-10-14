@@ -120,7 +120,7 @@
           }
 
           if(this.dataForm.applyPhone){
-            let reg = /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/;
+            let reg = /^1[3456789]\d{9}$/;
             if (!reg.test(this.dataForm.applyPhone)) {
               flag = false
               alert('请输入正确的手机号')

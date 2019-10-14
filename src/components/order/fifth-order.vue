@@ -1,58 +1,70 @@
 <template>
   <div>
-    <div class='new_title'>不动产登记便民邮寄</div>
-    <div class="new_box">
-      <div class="new_tui" @click="new_tui()"></div>
-      授权委托书
-    </div>
-    <!-- 截取授权委托书图片开始 -->
-    <div ref="imageTofile">
-      <div class='new_info_title'>授权委托书</div>
-      <div class='new_yi new_info'>
-        <span>委托人：</span>
-        <span>{{dataForm.applyName}}</span>
+    <div v-if="!qianming">
+      <div class='new_title'>不动产登记便民邮寄</div>
+      <div class="new_box">
+        <div class="new_tui" @click="new_tui()"></div>
+        授权委托书
       </div>
-      <div class='new_id new_info'>
-        <span>身份证：</span>
-        <span>{{dataForm.propertyNo}}</span>
-      </div>
-      <div class='new_num new_info'>
-        <span>凭证编号：</span>
-        <span>{{dataForm.idCard}}</span>
-      </div>
-      <div class='new_jia new_info'>
-        <span>受托人：</span>
-        <span>中国邮政速递物流股份有限公司天津市分公司</span>
-      </div>
-      <div class='new_shi new_info'>
-        <span>委托事项：</span>
-        <span>权利人自愿委托中国邮政速递物流股份有限公司天津市分公司为合法代理人，代为领取本人申请办理的不动产权证/不动产登记证明，并邮寄送达本人，受托人在其权限范围内依法所作的一切行为，接受问询的行为及签署的一切文件，委托人均予以承认。</span>
-      </div>
-      <div class='new_white new_info'>
-        <div class='white_title'>
-          <span>委托人签名：</span>
-          <button @click="overwrite">清空</button>
+      <!-- 截取授权委托书图片开始 -->
+      <div ref="imageTofile">
+        <div class='new_info_title'>授权委托书</div>
+        <div class='new_yi new_info'>
+          <span>委托人：</span>
+          <span>{{dataForm.applyName}}</span>
         </div>
-        <div class='new_qianzi'>
-          <Signature ref="signaturePic"></Signature>
+        <div class='new_id new_info'>
+          <span>身份证：</span>
+          <span>{{dataForm.propertyNo}}</span>
         </div>
+        <div class='new_num new_info'>
+          <span>凭证编号：</span>
+          <span>{{dataForm.idCard}}</span>
+        </div>
+        <div class='new_jia new_info'>
+          <span>受托人：</span>
+          <span>中国邮政速递物流股份有限公司天津市分公司</span>
+        </div>
+        <div class='new_shi new_info'>
+          <span>委托事项：</span>
+          <span>权利人自愿委托中国邮政速递物流股份有限公司天津市分公司为合法代理人，代为领取本人申请办理的不动产权证/不动产登记证明，并邮寄送达本人，受托人在其权限范围内依法所作的一切行为，接受问询的行为及签署的一切文件，委托人均予以承认。</span>
+        </div>
+        <div class='new_white new_info'>
+          <div class='white_title'>
+            <span>委托人签名：</span>
+            <!-- <button @click="overwrite">清空</button> -->
+            <button @click='startwrite'>签名</button>
+          </div>
+          <!-- <div class='new_qianzi' v-if="qianming">
+            <Signature ref="signaturePic"></Signature>
+          </div> -->
+          <img src="../../img/write.jpg" class='show_qianming' alt="签名">
+        </div>
+        <div style="height: 10px;"></div>
+        <!-- 截取授权委托书图片结束 -->
       </div>
-      <div style="height: 10px;"></div>
-      <!-- 截取授权委托书图片结束 -->
-    </div>
 
-    <button class='new_sub' @click="jump5" :disabled="payOrder">提交</button>
-    <div class="new_dianzi"></div>
+      <button class='new_sub' @click="jump5" :disabled="payOrder">提交</button>
+      <div class="new_dianzi"></div>
+    </div>
+    <div class='new_qianzi' v-if="qianming">
+      <div class='qianming_btn'>
+        <button @click="overwrite()">清空</button>
+        <button @click="writeend()">完成</button>
+      </div>
+      <Signature ref="signaturePic"></Signature>
+    </div>
   </div>
 </template>
 
 <script>
   import html2canvas from 'html2canvas'
-  import Signature from '../Index/signature.vue'
+  import Signature from './demo1.vue'
   var commission = ''
   export default {
     data(){
       return{
+        qianming:false,
         payOrder: false,
         dataForm: {
           orderId: '',
@@ -87,6 +99,12 @@
     methods:{
       new_tui(){
         this.$router.push({name: 'fourthOrder'})
+      },
+      startwrite(){
+        this.qianming = true
+      },
+      writeend(){
+        this.qianming = false
       },
       overwrite(){
         this.$refs.signaturePic.overwrite()
@@ -150,7 +168,6 @@
       createOrderInfo(){
         this.dataForm.commission = commission
         this.dataForm.openid = localStorage.getItem("openid")
-
         this.$http({
           url: this.$http.adornUrl('/mobile/order/create'),
           method: 'post',
@@ -245,7 +262,6 @@
             "package": data.data.package,
             "signType": data.data.signType,         //微信签名方式：
             "paySign": data.data.paySign //微信签名
-
             // "appId": data.data.payResponse.appId,     //公众号名称，由商户传入
             // "timeStamp": data.data.payResponse.timeStamp,         //时间戳，自1970年以来的秒数
             // "nonceStr": data.data.payResponse.nonceStr, //随机串
@@ -294,6 +310,37 @@
 </script>
 
 <style scoped>
+  .show_qianming{
+    margin-top:0.3rem;
+    width:100%;
+    height:3.3rem;
+  }
+  .qianming_btn button{
+    width: 1rem;
+    height: 0.45rem;
+    text-align: center;
+    line-height: 0.45rem;
+    border-radius: 0.3rem;
+    background: #177abf;
+    border:none;
+    outline: none;
+    color:white;
+  }
+  .qianming_btn{
+    position: absolute;
+    top:0;
+    left:-6rem;
+    right:0;
+    bottom:0;
+    margin:auto;
+    width:7.1rem;
+    height:1rem;
+    transform: rotateZ(90deg);
+    z-index: 5;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+  }
   .dz select{
     width:100%;
     height:0.8rem;
@@ -309,7 +356,6 @@
     align-items: center;
     margin-top:0.35rem;
     border-top:1px solid #dedede;
-
   }
   .btn_list .xiugai{
     border-right:1px solid #dedede;
@@ -517,7 +563,6 @@
     width:0.4rem;
     margin-right: 0.1rem;
   }
-
   .content2 .box1{
     width:5.2rem;
     height:3rem;
@@ -941,9 +986,12 @@
     align-items: center;
   }
   .new_qianzi{
-    margin-top:0.3rem;
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:3;
     width:100%;
-    height:3.3rem;
+    height:100%;
     background:#f2f2f2;
   }
   .new_info span:first-child{

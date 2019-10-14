@@ -236,7 +236,7 @@
       },
       jump4(){
         var reg1 = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/;
-        var reg2 = /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/;
+        var reg2 = /^1[3456789]\d{9}$/;
         if(this.dataForm.name==''){
           alert("请输入收件人姓名")
           return
