@@ -75,7 +75,7 @@
         let formData = new FormData();
         //接口接收参数 键值形式 添加到formData中
         formData.append("file", fileData);
-        formData.append("type", 1);
+        formData.append("type", type);
         formData.append("name", sessionStorage.getItem('applyName'));
         $.ajax({
           url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
