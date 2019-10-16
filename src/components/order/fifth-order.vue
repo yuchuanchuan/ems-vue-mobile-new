@@ -232,7 +232,7 @@
         //     method: 'get',
         //     params: this.$http.adornParams({
         //       'orderId': orderId,
-        //       'returnUrl': 'http://ems.tjeasytech.cn/mobile/orderInfo'
+        //       'returnUrl': 'http://ems.jujinkeji.net/mobile/orderInfo'
         //     })
         //   }).then(({ data }) => {
         //     if (data && data.code === 0) {
@@ -293,7 +293,7 @@
         //   })
         // }).then(({ data }) => {
         //   if (data && data.code === 0) {
-        //     // window.location.assign('http://ems.tjeasytech.cn/mobile/submit')
+        //     // window.location.assign('http://ems.jujinkeji.net/mobile/submit')
         //     this.$router.push({ name: 'submit', params:{'orderNum': this.orderNum} })
         //     // this.getUserOrderList()
         //   } else {

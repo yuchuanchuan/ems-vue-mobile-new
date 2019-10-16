@@ -11,7 +11,7 @@
 				<div class='timer'>下单时间：{{item.createOrderDate}}</div>
 				<div class='status'>
 					<p>
-            当前状态：{{item.status ===1 ? '未支付' : item.status ===2 ? '已支付' : item.status === 3 ? '待收货' : item.status === 4 ? '已收货' : item.status === 5 ? '已取消' : item.status === 6 ? '受理中' : item.status === 7 ? '审核中' : item.status === 8 ? '制证中' : item.status === 9 ? '发证中' : '' }}
+            当前状态：{{item.status ===1 ? '待支付' : (item.status ===2 || item.status ===6 || item.status === 7 || item.status === 8 || item.status === 9) ? '已支付' : (item.status === 3 || item.status === 13) ? '已发货' : (item.status === 4 || item.status === 11) ? '已签收' : (item.status === 10 || item.status === 12) ? '未妥投' : item.status === 5 ? '已取消' : '' }}
             <span v-if="item.status ===1">(剩余{{item.djs}}）</span>
             <span v-if="item.status ===2 && item.showCancelBtn">(剩余{{item.djs1}}）</span>
           </p>
@@ -136,13 +136,12 @@ export default {
            }
            this.orderList[key]["djs"] = "00:" + mm + ":" + ss;
          }
-         // else{
-         //   // 自动取消订单，无退款
-         //   if(this.orderList[key]["status"] === 1){
-         //     this.updateCancelStatus(this.orderList[key]["orderNumber"], 0)
-         //   }
-         //
-         // }
+         else{
+           // 自动取消订单，无退款
+           if(this.orderList[key]["status"] === 1){
+             this.updateCancelStatus(this.orderList[key]["orderNumber"], 0)
+           }
+         }
          // else{
          //   alert("退款-----99999")
          //   if(this.orderList[key]["status"] === 1){
@@ -436,7 +435,7 @@ export default {
       //   })
       // }).then(({ data }) => {
       //   if (data && data.code === 0) {
-      //     // window.location.assign('http://ems.tjeasytech.cn/mobile/submit')
+      //     // window.location.assign('http://ems.jujinkeji.net/mobile/submit')
       //     this.$router.push({ name: 'submit', params:{'orderNum': this.orderNum} })
       //     // this.getUserOrderList()
       //   } else {

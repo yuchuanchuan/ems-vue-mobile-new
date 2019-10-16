@@ -118,9 +118,9 @@ export default {
       }).then(({ data }) => {
         if (data && data.code === 0) {
           this.dataForm = data.data
-          this.dataForm.ownerNegative = "http://ems.tjeasytech.cn/mobile/" + data.data.ownerNegative
-          this.dataForm.ownerPositive = "http://ems.tjeasytech.cn/mobile/" + data.data.ownerPositive
-          this.dataForm.housingAuthority = "http://ems.tjeasytech.cn/mobile/" + data.data.housingAuthority
+          this.dataForm.ownerNegative = "http://ems.jujinkeji.net/mobile/" + data.data.ownerNegative
+          this.dataForm.ownerPositive = "http://ems.jujinkeji.net/mobile/" + data.data.ownerPositive
+          this.dataForm.housingAuthority = "http://ems.jujinkeji.net/mobile/" + data.data.housingAuthority
         } else {
           alert(data.msg)
         }

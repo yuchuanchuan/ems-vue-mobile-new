@@ -111,9 +111,9 @@ export default {
       }).then(({ data }) => {
         if (data && data.code === 0) {
           this.dataForm = data.data
-          this.dataForm.ownerNegative = decodeURIComponent("http://ems.tjeasytech.cn/" + data.data.ownerNegative)
-          this.dataForm.ownerPositive = decodeURIComponent("http://ems.tjeasytech.cn/" + data.data.ownerPositive)
-          this.dataForm.housingAuthority = decodeURIComponent("http://ems.tjeasytech.cn/zip/受理凭证/" + data.data.housingAuthority)
+          this.dataForm.ownerNegative = decodeURIComponent("http://ems.jujinkeji.net/" + data.data.ownerNegative)
+          this.dataForm.ownerPositive = decodeURIComponent("http://ems.jujinkeji.net/" + data.data.ownerPositive)
+          this.dataForm.housingAuthority = decodeURIComponent("http://ems.jujinkeji.net/zip/受理凭证/" + data.data.housingAuthority)
         } else {
           alert(data.msg)
         }
