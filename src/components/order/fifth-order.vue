@@ -38,7 +38,9 @@
           <!-- <div class='new_qianzi' v-if="qianming">
             <Signature ref="signaturePic"></Signature>
           </div> -->
-          <img src="../../img/write.jpg" class='show_qianming' alt="签名">
+          <div style="display:flex;justify-content: center;align-items: center;width:100%;height:3.3rem;">
+            <img :src="img_path" :class='is_xuanzhuan?"xuanzhuan":"show_qianming"' alt="签名">
+          </div>
         </div>
         <div style="height: 10px;"></div>
         <!-- 截取授权委托书图片结束 -->
@@ -48,18 +50,14 @@
       <div class="new_dianzi"></div>
     </div>
     <div class='new_qianzi' v-if="qianming">
-      <div class='qianming_btn'>
-        <button @click="overwrite()">清空</button>
-        <button @click="writeend()">完成</button>
-      </div>
-      <Signature ref="signaturePic"></Signature>
+      <Signature ref="signaturePic" @event1="change($event)"></Signature>
     </div>
   </div>
 </template>
 
 <script>
   import html2canvas from 'html2canvas'
-  import Signature from './demo1.vue'
+  import Signature from '../Index/signature.vue'
   var commission = ''
   export default {
     data(){
@@ -93,22 +91,27 @@
           street: sessionStorage.getItem('street'),
           houseNum: sessionStorage.getItem('houseNum')
         },
-        prepayId: ''
+        prepayId: '',
+        img_path:require("../../img/write.jpg"),
+        is_xuanzhuan:false
       }
     },
     methods:{
+      //得到子组件传值
+       change(data) {
+          this.img_path = data;
+          console.log(this.img_path)
+          this.qianming = false
+          this.is_xuanzhuan = true
+      },
+
       new_tui(){
         this.$router.push({name: 'fourthOrder'})
       },
       startwrite(){
         this.qianming = true
       },
-      writeend(){
-        this.qianming = false
-      },
-      overwrite(){
-        this.$refs.signaturePic.overwrite()
-      },
+      
       jump5(){
         if(this.$refs.signaturePic.touchBegin){
           this.payOrder = true
@@ -310,37 +313,19 @@
 </script>
 
 <style scoped>
+  .xuanzhuan{
+    height:6.64rem;
+    width:3.3rem;
+    transform: rotateZ(-90deg);
+    margin:0 auto;
+    display:block;
+  }
   .show_qianming{
     margin-top:0.3rem;
     width:100%;
     height:3.3rem;
   }
-  .qianming_btn button{
-    width: 1rem;
-    height: 0.45rem;
-    text-align: center;
-    line-height: 0.45rem;
-    border-radius: 0.3rem;
-    background: #177abf;
-    border:none;
-    outline: none;
-    color:white;
-  }
-  .qianming_btn{
-    position: absolute;
-    top:0;
-    left:-6rem;
-    right:0;
-    bottom:0;
-    margin:auto;
-    width:7.1rem;
-    height:1rem;
-    transform: rotateZ(90deg);
-    z-index: 5;
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-end;
-  }
+  
   .dz select{
     width:100%;
     height:0.8rem;
