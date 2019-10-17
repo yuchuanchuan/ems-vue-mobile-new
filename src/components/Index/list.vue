@@ -136,12 +136,12 @@ export default {
            }
            this.orderList[key]["djs"] = "00:" + mm + ":" + ss;
          }
-         else{
-           // 自动取消订单，无退款
-           if(this.orderList[key]["status"] === 1){
-             this.updateCancelStatus(this.orderList[key]["orderNumber"], 0)
-           }
-         }
+         // else{
+         //   // 自动取消订单，无退款
+         //   if(this.orderList[key]["status"] === 1){
+         //     this.updateCancelStatus(this.orderList[key]["orderNumber"], 0)
+         //   }
+         // }
          // else{
          //   alert("退款-----99999")
          //   if(this.orderList[key]["status"] === 1){
