@@ -131,10 +131,19 @@
 
           if(this.dataForm.propertyNo){
             let reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
-            if (!reg.test(this.dataForm.propertyNo)) {
+            let reg1 = /^[a-zA-Z][0-9]{8}$/
+
+
+            if (!reg.test(this.dataForm.propertyNo) && !reg1.test(this.dataForm.propertyNo)) {
               flag = false
               alert('请输入正确的身份证号')
               return;
+            }
+            if(reg.test(this.dataForm.propertyNo)){
+              alert("身份证号")
+            }
+            if(reg1.test(this.dataForm.propertyNo)){
+              alert("港澳通行证||台湾通行证||护照")
             }
             window.scrollTo(0, 0);
           }
