@@ -59,7 +59,7 @@
 
 <script>
   import html2canvas from 'html2canvas'
-  import Signature from './demo1.vue'
+  import Signature from '../Index/signature.vue'
   var commission = ''
   export default {
     data(){
