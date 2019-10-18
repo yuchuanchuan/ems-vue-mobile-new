@@ -77,16 +77,12 @@
       overwrite(){
         this.$refs.signaturePic.overwrite()
       },
-
-
       // mobile
       touchStart (ev) {
         this.touchBegin = true
-
         let canvas = this.$refs.canvasF
         this.canvasTxt = canvas.getContext('2d')
         this.stageInfo = canvas.getBoundingClientRect()
-
         ev = ev || event
         ev.preventDefault()
         if (ev.touches.length == 1) {
@@ -145,7 +141,6 @@
         let canvas = this.$refs.canvasF
         this.canvasTxt = canvas.getContext('2d')
         this.stageInfo = canvas.getBoundingClientRect()
-
         ev = ev || event
         ev.preventDefault()
         if (1) {
@@ -217,9 +212,7 @@
         this.dataURLtoFile(this.$refs.canvasF.toDataURL())
         this.showPop = false
         // this.$emit('handle', this.$refs.canvasF.toDataURL())
-
         // console.log(this.$refs.canvasF.toDataURL()) // 签名img回传后台
-
         // console.log(this.imgUrl)
       },
       // 将base64转换成file对象
@@ -234,7 +227,6 @@
           u8arr[n] = bstr.charCodeAt(n)
         }
         // console.log(new File([u8arr], `${filename}.${suffix}`, {type: mime}))
-
         var file = new File([u8arr], `${filename}.${suffix}`, { type: mime })
         console.log(file)
         var formdata1 = new FormData()// 创建form对象

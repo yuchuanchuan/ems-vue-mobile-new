@@ -104,7 +104,6 @@
           this.qianming = false
           this.is_xuanzhuan = true
       },
-
       new_tui(){
         this.$router.push({name: 'fourthOrder'})
       },
