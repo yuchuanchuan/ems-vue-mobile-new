@@ -139,12 +139,6 @@
               alert('请输入正确的身份证号')
               return;
             }
-            if(reg.test(this.dataForm.propertyNo)){
-              alert("身份证号")
-            }
-            if(reg1.test(this.dataForm.propertyNo)){
-              alert("港澳通行证||台湾通行证||护照")
-            }
             window.scrollTo(0, 0);
           }
 
