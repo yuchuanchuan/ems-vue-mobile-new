@@ -17,7 +17,7 @@
 
     <div class="inp_list">
       <div class='user_name'>
-        <div class='left'>申请人</div>
+        <div class='left'>产权人</div>
         <input type="text" v-model="dataForm.applyName">
       </div>
 
@@ -46,7 +46,7 @@
         <div class='fuceng_title'>请确认信息</div>
 
         <div class='info_list'>
-          <div class='user_name'>申请人：{{dataForm.applyName}}</div>
+          <div class='user_name'>产权人：{{dataForm.applyName}}</div>
           <div class='user_id'>身份证号：{{dataForm.propertyNo}}</div>
           <div class='user_phone'>手机号：{{dataForm.applyPhone}}</div>
           <div class='user_num'>凭证编号：{{dataForm.idCard}}</div>
@@ -100,7 +100,7 @@
       },
       jump1 () {
         if(this.dataForm.applyName == '' || this.dataForm.applyName == null){
-          alert('请输入申请人姓名')
+          alert('请输入产权人姓名')
         } else if(this.dataForm.applyPhone == '' || this.dataForm.applyPhone == null){
           alert('请输入手机号')
         } else if(this.dataForm.propertyNo == '' || this.dataForm.propertyNo == null){
@@ -113,7 +113,7 @@
             let reg = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/;
             if (!reg.test(this.dataForm.applyName)) {
               flag = false
-              alert('请输入正确的申请人姓名')
+              alert('请输入正确的产权人姓名')
               return;
             }
             window.scrollTo(0, 0);
