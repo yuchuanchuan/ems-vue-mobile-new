@@ -435,7 +435,7 @@ export default {
       //   })
       // }).then(({ data }) => {
       //   if (data && data.code === 0) {
-      //     // window.location.assign('http://ems.jujinkeji.net/mobile/submit')
+      //     // window.location.assign('http://ems.tjeasytech.cn/mobile/submit')
       //     this.$router.push({ name: 'submit', params:{'orderNum': this.orderNum} })
       //     // this.getUserOrderList()
       //   } else {

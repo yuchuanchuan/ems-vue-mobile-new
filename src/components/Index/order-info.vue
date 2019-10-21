@@ -172,7 +172,7 @@
 
       <div class="inp_list">
         <div class='user_name'>
-          <div class='left'>申请人</div>
+          <div class='left'>产权人</div>
           <input type="text" v-model="dataForm.applyName"  @blur.prevent="changeName()" >
         </div>
 
@@ -200,7 +200,7 @@
         <div class='fuceng_title'>请确认信息</div>
 
         <div class='info_list'>
-          <div class='user_name'>申请人：{{dataForm.applyName}}</div>
+          <div class='user_name'>产权人：{{dataForm.applyName}}</div>
           <div class='user_id'>身份证号：{{dataForm.propertyNo}}</div>
           <div class='user_phone'>手机号：{{dataForm.applyPhone}}</div>
           <div class='user_num'>凭证编号：{{dataForm.idCard}}</div>
@@ -1056,8 +1056,8 @@
         // this.dataForm.postRiskId = $('input:radio[name="dizhi"]:checked').val();val
 
 
-        // let index = 'http://ems.jujinkeji.net/mobile/Index'
-        // location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorize?returnUrl=' + index
+        // let index = 'http://ems.tjeasytech.cn/mobile/Index'
+        // location.href = 'http://ems.tjeasytech.cn/mobile-ems/wechat/authorize?returnUrl=' + index
         this.$http({
            url: this.$http.adornUrl('/mobile/order/create'),
            method: 'post',
@@ -1114,7 +1114,7 @@
           method: 'get',
           params: this.$http.adornParams({
             'orderId': orderId,
-            'returnUrl': 'http://ems.jujinkeji.net/mobile/orderInfo'
+            'returnUrl': 'http://ems.tjeasytech.cn/mobile/orderInfo'
           })
         }).then(({ data }) => {
           if (data && data.code === 0) {
@@ -1167,7 +1167,7 @@
           })
         }).then(({ data }) => {
           if (data && data.code === 0) {
-            // window.location.assign('http://ems.jujinkeji.net/mobile/submit')
+            // window.location.assign('http://ems.tjeasytech.cn/mobile/submit')
             this.$router.push({ name: 'submit', params:{'orderNum': this.orderNum} })
             // this.getUserOrderList()
           } else {
@@ -1308,7 +1308,7 @@
       let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
       // XXX: 修复iOS版微信HTML5 History兼容性问题
       if (isiOS && "/mobile" + to.path !== window.location.pathname) {
-        window.location.assign('http://ems.jujinkeji.net/mobile/orderInfo')
+        window.location.assign('http://ems.tjeasytech.cn/mobile/orderInfo')
       } else {
         next()
       }

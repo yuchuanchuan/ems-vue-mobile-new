@@ -1,17 +1,13 @@
 <template>
-  <div class='max'>
-    <div class='qianming_btn max'>
-      <button @click="overwrite()">清空</button>
-      <button @click="writeend()">完成</button>
-    </div>
-    <section class="signature max">
-      <div class="signatureBox max">
-        <div class="canvasBox max" ref="canvasHW">
-          <canvas ref="canvasF" @touchstart='touchStart' @touchmove='touchMove' @touchend='touchEnd' @mousedown="mouseDown" @mousemove="mouseMove" @mouseup="mouseUp" v-if="tempImgUrl ==''" class='max'></canvas>
+  <div>
+    <section class="signature">
+      <div class="signatureBox">
+        <div class="canvasBox" ref="canvasHW">
+          <canvas ref="canvasF" @touchstart='touchStart' @touchmove='touchMove' @touchend='touchEnd' @mousedown="mouseDown" @mousemove="mouseMove" @mouseup="mouseUp" v-if="tempImgUrl ==''"></canvas>
           <!--<img class="imgCanvas" v-if="tempImgUrl" :src="'/api/mongodb/getDownloadOutputStream?fileId='+imgUrl">-->
           <!--<div class="btnBox">-->
-            <!--<div @click.native="overwrite">重写</div>-->
-            <!--<div @click.native="commit" v-if="tempImgUrl ==''">确定</div>-->
+          <!--<div @click.native="overwrite">重写</div>-->
+          <!--<div @click.native="commit" v-if="tempImgUrl ==''">确定</div>-->
           <!--</div>-->
         </div>
       </div>
@@ -69,14 +65,6 @@
       // this.stageInfo = canvas.getBoundingClientRect()
     },
     methods: {
-      writeend(){
-        var img_path = this.$refs.canvasF.toDataURL()
-        this.$emit('event1',img_path)
-        console.log(img_path)
-      },
-      overwrite(){
-        this.$refs.signaturePic.overwrite()
-      },
       // mobile
       touchStart (ev) {
         this.touchBegin = true
@@ -256,36 +244,6 @@
 </script>
 
 <style scoped>
-  .max{
-    width:100%;
-    height:100%;
-  }
-  .qianming_btn button{
-    width: 1rem;
-    height: 0.45rem;
-    text-align: center;
-    line-height: 0.45rem;
-    border-radius: 0.3rem;
-    background: #177abf;
-    border:none;
-    outline: none;
-    color:white;
-  }
-  .qianming_btn{
-    position: absolute;
-    top:0;
-    left:-6rem;
-    right:0;
-    bottom:0;
-    margin:auto;
-    width:7.1rem;
-    height:1rem;
-    transform: rotateZ(90deg);
-    z-index: 5;
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-end;
-  }
   .signatureBox {
     width: 100%;
     /*height: calc(100% - 50px);*/

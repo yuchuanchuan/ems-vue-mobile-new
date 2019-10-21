@@ -1,57 +1,48 @@
 <template>
   <div>
-    <div v-if="!qianming">
-      <div class='new_title'>不动产登记便民邮寄</div>
-      <div class="new_box">
-        <div class="new_tui" @click="new_tui()"></div>
-        授权委托书
+    <div class='new_title'>不动产登记便民邮寄</div>
+    <div class="new_box">
+      <div class="new_tui" @click="new_tui()"></div>
+      授权委托书
+    </div>
+    <!-- 截取授权委托书图片开始 -->
+    <div ref="imageTofile">
+      <div class='new_info_title'>授权委托书</div>
+      <div class='new_yi new_info'>
+        <span>委托人：</span>
+        <span>{{dataForm.applyName}}</span>
       </div>
-      <!-- 截取授权委托书图片开始 -->
-      <div ref="imageTofile">
-        <div class='new_info_title'>授权委托书</div>
-        <div class='new_yi new_info'>
-          <span>委托人：</span>
-          <span>{{dataForm.applyName}}</span>
-        </div>
-        <div class='new_id new_info'>
-          <span>身份证：</span>
-          <span>{{dataForm.propertyNo}}</span>
-        </div>
-        <div class='new_num new_info'>
-          <span>凭证编号：</span>
-          <span>{{dataForm.idCard}}</span>
-        </div>
-        <div class='new_jia new_info'>
-          <span>受托人：</span>
-          <span>中国邮政速递物流股份有限公司天津市分公司</span>
-        </div>
-        <div class='new_shi new_info'>
-          <span>委托事项：</span>
-          <span>权利人自愿委托中国邮政速递物流股份有限公司天津市分公司为合法代理人，代为领取本人申请办理的不动产权证/不动产登记证明，并邮寄送达本人，受托人在其权限范围内依法所作的一切行为，接受问询的行为及签署的一切文件，委托人均予以承认。</span>
-        </div>
-        <div class='new_white new_info'>
-          <div class='white_title'>
-            <span>委托人签名：</span>
-            <!-- <button @click="overwrite">清空</button> -->
-            <button @click='startwrite'>签名</button>
-          </div>
-          <!-- <div class='new_qianzi' v-if="qianming">
-            <Signature ref="signaturePic"></Signature>
-          </div> -->
-          <div style="display:flex;justify-content: center;align-items: center;width:100%;height:3.3rem;">
-            <img :src="img_path" :class='is_xuanzhuan?"xuanzhuan":"show_qianming"' alt="签名">
-          </div>
-        </div>
-        <div style="height: 10px;"></div>
-        <!-- 截取授权委托书图片结束 -->
+      <div class='new_id new_info'>
+        <span>身份证：</span>
+        <span>{{dataForm.propertyNo}}</span>
       </div>
+      <div class='new_num new_info'>
+        <span>凭证编号：</span>
+        <span>{{dataForm.idCard}}</span>
+      </div>
+      <div class='new_jia new_info'>
+        <span>受托人：</span>
+        <span>中国邮政速递物流股份有限公司天津市分公司</span>
+      </div>
+      <div class='new_shi new_info'>
+        <span>委托事项：</span>
+        <span>权利人自愿委托中国邮政速递物流股份有限公司天津市分公司为合法代理人，代为领取本人申请办理的不动产权证/不动产登记证明，并邮寄送达本人，受托人在其权限范围内依法所作的一切行为，接受问询的行为及签署的一切文件，委托人均予以承认。</span>
+      </div>
+      <div class='new_white new_info'>
+        <div class='white_title'>
+          <span>委托人签名：</span>
+          <button @click="overwrite">清空</button>
+        </div>
+        <div class='new_qianzi'>
+          <Signature ref="signaturePic"></Signature>
+        </div>
+      </div>
+      <div style="height: 10px;"></div>
+      <!-- 截取授权委托书图片结束 -->
+    </div>
 
-      <button class='new_sub' @click="jump5" :disabled="payOrder">提交</button>
-      <div class="new_dianzi"></div>
-    </div>
-    <div class='new_qianzi' v-if="qianming">
-      <Signature ref="signaturePic" @event1="change($event)"></Signature>
-    </div>
+    <button class='new_sub' @click="jump5" :disabled="payOrder">提交</button>
+    <div class="new_dianzi"></div>
   </div>
 </template>
 
@@ -62,7 +53,6 @@
   export default {
     data(){
       return{
-        qianming:false,
         payOrder: false,
         dataForm: {
           orderId: '',
@@ -91,26 +81,16 @@
           street: sessionStorage.getItem('street'),
           houseNum: sessionStorage.getItem('houseNum')
         },
-        prepayId: '',
-        img_path:require("../../img/write.jpg"),
-        is_xuanzhuan:false
+        prepayId: ''
       }
     },
     methods:{
-      //得到子组件传值
-       change(data) {
-          this.img_path = data;
-          console.log(this.img_path)
-          this.qianming = false
-          this.is_xuanzhuan = true
-      },
       new_tui(){
         this.$router.push({name: 'fourthOrder'})
       },
-      startwrite(){
-        this.qianming = true
+      overwrite(){
+        this.$refs.signaturePic.overwrite()
       },
-      
       jump5(){
         if(this.$refs.signaturePic.touchBegin){
           this.payOrder = true
@@ -228,30 +208,30 @@
             }
           }
         }).then(()=>{
-        //   // 发起支付
-        //   this.$http({
-        //     url: this.$http.adornUrl('/pay/create'),
-        //     method: 'get',
-        //     params: this.$http.adornParams({
-        //       'orderId': orderId,
-        //       'returnUrl': 'http://ems.jujinkeji.net/mobile/orderInfo'
-        //     })
-        //   }).then(({ data }) => {
-        //     if (data && data.code === 0) {
-        //       if (typeof WeixinJSBridge == "undefined"){//微信浏览器内置对象。参考微信官方文档
-        //         if( document.addEventListener ){
-        //           document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady(data), false);
-        //         }else if (document.attachEvent){
-        //           document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady(data));
-        //           document.attachEvent('onWeixinJSBridgeReady',this.onBridgeReady(data));
-        //         }
-        //       }else{
-        //         this.onBridgeReady(data);
-        //       }
-        //     } else {
-        //       alert(data.msg)
-        //     }
-        //   })
+          //   // 发起支付
+          //   this.$http({
+          //     url: this.$http.adornUrl('/pay/create'),
+          //     method: 'get',
+          //     params: this.$http.adornParams({
+          //       'orderId': orderId,
+          //       'returnUrl': 'http://ems.tjeasytech.cn/mobile/orderInfo'
+          //     })
+          //   }).then(({ data }) => {
+          //     if (data && data.code === 0) {
+          //       if (typeof WeixinJSBridge == "undefined"){//微信浏览器内置对象。参考微信官方文档
+          //         if( document.addEventListener ){
+          //           document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady(data), false);
+          //         }else if (document.attachEvent){
+          //           document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady(data));
+          //           document.attachEvent('onWeixinJSBridgeReady',this.onBridgeReady(data));
+          //         }
+          //       }else{
+          //         this.onBridgeReady(data);
+          //       }
+          //     } else {
+          //       alert(data.msg)
+          //     }
+          //   })
         })
       },
       onBridgeReady:function(data){
@@ -295,7 +275,7 @@
         //   })
         // }).then(({ data }) => {
         //   if (data && data.code === 0) {
-        //     // window.location.assign('http://ems.jujinkeji.net/mobile/submit')
+        //     // window.location.assign('http://ems.tjeasytech.cn/mobile/submit')
         //     this.$router.push({ name: 'submit', params:{'orderNum': this.orderNum} })
         //     // this.getUserOrderList()
         //   } else {
@@ -312,19 +292,6 @@
 </script>
 
 <style scoped>
-  .xuanzhuan{
-    height:6.64rem;
-    width:3.3rem;
-    transform: rotateZ(-90deg);
-    margin:0 auto;
-    display:block;
-  }
-  .show_qianming{
-    margin-top:0.3rem;
-    width:100%;
-    height:3.3rem;
-  }
-  
   .dz select{
     width:100%;
     height:0.8rem;
@@ -970,12 +937,9 @@
     align-items: center;
   }
   .new_qianzi{
-    position:fixed;
-    top:0;
-    left:0;
-    z-index:3;
+    margin-top:0.3rem;
     width:100%;
-    height:100%;
+    height:3.3rem;
     background:#f2f2f2;
   }
   .new_info span:first-child{

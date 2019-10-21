@@ -225,7 +225,7 @@
       //   this.show1 = false
       // }
       if(sessionStorage.getItem("ownerPositive")){
-        this.imageSave1 = decodeURIComponent("http://ems.jujinkeji.net/" + sessionStorage.getItem("ownerPositive"))
+        this.imageSave1 = decodeURIComponent("http://ems.tjeasytech.cn/" + sessionStorage.getItem("ownerPositive"))
         this.show1 = false
       }
       // if(sessionStorage.getItem('img2')){
@@ -233,15 +233,15 @@
       //   this.show2 = false
       // }
       if(sessionStorage.getItem("ownerNegative")){
-        this.imageSave2 = decodeURIComponent("http://ems.jujinkeji.net/" + sessionStorage.getItem("ownerNegative"))
+        this.imageSave2 = decodeURIComponent("http://ems.tjeasytech.cn/" + sessionStorage.getItem("ownerNegative"))
         this.show2 = false
       }
       // if(sessionStorage.getItem('img3')){
       //   this.imageSave3 = sessionStorage.getItem('img3')
-      //   this.show3 = false   ems.jujinkeji.net
+      //   this.show3 = false   ems.tjeasytech.cn
       // }
       if(sessionStorage.getItem("housingAuthority")){
-        this.imageSave3 = decodeURIComponent("http://ems.jujinkeji.net/zip/受理凭证/" + sessionStorage.getItem("housingAuthority"))
+        this.imageSave3 = decodeURIComponent("http://ems.tjeasytech.cn/zip/受理凭证/" + sessionStorage.getItem("housingAuthority"))
         this.show3 = false
       }
     }
