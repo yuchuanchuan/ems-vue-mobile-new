@@ -139,7 +139,7 @@
               commission = res.data
               setTimeout(()=>{
                 _this.updateCommission(commission)
-              },1000)
+              },1500)
               // success
             }else{
               console.log(res.msg)
