@@ -33,7 +33,7 @@
 
       <div class='user_num'>
         <div class='left'>凭证编号</div>
-        <input type="text" v-model="dataForm.idCard">
+        <input type="text" v-model="dataForm.idCard" maxlength="15">
       </div>
     </div>
     <!--<div class="tishi" v-show="show">-->
@@ -82,7 +82,7 @@
       },
       sureNext(){
         this.sureInfo = false
-        if(confirm("“天津市不动产登记受理凭证”原件请务必交回现场邮政EMS人员！")){
+        if(confirm("“务必交回不动产大厅邮政窗口ems人员！")){
             sessionStorage.setItem('applyName', this.dataForm.applyName)
             sessionStorage.setItem('applyPhone', this.dataForm.applyPhone)
             sessionStorage.setItem('propertyNo', this.dataForm.propertyNo)
@@ -107,7 +107,10 @@
           alert('请输入身份证号')
         }else if(this.dataForm.idCard == '' || this.dataForm.idCard == null){
           alert('请输入凭证编号')
-        }else{
+        }else if(this.dataForm.idCard != '' && (this.dataForm.idCard.length < 15 || this.dataForm.idCard.length > 15)){
+          alert('请输入正确的凭证编号，凭证编号为15位')
+        }
+        else{
           let flag = true
           if(this.dataForm.applyName){
             let reg = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/;
