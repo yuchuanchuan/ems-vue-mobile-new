@@ -29,11 +29,15 @@
         <span>权利人自愿委托中国邮政速递物流股份有限公司天津市分公司为合法代理人，代为领取本人申请办理的不动产权证/不动产登记证明，并邮寄送达本人，受托人在其权限范围内依法所作的一切行为，接受问询的行为及签署的一切文件，委托人均予以承认。</span>
       </div>
       <div class='new_white new_info'>
-        <div class='white_title'>
+        <div class='white_title' style="margin-bottom:0.3rem;">
           <span>委托人签名：</span>
-          <button @click="overwrite">清空</button>
+          <!--<button @click="overwrite">清空</button>-->
         </div>
-        <div class='new_qianzi'>
+        <div class="sign_show" v-if="!showSign" @click="handleShowSign">
+          <img :src="signImgUrl" alt="" v-if="signImgUrl" style="width: 180px; height: 200%; margin-top:-95px;" ref="signPic" class="roatePic">
+          <span style="font-size:0.5rem;" v-else>请点击横板进行签名</span>
+        </div>
+        <div class='new_qianzi' v-if="showSign">
           <Signature ref="signaturePic"></Signature>
         </div>
       </div>
@@ -53,6 +57,9 @@
   export default {
     data(){
       return{
+        showSign: false,
+        signImgUrl: '',
+        roateImg: false,
         payOrder: false,
         dataForm: {
           orderId: '',
@@ -85,6 +92,20 @@
       }
     },
     methods:{
+      // roateSignImg(){
+      //   let width = this.$refs.signPic.width
+      //   let height = this.$refs.signPic.height
+      //   if(height > width){
+      //     this.$refs.signPic.width = height
+      //     this.$refs.signPic.height = width
+      //     this.roateImg = true
+      //   }else{
+      //     this.roateImg = false
+      //   }
+      // },
+      handleShowSign(){
+        this.showSign = true
+      },
       new_tui(){
         this.$router.push({name: 'fourthOrder'})
       },
@@ -92,7 +113,7 @@
         this.$refs.signaturePic.overwrite()
       },
       jump5(){
-        if(this.$refs.signaturePic.touchBegin){
+        if(this.signImgUrl){
           this.payOrder = true
           // 截图 授权委托书
           this.createOrderInfo()
@@ -292,6 +313,15 @@
 </script>
 
 <style scoped>
+  .sign_show{
+    width: 100%;
+    height: 180px;
+    background-color:#f2f2f2;
+    color: #177abf;
+    font-size: 1.8rem;
+    line-height: 120px;
+    text-align: center;
+  }
   .dz select{
     width:100%;
     height:0.8rem;
@@ -937,10 +967,14 @@
     align-items: center;
   }
   .new_qianzi{
-    margin-top:0.3rem;
     width:100%;
-    height:3.3rem;
+    /*height:3.3rem;*/
     background:#f2f2f2;
+    position:absolute;
+    top:0px;
+    left: 0px;
+    bottom:0px;
+    height:100%;
   }
   .new_info span:first-child{
     font-size:0.28rem;
@@ -996,5 +1030,8 @@
     background: #213980;
     height: 0.8rem;
     line-height: 0.8rem;
+  }
+  .roatePic{
+    transform: rotateZ(-90deg);
   }
 </style>
