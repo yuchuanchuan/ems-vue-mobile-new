@@ -102,7 +102,8 @@ export default {
         handleAreaId: '',
         openid: '',
         handleId: '',
-        postType:''
+        postType:'',
+        status: ''
       }
     }
   },
