@@ -14,7 +14,21 @@
 			</div>
 			<div class='info_detail'>
 				<div class="info_left">当前状态</div>
-				<div class='info_right'>{{dataForm.status ===1 ? '未支付' : dataForm.status ===2 ? '已支付' : dataForm.status === 3 ? '待收货' : dataForm.status === 4 ? '已收货' : dataForm.status === 5 ? '已取消' : dataForm.status === 6 ? '受理中' : dataForm.status === 7 ? '审核中' : dataForm.status === 8 ? '制证中' : dataForm.status === 9 ? '发证中' : '' }}</div>
+				<div class='info_right'>
+          <span v-if="dataForm.status === 1">待支付</span>
+          <span v-else-if="dataForm.status === 2">已支付</span>
+          <span v-else-if="dataForm.status === 3">已发货</span>
+          <span v-else-if="dataForm.status === 4">已妥投</span>
+          <span v-else-if="dataForm.status === 5">已取消</span>
+          <span v-else-if="dataForm.status === 6">已支付</span>
+          <span v-else-if="dataForm.status === 7">已支付</span>
+          <span v-else-if="dataForm.status === 8">已出证</span>
+          <span v-else-if="dataForm.status === 9">已出证</span>
+          <span v-else-if="dataForm.status === 10">未妥投</span>
+          <span v-else-if="dataForm.status === 11">已妥投</span>
+          <span v-else-if="dataForm.status === 12">未妥投</span>
+          <span v-else-if="dataForm.status === 13">已发货</span>
+        </div>
 			</div>
 		</div>
 
