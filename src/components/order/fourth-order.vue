@@ -12,14 +12,14 @@
         <option v-for="(item,index) in postTypes" :key="index" :value="item.id">{{item.value}}</option>
       </select>
     </div>
-    <div class="item">
+    <div class="item" v-if="hasFree == 1">
       <div class="title">邮寄费用</div>
       <div class="info feiyong">
         <div class="dizhi">￥{{postPrice / 100}}</div>
       </div>
     </div>
     <div class="box3">
-      <div class="item">
+      <div class="item" v-if="hasFree == 1">
         <div class="title">是否投递保险</div>
         <div class="kg">
             <span class="switch" @click="switchDepartment" :class="isShow ? 'on': ''">
@@ -27,7 +27,7 @@
             </span>
         </div>
       </div>
-      <div class="item">
+      <div class="item" v-if="hasFree == 1">
         <div class="title">保险费用</div>
         <div class="price">￥{{dataForm.postRisk == 2 ? 0 : (rateFree / 100)}}</div>
       </div>
@@ -47,6 +47,7 @@
     data(){
       return{
         detailRiskName: '',
+        hasFree: '',
         postTypes:[],
         handleAreas: [],
         postPrice: sessionStorage.getItem('postPrice'), // 邮寄价格
@@ -127,6 +128,7 @@
             this.dataForm.handleAreaId = data.data.areaId
             this.detailRiskName = data.data.handleAddress
             this.dataForm.handleId = data.data.id
+            this.hasFree = data.data.hasFree
           }
         }).then(()=>{
           this.getHandleAreaList()
@@ -151,6 +153,8 @@
           sessionStorage.setItem('handleId', this.dataForm.handleId)
           sessionStorage.setItem('handleAreaId', this.dataForm.handleAreaId)
           sessionStorage.setItem('isShow', this.isShow)
+
+          sessionStorage.setItem("hasFree", this.hasFree)
 
           // this.$router.push({name: 'fifthOrder'})
           this.$router.push({name: 'orderInfo'})

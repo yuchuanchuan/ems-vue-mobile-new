@@ -1,6 +1,7 @@
 <template>
   <!--第二步-->
   <div class="content1">
+    <!--<div class="zhe-zhao-ceng" v-if="showZheZhao" style="z-index: 99999">正在上传中，请稍后...</div>-->
     <div class="title">不动产登记便民邮寄</div>
     <div class="box"><div class="tui" @click="tui()"></div>上传凭证</div>
     <div class="box1-title">
@@ -42,6 +43,7 @@
   export default {
     data(){
       return{
+        // showZheZhao: false,
         imageSave1:"",
         imageSave2:'',
         imageSave3:'',
@@ -89,8 +91,10 @@
               // ownerPositive = res.data
               // sessionStorage.setItem('ownerPositive', ownerPositive)
               sessionStorage.setItem(imgName, res.data)
+              self.showZheZhao = false // 显示遮罩层
             } else {
               console.log(res.msg)
+              self.showZheZhao = false // 显示遮罩层
             }
           }
         })
@@ -102,6 +106,8 @@
         if(confirm("温馨提示：为了保证证件清晰，请您home键向右横版拍照")){
           document.getElementById('saveImage1').click()
           document.getElementById('saveImage1').onchange = function(e){
+            self.showZheZhao = true // 显示遮罩层
+
             let reader = new FileReader();
             let fileData = "";
             reader.readAsDataURL(e.target.files[0]);
@@ -132,7 +138,7 @@
                 }else{
                   self.xuanzhuan1 = false
                 }
-              },50)
+              },500)
             };
           }
         }
@@ -144,6 +150,8 @@
         if(confirm("温馨提示：为了保证证件清晰，请您home键向右横版拍照")){
           document.getElementById('saveImage2').click()
           document.getElementById('saveImage2').onchange = function(e){
+            self.showZheZhao = true // 显示遮罩层
+
             let reader = new FileReader();
             let fileData = "";
             reader.readAsDataURL(e.target.files[0]);
@@ -173,7 +181,7 @@
                 }else{
                   self.xuanzhuan2 = false
                 }
-              },50)
+              },500)
             };
           }
         }
@@ -184,6 +192,8 @@
         if(confirm("温馨提示：为了保证证件清晰，请您home键向下竖版照相")){
           document.getElementById('saveImage3').click()
           document.getElementById('saveImage3').onchange = function(e){
+            self.showZheZhao = true // 显示遮罩层
+
             let reader = new FileReader();
             let fileData = "";
             reader.readAsDataURL(e.target.files[0]);
@@ -213,7 +223,7 @@
                 }else{
                   self.xuanzhuan3 = false
                 }
-              },50)
+              },500)
             };
           }
         }
@@ -320,6 +330,15 @@
 </script>
 
 <style scoped>
+  /*.zhe-zhao-ceng{*/
+    /*width: 100%;*/
+    /*height: 100%;*/
+    /*position: absolute;*/
+    /*background-color: #000000;*/
+    /*opacity: 0.3;*/
+    /*text-align: center;*/
+    /*padding-top: 45%;*/
+  /*}*/
   .dz select{
     width:100%;
     height:0.8rem;

@@ -178,7 +178,9 @@
         }).then(({ data }) => {
           if (data && data.code === 0) {
             this.dataForm.orderId = data.data.orderId
-            this.wechatPay(data.data.orderId)
+            if(sessionStorage.getItem("hasFree") == 1){ // 收取费用
+              this.wechatPay(data.data.orderId)
+            }
           } else {
             alert(data.msg)
           }
@@ -194,6 +196,9 @@
           })
         }).then(({ data }) => {
           if (data && data.code === 0) {
+            if(sessionStorage.getItem("hasFree") == 2){ // 不收取费用
+              this.updateOrderStatus()
+            }
             // success
           } else {
             alert(data.msg)

@@ -112,7 +112,8 @@ export default {
 	    tanchuang_status:false,
       tempOrderNum: '',
       tempOrderStatus: '',
-      orderNum: ''
+      orderNum: '',
+      hasFree: ''
     }
   },
   mounted(){
@@ -200,6 +201,20 @@ export default {
     document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + 'px';
   },
   methods:{
+    // 根据地区编号，获取id
+    getHandleAreaInfo(){
+      this.$http({
+        url: this.$http.adornUrl('/mobile/handlerArea/getHandleAreaBySystemNo'),
+        method: 'get',
+        params: this.$http.adornParams({
+          'systemNo': localStorage.getItem("areaid")
+        })
+      }).then(({ data }) => {
+        if (data && data.code === 0) {
+          this.hasFree = data.data.hasFree
+        }
+      })
+    },
 
     tui(){
       this.$router.go(-1);
@@ -372,6 +387,8 @@ export default {
     yes(){
       if(this.tempOrderStatus == 1){
         this.updateCancelStatus(this.tempOrderNum, 1)
+      }else if(this.hasFree == 2){ // 未收取费用
+        this.updateCancelStatus(this.tempOrderNum, 1)
       }else{
         this.fundPay(this.tempOrderNum)
       }
@@ -450,6 +467,7 @@ export default {
     // alert('零点时间戳===' + new Date(new Date(new Date().getTime() - 60*60*1000).setHours(0,0,0,0)).getTime())
     // alert('openid---------' + localStorage.getItem("openid"))
     this.getUserOrderList()
+    this.getHandleAreaInfo()
   },
   destroyed(){
     clearInterval(t)
