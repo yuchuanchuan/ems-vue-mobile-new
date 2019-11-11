@@ -161,7 +161,8 @@ export default {
         for (var key in this.orderList) {
           if(this.orderList[key]["status"] === 2){
             let startTime = new Date().getTime()
-            let endTime = new Date(new Date(new Date().getTime() - 60*60*1000).setHours(0,0,0,0)).getTime() + 86400000
+            // let endTime = new Date(new Date(new Date().getTime() - 60*60*1000).setHours(0,0,0,0)).getTime() + 86400000
+            let endTime = this.orderList[key]["createTimestamp"] + 86400000
             let rightTime = endTime - startTime;
             if (rightTime >= 0) {
               hh = Math.floor(rightTime / 1000 / 60 / 60 % 24);
@@ -178,11 +179,11 @@ export default {
               }
               this.orderList[key]["djs1"] = hh + ":" + mm + ":" + ss;
               // this.showCanceldjs = true
-              if(new Date(this.orderList[key]["createTimestamp"]).toDateString() === new Date().toDateString()){
-                this.orderList[key]["showCancelBtn"] = true
-              }else{
-                this.orderList[key]["showCancelBtn"] = false
-              }
+              // if(new Date(this.orderList[key]["createTimestamp"]).toDateString() === new Date().toDateString()){
+              //   this.orderList[key]["showCancelBtn"] = true
+              // }else{
+              //   this.orderList[key]["showCancelBtn"] = false
+              // }
             }else{
               this.orderList[key]["showCancelBtn"] = false
 
@@ -306,8 +307,9 @@ export default {
         return "00:00:00"
       }
     },
-    cancelOrderTime(){
-      var endtime = new Date(new Date(new Date().getTime() - 60*60*1000).setHours(0,0,0,0)).getTime() + 86400000
+    cancelOrderTime(endtime){
+      // var endtime = new Date(new Date(new Date().getTime() - 60*60*1000).setHours(0,0,0,0)).getTime() + 86400000
+      endtime = endtime + 86400000
       var hh, mm, ss = null
       var str = "";
       var time =  endtime - new Date().getTime();
@@ -350,21 +352,27 @@ export default {
             if(obj.status === 2){
               // 创建订单日期为今天，则开启到0点后，不能再次倒计时
               // alert(new Date(obj.createTimestamp).toDateString() + "---------" + new Date().toDateString())
-              if(new Date(obj.createTimestamp).toDateString() === new Date().toDateString()){
-                this.$set(
-                  obj,"djs1",this.cancelOrderTime()
-                );
-                this.$set(
-                  obj,"showCancelBtn", true
-                )
-              }else{
-                this.$set(
-                  obj,"djs1","",
-                );
-                this.$set(
-                  obj,"showCancelBtn", false
-                )
-              }
+              // if(new Date(obj.createTimestamp).toDateString() === new Date().toDateString()){
+              //   this.$set(
+              //     obj,"djs1",this.cancelOrderTime()
+              //   );
+              //   this.$set(
+              //     obj,"showCancelBtn", true
+              //   )
+              // }else{
+              //   this.$set(
+              //     obj,"djs1","",
+              //   );
+              //   this.$set(
+              //     obj,"showCancelBtn", false
+              //   )
+              // }
+              this.$set(
+                obj,"djs1",this.cancelOrderTime(obj.createTimestamp)
+              );
+              this.$set(
+                obj,"showCancelBtn", true
+              )
             }
           })
 
