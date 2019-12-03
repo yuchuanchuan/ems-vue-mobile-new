@@ -44,7 +44,7 @@
 			</div>
 			<div class='info_detail'>
 				<div class="info_left">收件地址</div>
-				<div class='info_right'>{{dataForm.postAddress}}</div>
+				<div class='info_right'>{{dataForm.postProvinceName + dataForm.postCityName + dataForm.postCountyName + dataForm.postAddress}}</div>
 			</div>
 			<div class='info_detail'>
 				<div class="info_left">凭证编号</div>
@@ -96,8 +96,11 @@ export default {
         housingAuthority: '',
 
         postProvinceId: '',
+        postProvinceName: '',
         postCityId: '',
+        postCityName: '',
         postCountyId: '',
+        postCountyName: '',
 
         handleAreaId: '',
         openid: '',
