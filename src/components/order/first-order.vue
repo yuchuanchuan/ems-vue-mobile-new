@@ -136,17 +136,26 @@
             let reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
             // let reg1 = /^[a-zA-Z][0-9]{8}$/;   && reg1.test(this.dataForm.propertyNo)
             let reg1 = /[a-zA-Z0-9]{8}/;
-            if(this.dataForm.propertyNo.length > 8){
+            let reg2 = /[a-zA-Z0-9]{10}/;
+            if(this.dataForm.propertyNo.length > 10){
               if (!reg.test(this.dataForm.propertyNo)) {
                 flag = false
                 alert('请输入正确的身份证号')
                 return;
               }
             }else {
-              if (!reg1.test(this.dataForm.propertyNo)) {
-                flag = false
-                alert('请输入正确的身份证号')
-                return;
+              if(this.dataForm.propertyNo.length > 8){
+                if (!reg2.test(this.dataForm.propertyNo)) {
+                  flag = false
+                  alert('请输入正确的身份证号')
+                  return;
+                }
+              }else{
+                if (!reg1.test(this.dataForm.propertyNo)) {
+                  flag = false
+                  alert('请输入正确的身份证号')
+                  return;
+                }
               }
             }
             window.scrollTo(0, 0);
