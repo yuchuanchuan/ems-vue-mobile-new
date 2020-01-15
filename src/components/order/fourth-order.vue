@@ -33,7 +33,7 @@
       </div>
       <div class="item">
         <div class="title">受理地址</div>
-        <select v-model="dataForm.handleId" class='addr_select'>
+        <select v-model="dataForm.handleId" class='addr_select' disabled="disabled">
           <option v-for="(item,index) in handleAreas" :key="index" :value="item.id">{{item.handleAddress}}</option>
         </select>
       </div>

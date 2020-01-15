@@ -107,8 +107,8 @@
           alert('请输入身份证号')
         }else if(this.dataForm.idCard == '' || this.dataForm.idCard == null){
           alert('请输入凭证编号')
-        }else if(this.dataForm.idCard != '' && (this.dataForm.idCard.length < 14 || this.dataForm.idCard.length > 14)){
-          alert('请输入正确的凭证编号，凭证编号为14位')
+        }else if(this.dataForm.idCard != '' && (this.dataForm.idCard.length != 15)){
+          alert('请输入正确的凭证编号，凭证编号为15位')
         }
         else{
           let flag = true
