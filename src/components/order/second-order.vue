@@ -85,6 +85,7 @@
           data: formData,
           contentType: false,
           processData: false,
+          async:false,
           success: function (res) {
             console.log(res);
             if (res.code === 0) {
