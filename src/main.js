@@ -6,16 +6,30 @@ import router from './router/router'
 import VueCookie from 'vue-cookie'
 import httpRequest from '@/utils/httpRequest'
 import $ from 'jquery'
+import VModal from 'vue-js-modal'
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+import common from '@/utils/mycommons.js'
+
+
+Vue.use(ElementUI);
+
+Vue.use(VModal, {
+    dialog: true,
+    dynamic: true
+})
+
 
 Vue.use(VueCookie)
+Vue.prototype.common=common
 Vue.prototype.$http = httpRequest// ajax请求方法
 Vue.config.productionTip = false
 
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  router,
-  template: '<App/>',
-  render: h => h(App)
+    el: '#app',
+    router,
+    template: '<App/>',
+    render: h => h(App)
 })

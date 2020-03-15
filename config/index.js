@@ -12,8 +12,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/mobile-ems':{
-        // target: 'http://ems.tjeasytech.cn/mobile-ems',
-        target: 'http://localhost:8080/mobile-ems',
+         target: 'http://ems.tjeasytech.cn/mobile-ems',
+        // target: 'http://localhost:9010/mobile-ems',
         changeOrigin:true,
         pathRewrite: {
           '^/mobile-ems':''
@@ -22,7 +22,7 @@ module.exports = {
     },
 
     // Various Dev Server settings
-    host: '192.168.31.181', // can be overwritten by process.env.HOST
+    host: 'localhost', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,

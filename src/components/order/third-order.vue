@@ -8,7 +8,7 @@
       <div class="r">为了确保邮件投递准确无误，请申请人准确、详细填写收件人信息、联系电话及收件地址，如因信息填写有误造成长时间无法收到邮件的，请打咨询电话：022-24013672</div>
     </div>
     <div class="item">
-      <div class="title">姓名</div>
+      <div class="title">收件人</div>
       <input type="text" placeholder="输入收件人姓名" v-model="dataForm.name" autofocus="autofocus">
     </div>
     <!--<div class='item'>-->
@@ -238,26 +238,28 @@
         var reg1 = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/;
         var reg2 = /^1[3456789]\d{9}$/;
         if(this.dataForm.name==''){
-          alert("请输入收件人姓名")
+          this.common.myAlert('请输入收件人姓名',this)
           return
         }if(!reg1.test(this.dataForm.name)){
-          alert("请输入正确的收件人姓名")
+          this.common.myAlert('请输入正确的收件人姓名',this)
           return
         }
         if(this.dataForm.phone==""){
-          alert("请输入电话号码")
+          this.common.myAlert('请输入电话号码',this)
           return
         }if(!reg2.test(this.dataForm.phone)){
-          alert("请输入正确的电话号码")
+          this.common.myAlert('请输入正确的电话号码',this)
           return
         }if(this.dataForm.postProvinceId == '' || this.dataForm.postCityId=='' || this.dataForm.postCountyId =='' ||
           this.dataForm.postProvinceId == null || this.dataForm.postCityId==null || this.dataForm.postCountyId ==null){
-          alert("请输入收件地址")
+          this.common.myAlert('请输入收件地址',this)
           return
         }if(this.dataForm.street == '' || this.dataForm.street == null){
-          alert("请输入街道/路名称")
+          this.common.myAlert('请输入街道/路名称',this)
+          return
         }if(this.dataForm.houseNum == '' || this.dataForm.houseNum == null){
-          alert("请输入门牌号码")
+          this.common.myAlert('请输入门牌号码',this)
+          return
         }else{
           sessionStorage.setItem('name', this.dataForm.name)
           sessionStorage.setItem('phone', this.dataForm.phone)

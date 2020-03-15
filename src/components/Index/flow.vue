@@ -157,8 +157,8 @@
   }
   .is_agree{
     margin-right: 0.2rem;
-  width:0.3rem;
-  height: 0.3rem;
+  width:0.7rem;
+  height: 0.7rem;
   margin-left: 0.4rem;
  }
  .meiyongde{

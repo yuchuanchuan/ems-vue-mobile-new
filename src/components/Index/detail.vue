@@ -22,8 +22,9 @@
           <span v-else-if="dataForm.status === 5">已取消</span>
           <span v-else-if="dataForm.status === 6">已支付</span>
           <span v-else-if="dataForm.status === 7">已支付</span>
-          <span v-else-if="dataForm.status === 8">已出证</span>
-          <span v-else-if="dataForm.status === 9">已出证</span>
+          <!-- 将原先的已出证改为已支付 -->
+          <span v-else-if="dataForm.status === 8">已支付</span>
+          <span v-else-if="dataForm.status === 9">已支付</span>
           <span v-else-if="dataForm.status === 10">未妥投</span>
           <span v-else-if="dataForm.status === 11">已妥投</span>
           <span v-else-if="dataForm.status === 12">未妥投</span>
@@ -44,7 +45,7 @@
 			</div>
 			<div class='info_detail'>
 				<div class="info_left">收件地址</div>
-				<div class='info_right'>{{dataForm.postProvinceName + dataForm.postCityName + dataForm.postCountyName + dataForm.postAddress}}</div>
+				<div class='info_rightForMore'>{{dataForm.postProvinceName + dataForm.postCityName + dataForm.postCountyName + dataForm.postAddress}}</div>
 			</div>
 			<div class='info_detail'>
 				<div class="info_left">凭证编号</div>
@@ -58,6 +59,10 @@
 				<div class="info_left">邮寄号</div>
 				<div class='info_right'>{{dataForm.mailNum}}</div>
 			</div>
+      <div class='info_detail'>
+      	<div class="info_left">办理网点</div>
+      	<div class='info_right'>{{handleArea}}</div>
+      </div>
 		</div>
 
 		<div class="info info3">
@@ -79,6 +84,7 @@ export default {
       is_show:false,
       postTypes:[],
       postText: '',
+      handleArea: '',
       dataForm:{
         orderId: '',
         orderNumber: '',
@@ -137,6 +143,7 @@ export default {
         }
       }).then(()=>{
         this.getPostInfo()
+        this.getHandleArea()
       })
     },
     getPostInfo(){
@@ -149,6 +156,21 @@ export default {
           data.data.forEach((item)=>{
             if(item.id === this.dataForm.postType){
               this.postText = item.bussinessName
+            }
+          })
+        }
+      })
+    },
+    getHandleArea(){
+      this.$http({
+        url: this.$http.adornUrl('/mobile/handlerArea/list'),
+        method: 'get',
+        params: this.$http.adornParams()
+      }).then(({ data }) => {
+        if (data && data.code === 0) {
+          data.data.forEach((item)=>{
+            if(item.id === this.dataForm.handleAreaId){
+              this.handleArea = item.handleArea
             }
           })
         }
@@ -226,6 +248,23 @@ export default {
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
+  .info_rightForMore{
+  	margin-left: 0.2rem;
+  	border-radius: 0.15rem;
+  	color:#595959;
+  	background: #f2f2f2;
+  	text-align: left;
+  	padding-left:0.5rem;
+  	line-height:0.5rem;
+  	padding-right: 0.3rem;
+  	font-size: 0.32rem;
+  	width:4.6rem;
+  	/* height:1.8rem; */
+  	overflow: scroll;
+  	text-overflow: ellipsis;
+  	/* white-space: nowrap; */
+
+  }
 	.info_left{
 		border-radius: 0.15rem;
 		font-size: 0.28rem;

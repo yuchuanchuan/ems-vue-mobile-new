@@ -43,6 +43,7 @@
 </template>
 
 <script>
+
   export default {
     data(){
       return{
@@ -136,9 +137,11 @@
       },
       jump2(){
         if(this.dataForm.postType == "" || this.dataForm.postType == null || this.dataForm.postType == 'null'){
-          alert("请选择邮寄文件类型")
+          // alert("请选择邮寄文件类型")
+          this.common.myAlert('请选择邮寄文件类型',this)
         }else if(this.dataForm.handleId == '' || this.dataForm.handleId == null || this.dataForm.handleId == 'null'){
-          alert("请选择受理地址")
+          // alert("请选择受理地址")
+          this.common.myAlert('请选择受理地址',this);
         }else{
           if(this.dataForm.handleAreaId == '' || this.dataForm.handleAreaId == null || this.dataForm.handleAreaId == 'null'){
             this.handleAreas.forEach((item) => {

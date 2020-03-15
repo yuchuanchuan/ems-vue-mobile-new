@@ -54,7 +54,6 @@
   import html2canvas from 'html2canvas'
   import Signature from '../Index/signature.vue'
   var commission = ''
-  var formdata1 = null
   export default {
     data(){
       return{
@@ -117,6 +116,7 @@
         if(this.signImgUrl){
           this.payOrder = true
           // 截图 授权委托书
+          this.createOrderInfo()
           this.toImage()
         }else {
           alert('请签字确认')
@@ -131,28 +131,6 @@
         }).then((canvas) => {
           let url = canvas.toDataURL('image/png');
           this.dataURLtoFile(url)
-        }).then(()=>{
-          let _this = this
-          $.ajax({
-            url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
-            type:'post',
-            data: formdata1,
-            contentType: false,
-            processData: false,
-            async:false,
-            success:function(res){
-              if(res.code === 0){
-                commission = res.data
-                // setTimeout(()=>{
-                //   _this.updateCommission(commission)
-                // },1500)
-                // success
-                _this.createOrderInfo()
-              }else{
-                console.log(res.msg)
-              }
-            }
-          })
         })
       },
       dataURLtoFile (dataurl, filename = new Date().getTime()) {
@@ -167,10 +145,28 @@
           u8arr[n] = bstr.charCodeAt(n)
         }
         let file = new File([u8arr], `${filename}.${suffix}`, { type: mime })
-        formdata1 = new FormData()// 创建form对象
+        let formdata1 = new FormData()// 创建form对象
         formdata1.append('file', file) // 通过append向form对象添加数据,可以通过append继续添加数//或formdata1.append('img',file);
         formdata1.append('type', 3)
         formdata1.append("name", sessionStorage.getItem('applyName'))
+        $.ajax({
+          url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
+          type:'post',
+          data: formdata1,
+          contentType: false,
+          processData: false,
+          success:function(res){
+            if(res.code === 0){
+              commission = res.data
+              setTimeout(()=>{
+                _this.updateCommission(commission)
+              },1500)
+              // success
+            }else{
+              console.log(res.msg)
+            }
+          }
+        })
       },
       createOrderInfo(){
         this.dataForm.commission = commission
@@ -188,8 +184,6 @@
           } else {
             alert(data.msg)
           }
-        }).then(()=>{
-          this.updateCommission(commission)
         })
       },
       updateCommission(commission){

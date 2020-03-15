@@ -23,6 +23,10 @@ import fifthOrder from "../components/order/fifth-order.vue"
 import VueDirectiveImagePreviewer from 'vue-directive-image-previewer'
 import 'vue-directive-image-previewer/dist/assets/style.css'
 
+//import Modal from '../components/order/as-modal.vue'
+//Modal.install=function(Vue){
+//  Vue.component(Modal.name,Modal)
+//}
 
 Vue.use(VueDirectiveImagePreviewer)
 Vue.use(Router)
