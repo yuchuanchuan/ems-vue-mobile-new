@@ -9,7 +9,7 @@
             <!--<div class='jiantou'></div>-->
         </div>
 
-        <img src="../../img/banlixuzhi.png" class='tip_img'>
+        <img src="../../img/banlixuzhi.png" class='tip_img' style="border:1px solid;">
         <div class='tip'>
             <div class='tip_title'>提示：</div>
             <div class='tip_info'>请将“天津市不动产登记受理凭证”中的“编号信息”、“权利人姓名”填写在以下表格中，“手机号”请填写受理登记时填写的信息。</div>
@@ -57,17 +57,7 @@
                 </div>
             </div>
         </div>
-        <el-dialog
-          title="提示"
-          :visible.sync="dialogVisible"
-          width="30%"
-          :before-close="handleClose">
-          <span>这是一段信息</span>
-          <span slot="footer" class="dialog-footer">
-            <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-          </span>
-        </el-dialog>
+
         <button class='next' @click="jump1()">下一步</button>
     </div>
 </template>
@@ -102,19 +92,11 @@
             },
             sureNext(){
                 this.sureInfo = false;
-                this.$confirm('务必交回不动产大厅邮政窗口ems人员！<br/><b>点击任意处关闭</b>', '提示：', {
-                  // confirmButtonText: '确定',
-                  showCancelButton:false,
-                  dangerouslyUseHTMLString: true,
-                  showConfirmButton:false,
-                  closeOnClickModal: true,
-                  callback: action => {
                 sessionStorage.setItem('applyName', this.dataForm.applyName)
                 sessionStorage.setItem('applyPhone', this.dataForm.applyPhone)
                 sessionStorage.setItem('propertyNo', this.dataForm.propertyNo.toString().toUpperCase())
                 sessionStorage.setItem('idCard', this.dataForm.idCard)
                 this.$router.push({name: 'secondOrder'})
-                }})
             },
             goback () {
                 if (this.dataForm.idCard === '') {
@@ -134,8 +116,8 @@
                     this.common.myAlert('请输入身份证号',this)
                 } else if (this.dataForm.idCard == '' || this.dataForm.idCard == null) {
                     this.common.myAlert('请输入凭证编号',this)
-                } else if (this.dataForm.idCard != '' && (this.dataForm.idCard.length != 15)) {
-                    this.common.myAlert('请输入正确的凭证编号，凭证编号为15位',this)
+                } else if (this.dataForm.idCard != '' && (this.dataForm.idCard.length != 15&&this.dataForm.idCard.length != 14)) {
+                    this.common.myAlert('请输入正确的凭证编号，凭证编号为14或15位',this)
                 }
                 else {
                     let flag = true

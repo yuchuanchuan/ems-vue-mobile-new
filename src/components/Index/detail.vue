@@ -45,7 +45,7 @@
 			</div>
 			<div class='info_detail'>
 				<div class="info_left">收件地址</div>
-				<div class='info_rightForMore'>{{dataForm.postProvinceName + dataForm.postCityName + dataForm.postCountyName + dataForm.postAddress}}</div>
+				<div class='info_rightForMore'>{{dataForm.postProvinceName + dataForm.postCityName + dataForm.postCountyName + dataForm.street}}</div>
 			</div>
 			<div class='info_detail'>
 				<div class="info_left">凭证编号</div>

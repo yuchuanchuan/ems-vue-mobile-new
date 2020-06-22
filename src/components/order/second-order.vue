@@ -7,7 +7,7 @@
       <div class="tui" @click="tui()"></div>
       上传凭证
     </div>
-    <div class="box1-title">
+    <!-- <div class="box1-title">
       <img src="../../img/ren.png">
       <div>产权人身份证明<span>（温馨提示：为了保证证件清晰，请您home键向右横版拍照）</span></div>
     </div>
@@ -20,7 +20,7 @@
       <div v-show="show2">身份证反面</div>
       <img :src=imageSave2 id="portrait2" :class="xuanzhuan2?'img xuanzhuan':'img'" :style="{'z-index': (show2==false ? '2':'-1')}" />
     </div>
-    <input type="file" id="saveImage2" name="myphoto" class="myinput" ref="closeUp" accept="image/*" capture="camera">
+    <input type="file" id="saveImage2" name="myphoto" class="myinput" ref="closeUp" accept="image/*" capture="camera"> -->
     <div class="box1-title">
       <img src="../../img/shu.png">
       <div>不动产登记受理凭证(上传图片)</div>
@@ -34,6 +34,9 @@
     <p class='content1_tip'>
       <span class='content1_tip_title'>温馨提示：</span>
       <span class='content1_tip_text'>上传的图片需要边框整齐字体清晰，如材料有误或不清晰的，可能需要重新上传。</span>
+    </p>
+    <p class='content1_tip'>
+      <span class="redText" v-show="showPhotoWarn">提醒：请上传凭证照片</span>
     </p>
     <button class="btn" @click="jump">下一步</button>
   </div>
@@ -55,6 +58,7 @@
         show1: true,
         show2: true,
         show3: true,
+        showPhotoWarn: false,
         xuanzhuan1: false,
         xuanzhuan2: false,
         xuanzhuan3: false
@@ -114,9 +118,9 @@
         // console.log(this.dialogVisible);
         this.$confirm('为了保证证件清晰，请您home键向右横版拍照<br/><b>点击任意处关闭</b>', '温馨提示：', {
           // confirmButtonText: '确定',
-          showCancelButton:false,
+          showCancelButton: false,
           dangerouslyUseHTMLString: true,
-          showConfirmButton:false,
+          showConfirmButton: false,
           closeOnClickModal: true,
           callback: action => {
             // alert('温馨提示：为了保证证件清晰，请您home键向右横版拍照')
@@ -165,9 +169,9 @@
         // alert('温馨提示：为了保证证件清晰，请您home键向右横版拍照')
         this.$confirm('为了保证证件清晰，请您home键向右横版拍照<br/><b>点击任意处关闭</b>', '温馨提示：', {
           // confirmButtonText: '确定',
-          showCancelButton:false,
+          showCancelButton: false,
           dangerouslyUseHTMLString: true,
-          showConfirmButton:false,
+          showConfirmButton: false,
           closeOnClickModal: true,
           callback: action => {
             document.getElementById('saveImage2').click()
@@ -211,61 +215,57 @@
       monidianji3(event) {
         var self = this
         // alert('温馨提示：为了保证证件清晰，请您home键向下竖版照相')
-        this.$confirm('为了保证证件清晰，请您home键向右横版拍照<br/><b>点击任意处关闭</b>', '温馨提示：', {
-          // confirmButtonText: '确定',
-          showCancelButton:false,
-          dangerouslyUseHTMLString: true,
-          showConfirmButton:false,
-          closeOnClickModal: true,
-          callback: action => {
-            document.getElementById('saveImage3').click()
-            document.getElementById('saveImage3').onchange = function(e) {
-              let reader = new FileReader()
-              let fileData = ''
-              reader.readAsDataURL(e.target.files[0])
-              reader.onload = function() {
-                self.show3 = false
-                var img = new Image()
-                img.src = this.result
-                // 判断图片是否大于100K,是就直接上传，反之压缩图片
-                if (this.result.length <= (100 * 1024)) {
-                  self.imageSave3 = this.result
-                  fileData = e.target.files[0]
-                  self.postImg(fileData, 2, 'housingAuthority')
-                } else {
-                  img.onload = function() {
-                    let ndata = self.compress(img)
-                    self.imageSave3 = ndata
-                    // BASE64转图片
-                    fileData = self.dataURLtoFile(ndata)
-                    self.postImg(fileData, 2, 'housingAuthority')
-                  }
-                }
-                setTimeout(function() {
-                  var width = img.width
-                  var height = img.height
-                  if (height > width) {
-                    self.xuanzhuan3 = false
-                  } else {
-                    self.xuanzhuan3 = false
-                  }
-                }, 500)
+
+        document.getElementById('saveImage3').click()
+        document.getElementById('saveImage3').onchange = function(e) {
+          let reader = new FileReader()
+          let fileData = ''
+          reader.readAsDataURL(e.target.files[0])
+          reader.onload = function() {
+            self.show3 = false
+            var img = new Image()
+            img.src = this.result
+            // 判断图片是否大于100K,是就直接上传，反之压缩图片
+            if (this.result.length <= (100 * 1024)) {
+              self.imageSave3 = this.result
+              fileData = e.target.files[0]
+              self.postImg(fileData, 2, 'housingAuthority')
+            } else {
+              img.onload = function() {
+                let ndata = self.compress(img)
+                self.imageSave3 = ndata
+                // BASE64转图片
+                fileData = self.dataURLtoFile(ndata)
+                self.postImg(fileData, 2, 'housingAuthority')
               }
             }
+            setTimeout(function() {
+              var width = img.width
+              var height = img.height
+              if (height > width) {
+                self.xuanzhuan3 = false
+              } else {
+                self.xuanzhuan3 = false
+              }
+            }, 500)
           }
-        })
+        }
+
       },
 
       jump() {
-        if (sessionStorage.getItem('ownerPositive') == '' || sessionStorage.getItem('ownerPositive') == null ||
-          sessionStorage.getItem('ownerPositive') == 'null') {
-          this.common.myAlert('请上传身份证正面照',this)
-        } else if (sessionStorage.getItem('ownerNegative') == '' || sessionStorage.getItem('ownerNegative') == null ||
-          sessionStorage.getItem('ownerNegative') == 'null') {
-          this.common.myAlert('请上传身份证反面照',this)
-        } else if (sessionStorage.getItem('housingAuthority') == '' || sessionStorage.getItem('housingAuthority') ==
+        // if (sessionStorage.getItem('ownerPositive') == '' || sessionStorage.getItem('ownerPositive') == null ||
+        //   sessionStorage.getItem('ownerPositive') == 'null') {
+        //   this.common.myAlert('请上传身份证正面照',this)
+        // } else if (sessionStorage.getItem('ownerNegative') == '' || sessionStorage.getItem('ownerNegative') == null ||
+        //   sessionStorage.getItem('ownerNegative') == 'null') {
+        //   this.common.myAlert('请上传身份证反面照',this)
+        // } else
+        if (sessionStorage.getItem('housingAuthority') == '' || sessionStorage.getItem('housingAuthority') ==
           null || sessionStorage.getItem('housingAuthority') == 'null') {
-          this.common.myAlert('请上传不动产登记受理凭证',this)
+
+          // this.common.myAlert('请上传不动产登记受理凭证',this)
+          this.showPhotoWarn = true
         } else {
           this.$router.push({
             name: 'thirdOrder'
@@ -409,6 +409,11 @@
   .content1_tip_text {
     color: #999;
   }
+
+.redText{
+  color: #FF0000;
+  font-weight: bolder;
+}
 
   body {
     width: 100%;
