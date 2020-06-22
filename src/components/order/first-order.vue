@@ -120,6 +120,7 @@
                     this.common.myAlert('请输入正确的凭证编号，凭证编号为14或15位',this)
                 }
                 else {
+
                     let flag = true
                     if (this.dataForm.applyName) {
                         let reg = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/;
