@@ -13,7 +13,7 @@ module.exports = {
     proxyTable: {
       '/mobile-ems':{
          target: 'http://ems.tjeasytech.cn/mobile-ems',
-        // target: 'http://localhost:9010/mobile-ems',
+        // target: 'http://localhost:9100/mobile-ems',
         changeOrigin:true,
         pathRewrite: {
           '^/mobile-ems':''

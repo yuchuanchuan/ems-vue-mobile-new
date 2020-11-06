@@ -18,22 +18,22 @@
         <div class="inp_list">
             <div class='user_name'>
                 <div class='left'>产权人</div>
-                <input type="text" v-model="dataForm.applyName">
+                <input type="text" v-model="dataForm.applyName" placeholder="请输入产权人姓名">
             </div>
 
             <div class='user_phone'>
                 <div class='left'>手机号</div>
-                <input type="text" v-model="dataForm.applyPhone">
+                <input type="number" v-model="dataForm.applyPhone" placeholder="请输入数字">
             </div>
 
             <div class='item'>
                 <div class='left'>身份证号</div>
-                <input type="text" v-model="dataForm.propertyNo">
+                <input type="text" v-model="dataForm.propertyNo" placeholder="请输入产权人身份证号">
             </div>
 
             <div class='user_num'>
                 <div class='left'>凭证编号</div>
-                <input type="text" v-model="dataForm.idCard" maxlength="15">
+                <input type="number" v-model="dataForm.idCard" maxlength="15" placeholder="请输入数字">
             </div>
         </div>
         <!--<div class="tishi" v-show="show">-->
@@ -44,7 +44,6 @@
         <div class='fuceng' v-if="sureInfo">
             <div class='fuceng_tip'>
                 <div class='fuceng_title'>请确认信息</div>
-
                 <div class='info_list'>
                     <div class='user_name'>产权人：{{dataForm.applyName}}</div>
                     <div class='user_id'>身份证号：{{dataForm.propertyNo}}</div>
@@ -63,138 +62,136 @@
 </template>
 
 <script>
-  // import {myAlert} from '../../utils/mycommons.js'
-    export default {
-        data(){
-            return {
-                sureInfo: false,
-                dataForm: {
-                    applyName: '',
-                    applyPhone: '',
-                    propertyNo: '',
-                    idCard: ''
-                },
-                text: '',
-                show: false
-            }
-        },
-        methods: {
-          // myAlert(txtMsg,self){
-          //   self.$confirm(txtMsg+'<br/><b>点击任意处关闭</b>', '提示：', {
-          //     // confirmButtonText: '确定',
-          //     showCancelButton:false,
-          //     dangerouslyUseHTMLString: true,
-          //     showConfirmButton:false,
-          //     closeOnClickModal: true})
-          // },
-            xiugai(){
-                this.sureInfo = false
-            },
-            sureNext(){
-                this.sureInfo = false;
-                sessionStorage.setItem('applyName', this.dataForm.applyName)
-                sessionStorage.setItem('applyPhone', this.dataForm.applyPhone)
-                sessionStorage.setItem('propertyNo', this.dataForm.propertyNo.toString().toUpperCase())
-                sessionStorage.setItem('idCard', this.dataForm.idCard)
-                this.$router.push({name: 'secondOrder'})
-            },
-            goback () {
-                if (this.dataForm.idCard === '') {
-                    this.show = true;
-                    this.text = "请输入凭证编号"
-                    return;
-                }
-                window.scrollTo(0, 0);
-            },
-            jump1 () {
-                if (this.dataForm.applyName == '' || this.dataForm.applyName == null) {
-                  var self = this
-                    this.common.myAlert("请输入产权人姓名",this)
-                } else if (this.dataForm.applyPhone == '' || this.dataForm.applyPhone == null) {
-                    this.common.myAlert("请输入手机号",this)
-                } else if (this.dataForm.propertyNo == '' || this.dataForm.propertyNo == null) {
-                    this.common.myAlert('请输入身份证号',this)
-                } else if (this.dataForm.idCard == '' || this.dataForm.idCard == null) {
-                    this.common.myAlert('请输入凭证编号',this)
-                } else if (this.dataForm.idCard != '' && (this.dataForm.idCard.length != 15&&this.dataForm.idCard.length != 14)) {
-                    this.common.myAlert('请输入正确的凭证编号，凭证编号为14或15位',this)
-                }
-                else {
-
-                    let flag = true
-                    if (this.dataForm.applyName) {
-                        let reg = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/;
-                        if (!reg.test(this.dataForm.applyName)) {
-                            flag = false
-                            this.common.myAlert('请输入正确的产权人姓名',this)
-                            return;
-                        }
-                        window.scrollTo(0, 0);
-                    }
-
-                    if (this.dataForm.applyPhone) {
-                        let reg = /^1[3456789]\d{9}$/;
-                        if (!reg.test(this.dataForm.applyPhone)) {
-                            flag = false
-                            this.common.myAlert('请输入正确的手机号',this)
-                            return;
-                        }
-                        window.scrollTo(0, 0);
-                    }
-
-                    if (this.dataForm.propertyNo) {
-                        let reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
-                        // let reg1 = /^[a-zA-Z][0-9]{8}$/;   && reg1.test(this.dataForm.propertyNo)
-                        let reg1 = /[a-zA-Z0-9]{8}/;
-                        let reg2 = /[a-zA-Z0-9]{10}/;
-                        if (this.dataForm.propertyNo.length > 10) {
-                            if (!reg.test(this.dataForm.propertyNo)) {
-                                flag = false
-                                this.common.myAlert('请输入正确的身份证号',this)
-                                return;
-                            }
-                        } else {
-                            if (this.dataForm.propertyNo.length > 8) {
-                                if (!reg2.test(this.dataForm.propertyNo)) {
-                                    flag = false
-                                    this.common.myAlert('请输入正确的身份证号',this)
-                                    return;
-                                }
-                            } else {
-                                if (!reg1.test(this.dataForm.propertyNo)) {
-                                    flag = false
-                                    this.common.myAlert('请输入正确的身份证号',this)
-                                    return;
-                                }
-                            }
-                        }
-                        window.scrollTo(0, 0);
-                    }
-
-                    if (flag) {
-                        this.sureInfo = true
-                    }
-                }
-            }
-        },
-        mounted(){
-            document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + 'px';
-        },
-        created(){
-            if (this.dataForm.applyName == '') {
-                this.dataForm.applyName = sessionStorage.getItem('applyName')
-            }
-            if (this.dataForm.applyPhone == '') {
-                this.dataForm.applyPhone = sessionStorage.getItem('applyPhone')
-            }
-            if (this.dataForm.propertyNo == '') {
-                this.dataForm.propertyNo = sessionStorage.getItem('propertyNo')
-            }
-            if (this.dataForm.idCard == '') {
-                this.dataForm.idCard = sessionStorage.getItem('idCard')
-            }
-        }
+// import {myAlert} from '../../utils/mycommons.js'
+export default {
+  data () {
+    return {
+      sureInfo: false,
+      dataForm: {
+        applyName: '',
+        applyPhone: '',
+        propertyNo: '',
+        idCard: ''
+      },
+      text: '',
+      show: false
     }
+  },
+  methods: {
+    // myAlert(txtMsg,self){
+    //   self.$confirm(txtMsg+'<br/><b>点击任意处关闭</b>', '提示：', {
+    //     // confirmButtonText: '确定',
+    //     showCancelButton:false,
+    //     dangerouslyUseHTMLString: true,
+    //     showConfirmButton:false,
+    //     closeOnClickModal: true})
+    // },
+    xiugai () {
+      this.sureInfo = false
+    },
+    sureNext () {
+      this.sureInfo = false
+      sessionStorage.setItem('applyName', this.dataForm.applyName)
+      sessionStorage.setItem('applyPhone', this.dataForm.applyPhone)
+      sessionStorage.setItem('propertyNo', this.dataForm.propertyNo.toString().toUpperCase())
+      sessionStorage.setItem('idCard', this.dataForm.idCard)
+      this.$router.push({name: 'secondOrder'})
+    },
+    goback () {
+      if (this.dataForm.idCard === '') {
+        this.show = true
+        this.text = '请输入凭证编号'
+        return
+      }
+      window.scrollTo(0, 0)
+    },
+    jump1 () {
+      if (this.dataForm.applyName == '' || this.dataForm.applyName == null) {
+        var self = this
+        this.common.myAlert('请输入产权人姓名', this)
+      } else if (this.dataForm.applyPhone == '' || this.dataForm.applyPhone == null) {
+        this.common.myAlert('请输入手机号', this)
+      } else if (this.dataForm.propertyNo == '' || this.dataForm.propertyNo == null) {
+        this.common.myAlert('请输入身份证号', this)
+      } else if (this.dataForm.idCard == '' || this.dataForm.idCard == null) {
+        this.common.myAlert('请输入凭证编号', this)
+      } else if (this.dataForm.idCard != '' && (this.dataForm.idCard.length != 15 && this.dataForm.idCard.length != 14)) {
+        this.common.myAlert('请输入正确的凭证编号，凭证编号为14或15位', this)
+      } else {
+        let flag = true
+        if (this.dataForm.applyName) {
+          let reg = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/
+          if (!reg.test(this.dataForm.applyName)) {
+            flag = false
+            this.common.myAlert('请输入正确的产权人姓名', this)
+            return
+          }
+          window.scrollTo(0, 0)
+        }
+
+        if (this.dataForm.applyPhone) {
+          let reg = /^1[3456789]\d{9}$/
+          if (!reg.test(this.dataForm.applyPhone)) {
+            flag = false
+            this.common.myAlert('请输入正确的手机号', this)
+            return
+          }
+          window.scrollTo(0, 0)
+        }
+
+        if (this.dataForm.propertyNo) {
+          let reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
+          // let reg1 = /^[a-zA-Z][0-9]{8}$/;   && reg1.test(this.dataForm.propertyNo)
+          let reg1 = /[a-zA-Z0-9]{8}/
+          let reg2 = /[a-zA-Z0-9]{10}/
+          if (this.dataForm.propertyNo.length > 10) {
+            if (!reg.test(this.dataForm.propertyNo)) {
+              flag = false
+              this.common.myAlert('请输入正确的身份证号', this)
+              return
+            }
+          } else {
+            if (this.dataForm.propertyNo.length > 8) {
+              if (!reg2.test(this.dataForm.propertyNo)) {
+                flag = false
+                this.common.myAlert('请输入正确的身份证号', this)
+                return
+              }
+            } else {
+              if (!reg1.test(this.dataForm.propertyNo)) {
+                flag = false
+                this.common.myAlert('请输入正确的身份证号', this)
+                return
+              }
+            }
+          }
+          window.scrollTo(0, 0)
+        }
+
+        if (flag) {
+          this.sureInfo = true
+        }
+      }
+    }
+  },
+  mounted () {
+    document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + 'px'
+  },
+  created () {
+    if (this.dataForm.applyName == '') {
+      this.dataForm.applyName = sessionStorage.getItem('applyName')
+    }
+    if (this.dataForm.applyPhone == '') {
+      this.dataForm.applyPhone = sessionStorage.getItem('applyPhone')
+    }
+    if (this.dataForm.propertyNo == '') {
+      this.dataForm.propertyNo = sessionStorage.getItem('propertyNo')
+    }
+    if (this.dataForm.idCard == '') {
+      this.dataForm.idCard = sessionStorage.getItem('idCard')
+    }
+  }
+}
 </script>
 
 <style scoped>
